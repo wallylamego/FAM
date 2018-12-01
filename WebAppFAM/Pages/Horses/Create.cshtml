@@ -1,0 +1,66 @@
+﻿@page
+@model WebAppFAM.Pages.Horses.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<h4>Horse</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Horse.FleetNo" class="control-label"></label>
+                <input asp-for="Horse.FleetNo" class="form-control" />
+                <span asp-validation-for="Horse.FleetNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Horse.RegistrationNumber" class="control-label"></label>
+                <input asp-for="Horse.RegistrationNumber" class="form-control" />
+                <span asp-validation-for="Horse.RegistrationNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Horse.VinNo" class="control-label"></label>
+                <input asp-for="Horse.VinNo" class="form-control" />
+                <span asp-validation-for="Horse.VinNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Horse.PhoneNo" class="control-label"></label>
+                <input asp-for="Horse.PhoneNo" class="form-control" />
+                <span asp-validation-for="Horse.PhoneNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Horse.GPSUnitNo" class="control-label"></label>
+                <input asp-for="Horse.GPSUnitNo" class="form-control" />
+                <span asp-validation-for="Horse.GPSUnitNo" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Horse.LicenseExpiry" class="control-label"></label>
+                <input asp-for="Horse.LicenseExpiry" class="form-control" />
+                <span asp-validation-for="Horse.LicenseExpiry" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Horse.InsuranceExpiry" class="control-label"></label>
+                <input asp-for="Horse.InsuranceExpiry" class="form-control" />
+                <span asp-validation-for="Horse.InsuranceExpiry" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

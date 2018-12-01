@@ -1,0 +1,63 @@
+﻿@page
+@model WebAppFAM.Pages.Horses.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete Horse</h2>
+
+<h3>Are you sure you want to delete this horse?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Horse.PhoneNo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Horse.PhoneNo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Horse.GPSUnitNo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Horse.GPSUnitNo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Horse.RegistrationNumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Horse.RegistrationNumber)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Horse.VinNo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Horse.VinNo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Horse.LicenseExpiry)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Horse.LicenseExpiry)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Horse.InsuranceExpiry)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Horse.InsuranceExpiry)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Horse.FleetNo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Horse.FleetNo)
+        </dd>
+    </dl>
+    
+    <form method="post">
+        <input type="hidden" asp-for="Horse.VehicleID" />
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-page="./Index">Back to List</a>
+    </form>
+</div>

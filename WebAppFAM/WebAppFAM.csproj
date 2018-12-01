@@ -1,0 +1,63 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <UserSecretsId>aspnet-WebAppFAM-73E7ED67-B3C5-4C9C-8272-BCAB8DF1825B</UserSecretsId>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Migrations\20180712164013_Customer_Location_Destination.cs" />
+    <Compile Remove="Migrations\20180712164013_Customer_Location_Destination.Designer.cs" />
+    <Compile Remove="Migrations\20180712164607_Customer_Location_Destination_2.cs" />
+    <Compile Remove="Migrations\20180712164607_Customer_Location_Destination_2.Designer.cs" />
+    <Compile Remove="Migrations\20180712164941_Customer_Location_Destination_3.cs" />
+    <Compile Remove="Migrations\20180712164941_Customer_Location_Destination_3.Designer.cs" />
+    <Compile Remove="Migrations\20180712165221_Customer_Location_Destination_4.cs" />
+    <Compile Remove="Migrations\20180712165221_Customer_Location_Destination_4.Designer.cs" />
+    <Compile Remove="Migrations\20180713043917_Customer_Location_Destination_5.cs" />
+    <Compile Remove="Migrations\20180713043917_Customer_Location_Destination_5.Designer.cs" />
+    <Compile Remove="Migrations\20180713044213_Customer_Location_Destination_6.cs" />
+    <Compile Remove="Migrations\20180713044213_Customer_Location_Destination_6.Designer.cs" />
+    <Compile Remove="Migrations\20180713081241_AddNewModels.cs" />
+    <Compile Remove="Migrations\20180713081241_AddNewModels.Designer.cs" />
+    <Compile Remove="Migrations\20180713084534_NewModels.cs" />
+    <Compile Remove="Migrations\20180713084534_NewModels.Designer.cs" />
+    <Compile Remove="Migrations\20180902183232_AddTripAndFuelModelsTake2.cs" />
+    <Compile Remove="Migrations\20180902183232_AddTripAndFuelModelsTake2.Designer.cs" />
+    <Compile Remove="Migrations\20180902185029_AddTripAndFuelModelsTake3.cs" />
+    <Compile Remove="Migrations\20180902185029_AddTripAndFuelModelsTake3.Designer.cs" />
+    <Compile Remove="Migrations\20180902190422_AddTripAndFuelModelsTake4.cs" />
+    <Compile Remove="Migrations\20180902190422_AddTripAndFuelModelsTake4.Designer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="jQuery" Version="3.3.1" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.4" PrivateAssets="all">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.5" PrivateAssets="All" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Scripts\" />
+    <Folder Include="wwwroot\lib\dataTables\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="Pages\_TrailerPartial.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Pages\_HorsePartial.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Pages\_DriverPartial.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Pages\_DestinationPartial.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Pages\_LayoutDataTables.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Pages\_ModalConfirmPartial.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+  </ItemGroup>
+</Project>

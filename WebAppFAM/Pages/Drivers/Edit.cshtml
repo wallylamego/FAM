@@ -1,0 +1,78 @@
+﻿@page
+@model WebAppFAM.Pages.Drivers.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit Driver</h2>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Driver.DriverID" />
+            <div class="form-group">
+                <label asp-for="Driver.FirstName" class="control-label"></label>
+                <input asp-for="Driver.FirstName" class="form-control" />
+                <span asp-validation-for="Driver.FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Driver.Surname" class="control-label"></label>
+                <input asp-for="Driver.Surname" class="form-control" />
+                <span asp-validation-for="Driver.Surname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Driver.SecondName" class="control-label"></label>
+                <input asp-for="Driver.SecondName" class="form-control" />
+                <span asp-validation-for="Driver.SecondName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Driver.CellNumber" class="control-label"></label>
+                <input asp-for="Driver.CellNumber" class="form-control" />
+                <span asp-validation-for="Driver.CellNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Driver.PDPExpiryDate" class="control-label"></label>
+                <input asp-for="Driver.PDPExpiryDate" class="form-control" />
+                <span asp-validation-for="Driver.PDPExpiryDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Driver.MedicalExpiryDate" class="control-label"></label>
+                <input asp-for="Driver.MedicalExpiryDate" class="form-control" />
+                <span asp-validation-for="Driver.MedicalExpiryDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Driver.PassportNo" class="control-label"></label>
+                <input asp-for="Driver.PassportNo" class="form-control" />
+                <span asp-validation-for="Driver.PassportNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Driver.IDNumber" class="control-label"></label>
+                <input asp-for="Driver.IDNumber" class="form-control" />
+                <span asp-validation-for="Driver.IDNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Driver.NextofKin" class="control-label"></label>
+                <input asp-for="Driver.NextofKin" class="form-control" />
+                <span asp-validation-for="Driver.NextofKin" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Driver.NextofKinDate" class="control-label"></label>
+                <input asp-for="Driver.NextofKinDate" class="form-control" />
+                <span asp-validation-for="Driver.NextofKinDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

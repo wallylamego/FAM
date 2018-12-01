@@ -1,0 +1,62 @@
+﻿@page
+@model WebAppFAM.Pages.Horses.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Horse Details</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Horse.FleetNo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Horse.FleetNo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Horse.RegistrationNumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Horse.RegistrationNumber)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Horse.VinNo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Horse.VinNo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Horse.PhoneNo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Horse.PhoneNo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Horse.GPSUnitNo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Horse.GPSUnitNo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Horse.LicenseExpiry)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Horse.LicenseExpiry)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Horse.InsuranceExpiry)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Horse.InsuranceExpiry)
+        </dd>
+
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Horse.VehicleID">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

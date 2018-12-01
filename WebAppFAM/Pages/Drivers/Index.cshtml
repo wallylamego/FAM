@@ -1,0 +1,90 @@
+﻿@page
+@model WebAppFAM.Pages.Drivers.IndexModel
+
+@{
+    ViewData["Title"] = "Drivers Listing";
+}
+
+<h2>Driver Listing</h2>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Driver[0].FirstName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Driver[0].Surname)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Driver[0].SecondName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Driver[0].CellNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Driver[0].PDPExpiryDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Driver[0].MedicalExpiryDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Driver[0].PassportNo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Driver[0].IDNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Driver[0].NextofKin)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Driver[0].NextofKinDate)
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Driver) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Surname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SecondName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CellNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PDPExpiryDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MedicalExpiryDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PassportNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IDNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NextofKin)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NextofKinDate)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.DriverID">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.DriverID">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.DriverID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

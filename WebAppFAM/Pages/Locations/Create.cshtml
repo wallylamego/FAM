@@ -1,0 +1,111 @@
+﻿@page
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@functions{
+    public string GetAntiXsrfRequestToken()
+    {
+        return Xsrf.GetAndStoreTokens(Model.HttpContext).RequestToken;
+    }
+}
+@model WebAppFAM.Pages.Locations.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create Location</h2>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" >
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Location.Province.Country" class="control-label"></label>
+                <select asp-for="Location.Province.CountryID" id="CountryID"
+                        asp-items="Model.CountryNameSL" class="form-control">
+                    <option value="">--Select Country--</option>
+                </select>
+                <span asp-validation-for="Location.Province.CountryID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Location.Province" class="control-label"></label>
+                <select asp-for="Location.ProvinceID" id="ProvinceID"
+                        asp-items="Model.ProvinceNameSL" class="form-control">
+                    <option value="">--Select Province--</option>
+                </select>
+                <span asp-validation-for="Location.ProvinceID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Location.LocationName" class="control-label"></label>
+                <input asp-for="Location.LocationName" id="LocationName" class="form-control" />
+                <span asp-validation-for="Location.LocationName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Location.GPSCoordinates" class="control-label"></label>
+                <input asp-for="Location.GPSCoordinates" id="GPSCoordinates" class="form-control" />
+                <span asp-validation-for="Location.GPSCoordinates" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="button" value="Create" class="btn btn-default" id="insert" />
+            </div>
+        </form>
+        <div id="msg"></div>
+    </div>
+</div>
+
+<div>
+    <a asp-page="LocationModel">Back to List</a>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+        $("#CountryID").change(function () {
+            $.getJSON("/Locations/Create?handler=ProvinceList", { CountryId: $("#CountryID").val() }, function (data, status, xhr) {
+                    console.log(data);
+                    var optionList = "<option value='-1'>" + "--Select a Province--" +
+                        "</option>";
+                $.each(data, function (index, row) {
+                        console.log(row.provinceName);
+                        optionList += "<option value='" + row.provinceID + "'>" +
+                            row.provinceName + "</option>"
+                });
+                $("#ProvinceID").empty().append(optionList);
+                });@*Get statement*@
+
+            });@*End Country Change statement*@
+
+            $("#insert").click(function () {
+                var obj = {};
+                obj.ProvinceID = $("#ProvinceID").val();
+                obj.LocationName = $("#LocationName").val();
+                obj.GPSCoordinates = $("#GPSCoordinates").val();
+                
+                $.ajax({
+                    type: "POST",
+                    url: '/Locations/Create?handler=Insert',
+                    headers:
+                        {
+                            "RequestVerificationToken": '@GetAntiXsrfRequestToken()'
+                        },
+                    contentType: "application/json",
+                    dataType: "json",
+                    data: JSON.stringify(obj),
+                    success: function (msg) {
+                        $("#msg").html(msg);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log(jqXHR);
+                        console.log(textStatus);
+                        console.log(errorThrown);
+                        $("#msg").html("Error while making Ajax call!");
+                    }
+                });//ajax
+            });//click insert
+        });
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+
+

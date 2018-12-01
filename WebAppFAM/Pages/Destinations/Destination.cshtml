@@ -1,0 +1,503 @@
+﻿@page "{destinationId?}"
+
+@{
+    Layout = "_LayoutDataTables";
+}
+
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@functions{
+    public string GetAntiXsrfRequestToken()
+    {
+        return Xsrf.GetAndStoreTokens(Model.HttpContext).RequestToken;
+    }
+}
+@model WebAppFAM.Pages.Destinations.DestinationModel
+
+@{
+    ViewData["Title"] = "Destination";
+}
+
+<h2>Destination Maintenance</h2>
+
+<a href="#" onclick="setInsertForm();">Create</a>&nbsp|&nbsp
+<a href="#" onclick="setDestinationTable();">List</a>
+
+<div id="divCreateUpdate">
+    <hr />
+    <div class="row" id="divDestinationForm">
+        <div class="col-md-4">
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Destination.DestinationID" id="destinationID" />
+                <input type="hidden" asp-for="Destination.StartLocationID" id="startLocationID" />
+                <input type="hidden" asp-for="Destination.EndLocationID" id="endLocationID" />
+                <div class="form-group">
+                    <label asp-for="Destination.Customer" class="control-label"></label>
+                    <select asp-for="Destination.CustomerID" id="customerID"
+                            asp-items="Model.CustomerNameSL" class="form-control">
+                        <option value="">--Select Customer--</option>
+                    </select>
+                    <span asp-validation-for="Destination.CustomerID" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">From: Country:Province:Location</label>
+                    <input asp-for="Destination.StartLocation.LocationName" id="startLocationName" class="form-control" />
+                    <span asp-validation-for="Destination.StartLocation.LocationName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">To: Country:Province:Location</label>
+                    <input asp-for="Destination.EndLocation.LocationName" id="endLocationName" class="form-control" />
+                    <span asp-validation-for="Destination.EndLocation.LocationName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Destination.Distance" class="control-label"></label>
+                    <input asp-for="Destination.Distance" id="distance" class="form-control" />
+                    <span asp-validation-for="Destination.Distance" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="button" value="Save" class="btn btn-default" id="savebutton" />
+                </div>
+            </form>
+            <div id="msg" hidden></div>
+        </div>
+    </div>
+
+    <div class="container" id="divLocation">
+        <br />
+        <div style="width:90%; margin:0 auto;">
+            <table id="LocationTable" class="table table-striped table-bordered dt-responsive nowrap" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>LocationID</th>
+                        <th>Country</th>
+                        <th>Province</th>
+                        <th>Location</th>
+                        <th>Select</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+
+</div>
+<div class="container" id="divDestinationTable">
+    <br />
+    <div style="width:100%; margin:0 auto;">
+        <table id="DestinationTable" class="table table-striped table-bordered dt-responsive nowrap" width="100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>DestinationID</th>
+                    <th>CustomerID</th>
+                    <th>StartLocationID</th>
+                    <th>EndLocationID</th>
+                    <th>Customer</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Distance</th>
+                    <th>Edit</th>
+                    <th>Del.</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+@await Html.PartialAsync("_ModalPartial")
+@await Html.PartialAsync("_ModalConfirmPartial")
+
+@section Scripts {
+
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            //Prepare the Destination Table
+            setDestinationTable();
+
+            // #region Destination Table Listing
+
+            $("#DestinationTable").on('xhr.dt', function (e, settings, json, xhr) {
+            }).DataTable({
+                "fixedHeader": {
+                    "header": true,
+                    "footer": true
+                },
+                "responsive": true,
+                "processing": true, // for show progress bar
+                "serverSide": true, // for process server side
+                "filter": true, // this is for disable filter (search box)
+                "orderMulti": false, // for disable multiple column at once
+                "ajax": {
+
+                    "url": "/Destinations/Destination?handler=Paging",
+                    "headers":
+                        {
+                            "RequestVerificationToken": '@GetAntiXsrfRequestToken()'
+                        },
+                    "type": "POST",
+                    "datatype": "json"
+                },
+                "columnDefs":
+                    [{
+                        /*Destination ID is not visible and is not searchable*/
+                        "targets": [0],
+                        "visible": false,
+                        "searchable": false
+                    },
+                    {
+                    /*CsutomerID is not visible and is not searchable*/
+                    "targets": [1],
+                    "visible": false,
+                    "searchable": false
+                        },
+                    {
+                        /*StartLocationID is not visible and is not searchable*/
+                        "targets": [2],
+                        "visible": false,
+                        "searchable": false
+                    },
+                    {
+                        /*EndLocationID is not visible and is not searchable*/
+                        "targets": [3],
+                        "visible": false,
+                        "searchable": false
+                    },
+                    {
+                        /*Edit button  is  visible and is not searchable*/
+                        "targets": [8],
+                        "visible": true,
+                        "searchable": false,
+                         "orderable": false
+                    },
+                    {
+                        /*Delete button  is  visible and is not searchable*/
+                        "targets": [9],
+                        "visible": true,
+                        "searchable": false,
+                        "orderable": false
+                    }
+                ],
+                "columns": [
+                    { "data": "destinationID", "name": "destinationID", "autoWidth": true },
+                    { "data": "customerID", "name": "customerID", "autoWidth": true },
+                    { "data": "startLocationID", "name": "startLocationID", "autoWidth": true },
+                    { "data": "endLocationID", "name": "endLocationID", "autoWidth": true },
+                    { "data": "customerName", "name": "customerName", "autoWidth": true },
+                    { "data": "startLocationName", "name": "startLocationName", "autoWidth": true },
+                    { "data": "endLocationName", "name": "endLocationName", "autoWidth": true },
+                    { "data": "distance", "name": "distance", "autoWidth": true },
+                    //Edit Data
+                    {
+                        "render": function (data, type, full, meta) {
+                            var selectedDestination = {};
+                            selectedDestination.destinationID = full.destinationID;
+                            selectedDestination.customerID = full.customerID;
+                            selectedDestination.startLocationID = full.startLocationID;
+                            selectedDestination.endLocationID = full.endLocationID;
+                            selectedDestination.startLocationName = encodeURIComponent(full.startLocationName);
+                            selectedDestination.endLocationName = encodeURIComponent(full.endLocationName);
+                            selectedDestination.distance = full.distance;
+
+                            return "<p data-placement='top' data-toggle='tooltip' title='Edit'><button class='btn btn-primary btn-xs' data-title='Edit' data-toggle='modal' data-target='#edit' onclick=updateDestinationForm('" + JSON.stringify(selectedDestination) + "')><span class='glyphicon glyphicon-pencil'></span></button></p>";
+
+                        }
+                    },
+                    //Delete Data
+                    {
+                        "data": null, render: function (data, type, row)
+                        {
+                            return '<p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" onclick=DeleteData("' + row.destinationID + '")><span class="glyphicon glyphicon-trash"></span></button></p>';
+                        }
+                    }
+                ]
+
+            });
+        // #endregion Destination Table Listing
+
+          $("#savebutton").click(function () {
+                var obj = {};
+                console.log("Save Button Function");
+                console.log("Insert Flag is: " + InsertFlag);
+                if (InsertFlag == false) {
+                    obj.DestinationID = $("#destinationID").val();
+                }
+
+                obj.CustomerID = $("#customerID").val();
+                obj.StartLocationID = $("#startLocationID").val();
+                obj.EndLocationID = $("#endLocationID").val();
+                obj.Distance = $("#distance").val();
+                console.log("object details in Save Button: " + obj);
+                if (InsertFlag) {
+                    ajaxDestinationInsert(obj);
+                }
+                else
+                {
+                    ajaxDestinationUpdate(obj);
+                }
+
+            });//click edit
+
+        });//End of Document Ready
+
+
+        //region Load Location Table
+        function loadLocationTable()
+        {
+             $("#LocationTable").on('xhr.dt', function (e, settings, json, xhr) {
+            }).DataTable({
+                "processing": true, // for show progress bar
+                "serverSide": true, // for process server side
+                "filter": true, // this is for disable filter (search box)
+                "orderMulti": false, // for disable multiple column at once
+                "ajax": {
+
+                    "url": "/Locations/LocationModel?handler=Paging",
+                    "headers":
+                        {
+                            "RequestVerificationToken": '@GetAntiXsrfRequestToken()'
+                        },
+                    "type": "POST",
+                    /*"contentType": "application/x-www-form-urlencoded",*/
+                    "datatype": "json"
+                },
+                "columnDefs":
+                    [{
+                        /*Location ID is not visible and is not searchable*/
+                        "targets": [0],
+                        "visible": false,
+                        "searchable": false
+                    },
+                    {
+                        /*Edit button  is  visible and is not searchable*/
+                        "targets": [4],
+                        "visible": true,
+                        "searchable": false,
+                        "orderable": false
+                    }
+                    ],
+                "columns": [
+                    { "data": "locationID", "name": "LocationID", "autoWidth": true },
+                    { "data": "countryName", "name": "CountryName", "autoWidth": true },
+                    { "data": "provinceName", "name": "ProvinceName", "autoWidth": true },
+                    { "data": "locationName", "name": "LocationName", "autoWidth": true },
+                    {
+                        "data": null, render: function (data, type, full, meta) {
+                               var selectedLocation = {};
+                            selectedLocation.locationID = full.locationID;
+                            selectedLocation.countryName = encodeURIComponent(full.countryName);
+                            selectedLocation.provinceName = encodeURIComponent(full.provinceName);
+                            selectedLocation.locationName = encodeURIComponent(full.locationName);
+
+                            return "<a href='#' class='btn btn-info' onclick=selectLocation('" + JSON.stringify(selectedLocation) + "'); >Select</a>";
+
+                        }
+                    }
+                ]
+                });
+        }
+        //#end Region Load Location Table
+
+        //#Region: Location Table Events
+        $("#startLocationName").focusin(function () {
+            LocationButton = "Start"
+            $('#divLocation').show();
+            if (!$.fn.DataTable.isDataTable('#LocationTable')) {
+                loadLocationTable();
+            }
+        });
+
+        $("#endLocationName").focusin(function () {
+            LocationButton = "End"
+            $('#divLocation').show();
+            if (!$.fn.DataTable.isDataTable('#LocationTable')) {
+                loadLocationTable();
+            }
+        });
+
+        //Update the correct location(from/to)
+        //form values with the correct location details
+        //this function is used for Insert and Edits.
+        function selectLocation(data) {
+            var selectedLocation = {};
+            selectedLocation = JSON.parse(data);
+            if (LocationButton === "Start") {
+                $("#startLocationID").val(selectedLocation.locationID);
+                $("#startLocationName").val(
+                    decodeURIComponent(selectedLocation.countryName) + ":" +
+                    decodeURIComponent(selectedLocation.provinceName) + ":" +
+                    decodeURIComponent(selectedLocation.locationName)
+                );
+            }
+            else {
+                $("#endLocationID").val(selectedLocation.locationID);
+                $("#endLocationName").val(
+                    decodeURIComponent(selectedLocation.countryName) + ":" +
+                    decodeURIComponent(selectedLocation.provinceName) + ":" +
+                    decodeURIComponent(selectedLocation.locationName)
+                );
+            }
+            $('#divLocation').hide();
+        }
+
+        //#endRegion Location Table Events
+
+
+
+        function ajaxDestinationUpdate(obj) {
+            console.log("Destination object in Update Ajax Call: " + JSON.stringify(obj));
+            $.ajax({
+                    type: "PUT",
+                    url: '/Destinations/Destination'+ "?handler=Update",
+                    headers:
+                        {
+                            "RequestVerificationToken": '@GetAntiXsrfRequestToken()'
+                        },
+                    contentType: "application/json",
+                    dataType: "json",
+                    data: JSON.stringify(obj),
+                    success: function (msg) {
+                        var oTable = $('#DestinationTable').DataTable();
+                        oTable.draw();
+                        $("#msg").html(msg);
+                        $("#modalHeader").text("Destination Processing Status");
+                        $("#modalMessage").text(msg);
+                        $("#myModal").modal("show");
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        $("#msg").html("Destination was not updated");
+                        $("#modalHeader").text("Destination Processing Status");
+                        $("#modalMessage").text(msg);
+                        $("#myModal").modal("show");
+                    }
+                });//ajax
+        }
+
+        function ajaxDestinationInsert(obj) {
+            console.log("Destination object in Insert Ajax Call: " + JSON.stringify(obj));
+            $.ajax({
+                type: "POST",
+                    url: "/Destinations/Destination?handler=Insert",
+                    headers:
+                        {
+                            "RequestVerificationToken": '@GetAntiXsrfRequestToken()'
+                        },
+                    contentType: "application/json",
+                    dataType: "json",
+                    data: JSON.stringify(obj),
+                    success: function (msg) {
+                        var oTable = $('#DestinationTable').DataTable();
+                        oTable.draw();
+                        $("#msg").html(msg);
+                        $("#modalHeader").text("Destination Processing Status");
+                        $("#modalMessage").text(msg);
+                        $("#myModal").modal("show");
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        $("#msg").html("Destination was not created");
+                        $("#msg").html(msg);
+                        $("#modalHeader").text("Destination Processing Status");
+                        $("#modalMessage").text(msg);
+                        $("#myModal").modal("show");
+                    }
+                });//ajax
+        }
+
+        var deleteDestinationId;
+        $('#btnModalConfirmYes').click(function () {
+            ajaxDestinationDelete(deleteDestinationId);
+            $("#myModalConfirm").modal("hide");
+        })
+
+        //Function to Delete a Destination From Destination Table
+        function DeleteData(DestinationID) {
+            $("#modalConfirmHeader").text("Destination Processing Status");
+            $("#modalConfirmMessage").text("Do you wish to delete this destination ?");
+            deleteDestinationId = DestinationID;
+            $("#myModalConfirm").modal("show");
+            
+        }
+
+        //Ajax Call to Delete Destination Data From Database
+        function ajaxDestinationDelete(DestinationID)
+            {
+                console.log("Before Ajax Call:" + "Destination ID is: " + DestinationID)
+                    var obj = {};
+                obj.DestinationID = DestinationID;
+                    $.ajax({
+                        type: "DELETE",
+                        url: '/Destinations/Destination?handler=Delete',
+                        headers:
+                            {
+                                "RequestVerificationToken": '@GetAntiXsrfRequestToken()'
+                            },
+                        contentType: "application/json",
+                        dataType: "json",
+                        data: JSON.stringify(obj),
+                        success: function (msg) {
+                                oTable = $('#DestinationTable').DataTable();
+                                oTable.draw();
+                                $("#msg").html(msg);
+                                $("#modalHeader").text("Destination Processing Status");
+                                $("#modalMessage").text(msg);
+                                $("#myModal").modal("show");
+                            },
+                            error: function () {
+                                $("#msg").html("Destination was not deleted.");
+                                $("#modalHeader").text("Destination Processing Status");
+                                $("#modalMessage").text(msg);
+                                $("#myModal").modal("show");
+                            }
+                        });//ajax
+
+            }
+
+        function setInsertForm()
+        {
+            InsertFlag = true;
+            $("#divCreateUpdate").show();
+            $("#divDestinationTable").hide();
+            $('#divLocation').hide();
+            //set all form values to nothing
+            $("#destinationID").val("");
+            $("#customerID").val(-1);
+            $("#startLocationID").val("");
+            $("#endLocationID").val("");
+            $("#distance").val("");
+            $("#startLocationName").val("");
+            $("#endLocationName").val("");
+        }
+
+        function setDestinationTable() {
+            InsertFlag = false;
+            $("#divCreateUpdate").hide();
+            $("#divDestinationTable").show();
+            $('#divLocation').hide();
+        }
+
+        function setUpdateForm() {
+            InsertFlag = false;
+            $("#divCreateUpdate").show();
+            $("#divDestinationTable").hide();
+            $('#divLocation').hide();
+        }
+
+        //once the user has selected which destination to edit
+        //the Edit Form is updated with all the relevant destination values.
+        function updateDestinationForm(data) {
+            var selectedDestination = {};
+            selectedDestination = JSON.parse(data);
+            $("#destinationID").val(selectedDestination.destinationID);
+            $("#customerID").val(selectedDestination.customerID);
+            $("#startLocationID").val(selectedDestination.startLocationID);
+            $("#endLocationID").val(selectedDestination.endLocationID);
+            $("#startLocationName").val(decodeURIComponent(selectedDestination.startLocationName));
+            $("#endLocationName").val(decodeURIComponent(selectedDestination.endLocationName));
+            $("#distance").val(decodeURIComponent(selectedDestination.distance));
+            setUpdateForm();
+        }
+
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

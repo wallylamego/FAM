@@ -1,0 +1,66 @@
+﻿@page
+@model WebAppFAM.Pages.Trailers.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Trailer</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Trailer.FleetNo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Trailer.FleetNo)
+        </dd>
+        <dd>
+            @Html.DisplayFor(modelItem =>Model.Trailer.TrailerType.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Trailer.RegistrationNumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Trailer.RegistrationNumber)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Trailer.VinNo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Trailer.VinNo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Trailer.LinkRegistrationNumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Trailer.LinkRegistrationNumber)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Trailer.LinkVinNo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Trailer.LinkVinNo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Trailer.LicenseExpiry)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Trailer.LicenseExpiry)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Trailer.InsuranceExpiry)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Trailer.InsuranceExpiry)
+        </dd>
+
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Trailer.VehicleID">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>
