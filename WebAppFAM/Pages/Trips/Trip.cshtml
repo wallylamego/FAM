@@ -418,15 +418,17 @@
             </h5>
         </div>
         <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordion">
-            <div class="card table-bordered well-sm">
-                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-            </div>
-            <br />
-            <div class="form-group">
-                <input type="button" value="Save" class="btn btn-default  " id="savebtnSection4" />
+            <div id="divUploadSection" class="well-sm" style="background-color:lightgray">
+                <form method="post" enctype="multipart/form-data">
+                    <div  class="form-group">
+                        <input type="file" id="fUpload" name="files" multiple class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <input type="button" class="btn btn-default" id="btnUpload" value="Upload" />
+                    </div>
+                </form>
             </div>
         </div>
-    </div>
 </div>
 
 @await Html.PartialAsync("_ModalPartial")
@@ -1377,7 +1379,33 @@
 
                 $("#savebtnSection1").click();
             });
-
+            $('#btnUpload').on('click', function () {
+      var files = $('#fUpload').prop("files");
+      var fdata = new FormData();
+      for (var i = 0; i < files.length; i++)
+      {
+          fdata.append("files", files[i]);
+      }
+      if (files.length > 0) {
+          $.ajax({
+            type: "POST",
+              url: '/Trips/Trip?handler=StreamingUpload',
+            headers:
+            {
+                "RequestVerificationToken": '@GetAntiXsrfRequestToken()'
+            },
+             data: fdata,
+             contentType: false,
+             processData: false,
+             success: function (response) {
+               alert('File Uploaded Successfully.')
+             }
+          });
+      }
+      else {
+          alert('Please select a file.')
+      }
+   })
 
 
 
