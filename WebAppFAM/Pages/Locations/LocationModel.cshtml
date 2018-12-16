@@ -51,6 +51,9 @@
         {
             $("#LocationTable").on('xhr.dt', function (e, settings, json, xhr) {
             }).DataTable({
+                lengthMenu: [25, 100, 150, 200],
+                dom: '<lfB<t>ip>',
+                buttons: ['excel', 'copy', 'csv', 'pdf', 'print'],
                 "fixedHeader": {
                     "header": true,
                     "footer": true
