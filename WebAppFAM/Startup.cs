@@ -40,10 +40,11 @@ namespace WebAppFAM
                     options.Conventions.AuthorizeFolder("/Account/Manage");
                     options.Conventions.AuthorizePage("/Account/Logout");
                 });
+            
 
-            // Register no-op EmailSender used by account confirmation and password reset during development
-            // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
-            services.AddSingleton<IEmailSender, EmailSender>();
+                         // Register no-op EmailSender used by account confirmation and password reset during development
+                         // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
+                         services.AddSingleton<IEmailSender, EmailSender>();
 
             services.AddDbContext<WebAppFAMContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("WebAppFAMContext")));

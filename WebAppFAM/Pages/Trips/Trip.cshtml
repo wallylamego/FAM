@@ -430,19 +430,19 @@
             </div>
         </div>
 </div>
-
+</div>
 @await Html.PartialAsync("_ModalPartial")
 @await Html.PartialAsync("_ModalConfirmPartial")
 
 @section Scripts {
 
 
-    <script type="text/javascript">
+<script type="text/javascript">
         var TripToSave = {};
 
         //section Update Destination Fields
         function updateDestinationInputFields(data) {
-            
+
         var selectedDestination = {};
         selectedDestination = JSON.parse(data);
         $("#destinationID").val(selectedDestination.destinationID);
@@ -506,8 +506,8 @@
             fuelItem.litres = $('#litres').val();
             fuelItem.odometre = $('#odometre').val();
             ajaxFuelItemInsert(fuelItem);
-            
-            
+
+
         }
 
 
@@ -623,7 +623,7 @@
                         $("#modalMessage").text("Trip Data Not Updated.");
                         $("#myModal").modal("show");
                     }
-                });//ajax insert 
+                });//ajax insert
         }
         function ajaxFuelItemInsert(obj) {
             console.log("Fuel Item : in Insert Ajax Call: " + JSON.stringify(obj));
@@ -649,7 +649,7 @@
                         var oTable = $('#FuelTable').DataTable();
                         oTable.draw()
                     }
-                        
+
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         $("#modalHeader").text("Fuel Item Processing Status");
@@ -667,7 +667,7 @@
             $.ajax({
                 type: "PUT",
                 url: "/Trips/Trip?handler=UpdateTrip",
-                
+
                     headers:
                         {
                             "RequestVerificationToken": '@GetAntiXsrfRequestToken()'
@@ -685,10 +685,10 @@
                         $("#diffCollectionHrs").val(parseFloat(Math.round(data.diffCollectionTimeHrs * 100) / 100).toFixed(2));
                         $("#diffStartHrs").val(parseFloat(Math.round(data.diffStartTimeHrs * 100) / 100).toFixed(2));
                         $("#diffEndHrs").val(parseFloat(Math.round(data.diffEndTimeHrs * 100) / 100).toFixed(2));
-                        $("#diffTotalHrs").val(parseFloat(Math.round((data.diffEndTimeHrs + data.diffEndTimeHrs + data.diffStartTimeHrs) * 100) / 100).toFixed(2)); 
+                        $("#diffTotalHrs").val(parseFloat(Math.round((data.diffEndTimeHrs + data.diffEndTimeHrs + data.diffStartTimeHrs) * 100) / 100).toFixed(2));
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
-                       
+
                         $("#modalHeader").text("Trip Processing Status");
                         $("#modalMessage").text("Trip was not updated.");
                         $("#myModal").modal("show");
@@ -1077,7 +1077,7 @@
 
         }//GetFuelData
 
-        
+
 
 
         $(document).ready(function () {
@@ -1107,7 +1107,7 @@
             $("#TrailerRegistrationNumber").prop("disabled", true);
 
             //Disable calculated dates fields in the date section
-           
+
             //var startDate = new Date(Date.now()).toLocaleString();
 
             $("#expectedCompletionDate").prop("disabled", true);
@@ -1233,8 +1233,8 @@
                 TripToSave.tripCode = $('#tripCode').val();
                 TripToSave.destinationID = $('#destinationID').val();
                 TripToSave.reverseDestinationID = $('#revDestChkBox:checked').val() ? true : false;
-              
-                
+
+
                 if ($('#tripId').val().length > 0) {
                     TripToSave.tripID = $('#tripId').val();
                     ajaxTripUpdate(TripToSave);
@@ -1277,8 +1277,8 @@
             //Fuel Expenses
             $('#savebtnSection3').click(function () {
 
-                //to save a fuel item we need a fuel rate 
-                //and litres which are numbers 
+                //to save a fuel item we need a fuel rate
+                //and litres which are numbers
                 //Check fuel rate has been entered
                 $("#modalHeader").text("Trip Section 3 Processing Status");
 
@@ -1286,16 +1286,16 @@
                     $("#modalMessage").text("Please ensure you have a numeric number for the Fuel Rate");
                     $("#myModal").modal("show");
                     return;
-                }       
+                }
                 if ($('#litres').val() == "") {
                     $("#modalMessage").text("Please ensure you have a numeric number for the litres");
                     $("#myModal").modal("show");
                     return;
                 }
-               
-                
+
+
                 addFuelItemToTable();
-               
+
 
                 $("#savebtnSection1").click();
             });
@@ -1310,21 +1310,21 @@
                     console.log("Expected Collection Date Time");
                     console.log(TripToSave.expectedCollectionDateTime);
                 }
-                
+
                 //Check expected Start Date
                 if ($('#expectedStartDate').val() != ""){
                     TripToSave.expectedStartDateTime = $('#expectedStartDate').val();
                     console.log("Expected Start Date Time");
                     console.log(TripToSave.expectedStartDateTime);
                 }
-                
+
                 //Check actual Collection Date
                 if ($('#actualCollectionDate').val() != "") {
                     TripToSave.actualCollectionDateTime = $('#actualCollectionDate').val();
                     console.log("Actual Collection Date Time");
                     console.log(TripToSave.actualCollectionDateTime);
                 }
-                
+
                 //Check Actual Start Date
                 if ($('#actualStartDate').val() != "") {
                     TripToSave.actualStartDateTime = $('#actualStartDate').val();
@@ -1338,18 +1338,18 @@
                     console.log("Actual Completion Date Time");
                     console.log(TripToSave.actualCompletionDateTime);
                 }
-                              
+
                 console.log('Trip To Save: Before Button 1 Click Runs');
                 console.log(TripToSave);
-  
+
                 $("#savebtnSection1").click();
             });
 
             //Invoice Details
             $('#savebtnSection5').click(function () {
 
-                //to save a fuel item we need a fuel rate 
-                //and litres which are numbers 
+                //to save a fuel item we need a fuel rate
+                //and litres which are numbers
                 //Check fuel rate has been entered
                 $("#modalHeader").text("Trip Section 5 Processing Status");
 
@@ -1379,17 +1379,21 @@
 
                 $("#savebtnSection1").click();
             });
-            $('#btnUpload').on('click', function () {
+    $('#btnUpload').on('click', function () {
       var files = $('#fUpload').prop("files");
       var fdata = new FormData();
       for (var i = 0; i < files.length; i++)
       {
           fdata.append("files", files[i]);
       }
-      if (files.length > 0) {
+        if (files.length > 0) {
+            var MyAppUrlSettings = {
+                MyUsefulUrl: "/UploadFiles/StreamingUpload"
+            };
+            console.log(MyAppUrlSettings.MyUsefulUrl);
           $.ajax({
             type: "POST",
-              url: '/Trips/Trip?handler=StreamingUpload',
+              url: MyAppUrlSettings.MyUsefulUrl,
             headers:
             {
                 "RequestVerificationToken": '@GetAntiXsrfRequestToken()'
@@ -1398,7 +1402,8 @@
              contentType: false,
              processData: false,
              success: function (response) {
-               alert('File Uploaded Successfully.')
+                 alert('File Uploaded Successfully.');
+                 alert(response);
              }
           });
       }
@@ -1423,6 +1428,6 @@
 
 
         });
-    </script>
+</script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
