@@ -34,15 +34,11 @@ namespace WebAppFAM.Pages.Trips
            
         //First create the View of the new model you wish to display to the user
             var TripQuery = _context.Trips
-              // .Include(d => d.Destination.StartLocation)
-              // .Include(t => t.Commodity)
                .Select(tp => new 
                {
                    tp.TripID,
                    tp.TripCode,
                    TripStart = tp.ExpectedCollectionDateTime,
-                   //From = "Test From",
-                   //To="Test To",
                    From = tp.Destination.StartLocation.Province.Country.CountryName + " | " +
                         tp.Destination.StartLocation.Province.ProvinceName + " | " +
                         tp.Destination.StartLocation.LocationName,
@@ -65,6 +61,8 @@ namespace WebAppFAM.Pages.Trips
                 t => t.TripCode.ToLower().Contains(Model.search.value.ToLower()) ||
                         t.TripStart.ToString().ToLower().Contains(Model.search.value.ToLower()) ||
                         t.Driver.ToLower().Contains(Model.search.value.ToLower()) ||
+                        t.From.ToLower().Contains(Model.search.value.ToLower()) ||
+                        t.To.ToLower().Contains(Model.search.value.ToLower()) ||
                         t.Horse.ToLower().Contains(Model.search.value.ToLower()));
 
                 filteredResultsCount = TripQuery.Count();

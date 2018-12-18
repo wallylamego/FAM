@@ -43,6 +43,26 @@ namespace WebAppFAM.Pages.Trips
         [BindProperty]
         public Trip Trip { get; set; }
         public DateTimeUtilities DTU;
+       
+        public async Task<IActionResult> OnGetAsync(int tripID)
+        {
+            
+            Trip = await _context.Trips
+                .Include(l => l.Destination.StartLocation)
+                .Include(c => c.Destination.EndLocation)
+                .Include(d=> d.Driver)
+                .Include(h=>h.Horse)
+                .Include(t=>t.Trailer)
+                .SingleOrDefaultAsync(m => m.TripID == tripID);
+           
+            if (Trip == null)
+            {
+                return NotFound();
+            }
+            return Page();
+        }
+
+
 
         //Add a new Fuel Item for this Trip
         public IActionResult OnPostInsertFuelItem([FromBody] Fuel obj)

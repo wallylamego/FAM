@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{tripId?}"
 @model WebAppFAM.Pages.Trips.TripModel
 @{
     ViewData["Title"] = "Trip";
@@ -213,49 +213,49 @@
         </div>
         <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
             @*<div class="card table-bordered well-sm">*@
-                <div id="divFuelInputFieldsSection" class="well-sm" style="background-color:lightgray">
-                    <div class="form-group" id="divPurchaseOrder">
-                        <label class="control-label">Purchase Order No</label>
-                        <input id="purchaseOrderID" class="form-control" />
-                    </div>
-                    <div class="form-group" id="divLitres">
-                        <label class="control-label">Litres</label>
-                        <input id="litres" class="form-control" />
-                    </div>
-                    <div class="form-group" id="divDieselRate">
-                        <label class="control-label">Diesel Rate</label>
-                        <input id="fuelRate" class="form-control" />
-                    </div>
-                    <div class="form-group" id="divDieselCost">
-                        <label class="control-label">Diesel Cost</label>
-                        <input id="DieselTotalCost" class="form-control" />
-                    </div>
-                    <div class="form-group" id="divOdometre">
-                        <label class="control-label">Odometre</label>
-                        <input id="odometre" class="form-control" />
-                    </div>
-                    <div class="form-group">
-                        <input type="button" value="Add" class="btn btn-default  " id="savebtnSection3" />
-                    </div>
+            <div id="divFuelInputFieldsSection" class="well-sm" style="background-color:lightgray">
+                <div class="form-group" id="divPurchaseOrder">
+                    <label class="control-label">Purchase Order No</label>
+                    <input id="purchaseOrderID" class="form-control" />
                 </div>
-                <br />
-                <div class="container" id="divFuelTable">
-                    <div style="width:100%; margin:0 auto;">
-                        <table id="FuelTable" class="table table-striped table-bordered dt-responsive nowrap" width="100%" cellspacing="0">
-                            <thead>
-                                <tr>
-                                    <th>FuelID</th>
-                                    <th>Purchase Order</th>
-                                    <th>Odometre</th>
-                                    <th>Litres</th>
-                                    <th>Diesel Rate</th>
-                                    <th>Diesel Cost</th>
-                                    <th>Del.</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
+                <div class="form-group" id="divLitres">
+                    <label class="control-label">Litres</label>
+                    <input id="litres" class="form-control" />
                 </div>
+                <div class="form-group" id="divDieselRate">
+                    <label class="control-label">Diesel Rate</label>
+                    <input id="fuelRate" class="form-control" />
+                </div>
+                <div class="form-group" id="divDieselCost">
+                    <label class="control-label">Diesel Cost</label>
+                    <input id="DieselTotalCost" class="form-control" />
+                </div>
+                <div class="form-group" id="divOdometre">
+                    <label class="control-label">Odometre</label>
+                    <input id="odometre" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <input type="button" value="Add" class="btn btn-default  " id="savebtnSection3" />
+                </div>
+            </div>
+            <br />
+            <div class="container" id="divFuelTable">
+                <div style="width:100%; margin:0 auto;">
+                    <table id="FuelTable" class="table table-striped table-bordered dt-responsive nowrap" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>FuelID</th>
+                                <th>Purchase Order</th>
+                                <th>Odometre</th>
+                                <th>Litres</th>
+                                <th>Diesel Rate</th>
+                                <th>Diesel Cost</th>
+                                <th>Del.</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
             @*</div>*@
             <br />
 
@@ -405,7 +405,7 @@
                 <div class="form-group">
                     <input type="button" value="Add" class="btn btn-default  " id="savebtnSection5" />
                 </div>
-            </div>            
+            </div>
         </div>
     </div>
     <div class="card" id="cardSection6">
@@ -420,7 +420,7 @@
         <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordion">
             <div id="divUploadSection" class="well-sm" style="background-color:lightgray">
                 <form method="post" enctype="multipart/form-data">
-                    <div  class="form-group">
+                    <div class="form-group">
                         <input type="file" id="fUpload" name="files" multiple class="form-control" />
                     </div>
                     <div class="form-group">
@@ -429,7 +429,7 @@
                 </form>
             </div>
         </div>
-</div>
+    </div>
 </div>
 @await Html.PartialAsync("_ModalPartial")
 @await Html.PartialAsync("_ModalConfirmPartial")
@@ -437,7 +437,7 @@
 @section Scripts {
 
 
-<script type="text/javascript">
+    <script type="text/javascript">
         var TripToSave = {};
 
         //section Update Destination Fields
@@ -1428,6 +1428,6 @@
 
 
         });
-</script>
+    </script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

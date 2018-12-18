@@ -52,40 +52,7 @@ namespace WebAppFAM.Pages.Locations
             return new JsonResult("Location: " + obj.LocationName + " Changes are saved.");
         }
 
-/*
-        public async Task<IActionResult> OnPostAsync()
-        {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
-
-            _context.Attach(Location).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!LocationExists(Location.LocationID))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return RedirectToPage("./Index");
-        }
-
-        private bool LocationExists(int id)
-        {
-            return _context.Locations.Any(e => e.LocationID == id);
-        }
-  */ 
+ 
     }
     
 }
