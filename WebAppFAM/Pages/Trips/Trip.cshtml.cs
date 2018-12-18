@@ -25,7 +25,7 @@ namespace WebAppFAM.Pages.Trips
     {
         private readonly WebAppFAM.Models.WebAppFAMContext _context;
         private IHostingEnvironment _hostingEnvironment;
-        private string _newPath;
+       // private string _newPath;
 
 
         // Get the default form options so that we can use them to set the default limits for
@@ -135,34 +135,34 @@ namespace WebAppFAM.Pages.Trips
             return new JsonResult(obj);
         }
 
-        public ActionResult OnPostUpload(List<IFormFile> files)
-        {
-            Debug.WriteLine("In Normal Upload");
-            if (files != null && files.Count > 0)
-            {
-                //string folderName = "Upload";
-                //string webRootPath = _hostingEnvironment.WebRootPath;
-                //string newPath = Path.Combine(webRootPath, folderName);
-                //if (!Directory.Exists(newPath))
-                //{
-                //    Directory.CreateDirectory(_newPath);
-                //}
-                foreach (IFormFile item in files)
-                {
-                    if (item.Length > 0)
-                    {
-                        string fileName = System.Net.Http.Headers.ContentDispositionHeaderValue.Parse(item.ContentDisposition).FileName.Trim('"');
-                        string fullPath = Path.Combine(_newPath, fileName);
-                        using (var stream = new FileStream(fullPath, FileMode.Create))
-                        {
-                            item.CopyTo(stream);
-                        }
-                    }
-                }
-                return this.Content("Success");
-            }
-            return this.Content("Fail");
-        }
+        //public ActionResult OnPostUpload(List<IFormFile> files)
+        //{
+        //    Debug.WriteLine("In Normal Upload");
+        //    if (files != null && files.Count > 0)
+        //    {
+        //        //string folderName = "Upload";
+        //        //string webRootPath = _hostingEnvironment.WebRootPath;
+        //        //string newPath = Path.Combine(webRootPath, folderName);
+        //        //if (!Directory.Exists(newPath))
+        //        //{
+        //        //    Directory.CreateDirectory(_newPath);
+        //        //}
+        //        foreach (IFormFile item in files)
+        //        {
+        //            if (item.Length > 0)
+        //            {
+        //                string fileName = System.Net.Http.Headers.ContentDispositionHeaderValue.Parse(item.ContentDisposition).FileName.Trim('"');
+        //                string fullPath = Path.Combine(_newPath, fileName);
+        //                using (var stream = new FileStream(fullPath, FileMode.Create))
+        //                {
+        //                    item.CopyTo(stream);
+        //                }
+        //            }
+        //        }
+        //        return this.Content("Success");
+        //    }
+        //    return this.Content("Fail");
+        //}
 
         public IActionResult OnPostInsertTrip([FromBody] Trip obj)
         {

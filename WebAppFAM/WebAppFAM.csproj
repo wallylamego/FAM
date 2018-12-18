@@ -41,6 +41,9 @@
     <Folder Include="wwwroot\lib\dataTables\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Update="Pages\Trips\TripMain.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Pages\_TrailerPartial.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
