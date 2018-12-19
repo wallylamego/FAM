@@ -205,7 +205,7 @@
     <div class="card" id="cardSection3">
         <div class="card-header" id="headingThree">
             <h5 class="mb-0">
-                <button class="btn-primary" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false"
+                <button id="fuelBtnSection" class="btn-primary" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false"
                         aria-controls="collapseThree" style="background-color:darkred; border:outset; font-size:medium; border-color:white">
                     Section 3: Kilomtres, Diesel
                 </button>
@@ -264,7 +264,7 @@
     <div class="card" id="cardSection4">
         <div class="card-header" id="headingFour">
             <h5 class="mb-0">
-                <button class="btn-primary" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false"
+                <button class="btn-primary" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" 
                         aria-controls="collapseFour" style="background-color:darkred; border:outset; font-size:medium; border-color:white">
                     Section 4: Dates and Times
                 </button>
@@ -274,10 +274,11 @@
             <div class="row" id="divTripDurationForm">
                 <div class="col-md-4">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    
                     <div class="form-group" id="divExpectedCollectionDateTime">
                         <label asp-for="Trip.ExpectedCollectionDateTime" class="control-label">Expected Collection Date</label>
                         <div class='input-group date' id='datetimepicker2'>
-                            <input type='text' class="form-control" id="expectedCollectionDate" />
+                            <input  type="text" class="form-control" id="expectedCollectionDate" />
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
@@ -374,33 +375,35 @@
             <div id="divInvoiceSection" class="well-sm" style="background-color:lightgray">
                 <div class="form-group" id="divInvoiceNo">
                     <label class="control-label">Invoice Number</label>
-                    <input id="invoiceNo" class="form-control" />
+                    <input asp-for="Trip.InvoiceNo" id="invoiceNo" class="form-control" />
+                    <span asp-validation-for="Trip.InvoiceNo" class="text-danger"></span>
                 </div>
                 <div class="form-group" id="divInvoiceDate">
                     <label class="control-label">Invoice Date</label>
                     <div class='input-group date' id='datetimepicker8'>
-                        <input type='text' class="form-control" id="invoiceDate" />
+                        <input value=@Model.Trip.InvoiceDate type='text' class="form-control" id="invoiceDate" />
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
                         <span asp-validation-for="Trip.InvoiceDate" class="text-danger"></span>
                     </div>
+                   
                 </div>
                 <div class="form-group" id="divCustomerReferenceNo">
                     <label class="control-label">Customer Reference No</label>
-                    <input id="customerReferenceNo" class="form-control" />
+                    <input asp-for="Trip.CustomerReferenceNo" id="customerReferenceNo" class="form-control" />
                 </div>
                 <div class="form-group" id="divInvoiceKms">
                     <label class="control-label">Invoice Kms</label>
-                    <input id="invoicedKms" class="form-control" />
+                    <input asp-for="Trip.InvoicedKms" id="invoicedKms" class="form-control" />
                 </div>
                 <div class="form-group" id="divInvoiceRate">
                     <label class="control-label">Invoice Rate</label>
-                    <input id="invoiceRate" class="form-control" />
+                    <input asp-for="Trip.InvoiceRate" id="invoiceRate" class="form-control" />
                 </div>
                 <div class="form-group" id="divInvoiceAmount">
                     <label class="control-label">Invoice Amount</label>
-                    <input id="invoiceAmount" class="form-control" />
+                    <input asp-for="Trip.InvoiceAmount" id="invoiceAmount" class="form-control" />
                 </div>
                 <div class="form-group">
                     <input type="button" value="Add" class="btn btn-default  " id="savebtnSection5" />
@@ -437,7 +440,7 @@
 @section Scripts {
 
 
-    <script type="text/javascript">
+<script type="text/javascript">
         var TripToSave = {};
 
         //section Update Destination Fields
@@ -668,24 +671,24 @@
                 type: "PUT",
                 url: "/Trips/Trip?handler=UpdateTrip",
 
-                    headers:
-                        {
-                            "RequestVerificationToken": '@GetAntiXsrfRequestToken()'
-                        },
-                    contentType: "application/json",
-                    dataType: "json",
-                    data: JSON.stringify(obj),
-                    success: function (data) {
-                        console.log(data);
-                        console.log("Trip Data successfully returned from DataBase");
-                        $("#modalHeader").text("Trip Section 1 Processing Status");
-                        $("#modalMessage").text($("#tripId").val() + " was updated.");
-                        $("#myModal").modal("show");
-                        $("#expectedCompletionDate").val(data.expectedCompletionDateTime);
-                        $("#diffCollectionHrs").val(parseFloat(Math.round(data.diffCollectionTimeHrs * 100) / 100).toFixed(2));
-                        $("#diffStartHrs").val(parseFloat(Math.round(data.diffStartTimeHrs * 100) / 100).toFixed(2));
-                        $("#diffEndHrs").val(parseFloat(Math.round(data.diffEndTimeHrs * 100) / 100).toFixed(2));
-                        $("#diffTotalHrs").val(parseFloat(Math.round((data.diffEndTimeHrs + data.diffEndTimeHrs + data.diffStartTimeHrs) * 100) / 100).toFixed(2));
+                headers:
+                {
+                    "RequestVerificationToken": '@GetAntiXsrfRequestToken()'
+                },
+                contentType: "application/json",
+                dataType: "json",
+                data: JSON.stringify(obj),
+                success: function (data) {
+                    console.log(data);
+                    console.log("Trip Data successfully returned from DataBase");
+                    $("#modalHeader").text("Trip Section 1 Processing Status");
+                    $("#modalMessage").text($("#tripId").val() + " was updated.");
+                    $("#myModal").modal("show");
+                    $("#expectedCompletionDate").val(data.expectedCompletionDateTime);
+                    $("#diffCollectionHrs").val(parseFloat(Math.round(data.diffCollectionTimeHrs * 100) / 100).toFixed(2));
+                    $("#diffStartHrs").val(parseFloat(Math.round(data.diffStartTimeHrs * 100) / 100).toFixed(2));
+                    $("#diffEndHrs").val(parseFloat(Math.round(data.diffEndTimeHrs * 100) / 100).toFixed(2));
+                    $("#diffTotalHrs").val(parseFloat(Math.round((data.diffEndTimeHrs + data.diffEndTimeHrs + data.diffStartTimeHrs) * 100) / 100).toFixed(2));
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
 
@@ -1274,6 +1277,19 @@
                 $("#savebtnSection1").click();
             });
 
+            //draw the fuel table
+            $('#fuelBtnSection').click(function () {
+                if (!$.fn.DataTable.isDataTable('#FuelTable')) {
+                    GetFuelData();
+                }
+                else {
+                    var oTable = $('#FuelTable').DataTable();
+                    oTable.draw()
+                }
+                console.log($('#tripId').val());
+            });
+
+
             //Fuel Expenses
             $('#savebtnSection3').click(function () {
 
@@ -1415,19 +1431,53 @@
 
 
         //Initialise the ExpectedStartDate for Trip Date Picker
-        $(function () {
+
+            $(function () {
+
             $('#datetimepicker1').datetimepicker();
-            $('#datetimepicker2').datetimepicker();
-            $('#datetimepicker3').datetimepicker();
-            $('#datetimepicker4').datetimepicker();
-            $('#datetimepicker5').datetimepicker();
-            $('#datetimepicker6').datetimepicker();
-            $('#datetimepicker7').datetimepicker();
-            $('#datetimepicker8').datetimepicker();
+                $('#datetimepicker2').datetimepicker(
+                    {
+                        format: "YYYY/MM/DD hh:mm:ss A",
+                        date: '@Model.Trip.ExpectedCollectionDateTime'
+                    }
+                );
+                $('#datetimepicker3').datetimepicker(
+                    {
+                        format: "YYYY/MM/DD hh:mm:ss A",
+                        date: '@Model.Trip.ExpectedStartDateTime'
+                    }
+                );
+                $('#datetimepicker4').datetimepicker(
+                    {
+                        format: "YYYY/MM/DD hh:mm:ss A",
+                        date: '@Model.Trip.ExpectedCompletionDateTime'
+                    }
+                );
+                $('#datetimepicker5').datetimepicker(
+                {
+                        format: "YYYY/MM/DD hh:mm:ss A",
+                        date: '@Model.Trip.ActualCollectionDateTime'
+                });
+                $('#datetimepicker6').datetimepicker(
+                {
+                        format: "YYYY/MM/DD hh:mm:ss A",
+                        date: '@Model.Trip.ActualStartDateTime'
+                });
+                $('#datetimepicker7').datetimepicker(
+                {
+                        format: "YYYY/MM/DD hh:mm:ss A",
+                        date: '@Model.Trip.ActualCompletionDateTime'
+                });
+                $('#datetimepicker8').datetimepicker(
+                    {
+                        format: "YYYY/MM/DD hh:mm:ss A",
+                        date: '@Model.Trip.InvoiceDate'
+                    }
+                );
         });
 
 
         });
-    </script>
+</script>
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
