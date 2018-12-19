@@ -710,7 +710,7 @@
             $("#driverSurname").val(selectedDriver.surname);
             $("#driverCellPhone").val(selectedDriver.cellNumber);
 
-            TripToSave.driverID = selectedDriver.driverID;
+           // TripToSave.driverID = selectedDriver.driverID;
 
             $("#divDriverInputFieldsSection").show();
 
@@ -827,7 +827,7 @@
             var selectedHorse = {};
             selectedHorse = JSON.parse(data);
             $("#horseID").val(selectedHorse.vehicleID);
-            TripToSave.horseID = selectedHorse.vehicleID;
+            //TripToSave.horseID = selectedHorse.vehicleID;
             $("#HorseFleetNo").val(selectedHorse.fleetNo);
             $("#HorseRegistrationNumber").val(selectedHorse.registrationNumber);
             $("#divHorseInputFieldsSection").show();
@@ -914,7 +914,7 @@
             $("#divTrailerInputFieldsSection").show();
             $("#divTrailerTableSection").hide();
             $('#showTrailerBtn').val("Hide Trailer");
-            TripToSave.trailerID = selectedTrailer.vehicleID;
+           // TripToSave.trailerID = selectedTrailer.vehicleID;
         }
 
 
@@ -1237,6 +1237,39 @@
                 TripToSave.destinationID = $('#destinationID').val();
                 TripToSave.reverseDestinationID = $('#revDestChkBox:checked').val() ? true : false;
 
+                //Update Section 2 Details
+                TripToSave.driverID = $("#driverID").val();
+                TripToSave.horseID = $("#horseID").val();
+                TripToSave.trailerID = $("#trailerID").val();
+
+                TripToSave.expectedCollectionDateTime = $('#expectedCollectionDate').val();
+                TripToSave.expectedStartDateTime = $('#expectedStartDate').val();
+                TripToSave.actualCollectionDateTime = $('#actualCollectionDate').val();
+                TripToSave.actualStartDateTime = $('#actualStartDate').val();
+                TripToSave.actualCompletionDateTime = $('#actualCompletionDate').val();
+
+                TripToSave.invoiceAmount = $('#invoiceAmount').val();
+                TripToSave.invoiceNo = $('#invoiceNo').val();
+                TripToSave.invoicedKms = $('#invoicedKms').val();
+                TripToSave.customerReferenceNo = $('#customerReferenceNo').val();
+                TripToSave.invoiceDate = $('#invoiceDate').val();
+                TripToSave.invoiceRate = $('#invoiceRate').val();
+
+                TripToSave.expectedCompletionDateTime = $("#expectedCompletionDate").val();
+                TripToSave.diffCollectionTimeHrs = $("#diffCollectionHrs").val();
+                TripToSave.diffStartTimeHrs = $("#diffStartHrs").val();
+                TripToSave.diffEndTimeHrs = $("#diffEndHrs").val();
+
+
+
+
+
+
+
+
+
+
+
 
                 if ($('#tripId').val().length > 0) {
                     TripToSave.tripID = $('#tripId').val();
@@ -1286,7 +1319,7 @@
                     var oTable = $('#FuelTable').DataTable();
                     oTable.draw()
                 }
-                console.log($('#tripId').val());
+                
             });
 
 
@@ -1312,7 +1345,7 @@
 
                 addFuelItemToTable();
 
-
+                
                 $("#savebtnSection1").click();
             });
 
@@ -1358,6 +1391,7 @@
                 console.log('Trip To Save: Before Button 1 Click Runs');
                 console.log(TripToSave);
 
+
                 $("#savebtnSection1").click();
             });
 
@@ -1385,13 +1419,12 @@
                     return;
                 }
 
-                TripToSave.invoiceAmount = $('#invoiceAmount').val();
-                TripToSave.invoiceNo = $('#invoiceNo').val();
-                TripToSave.invoicedKms = $('#invoicedKms').val();
-                TripToSave.customerReferenceNo = $('#customerReferenceNo').val();
-                TripToSave.invoiceDate = $('#invoiceDate').val();
-                TripToSave.invoiceRate = $('#invoiceRate').val();
-
+                //TripToSave.invoiceAmount = $('#invoiceAmount').val();
+                //TripToSave.invoiceNo = $('#invoiceNo').val();
+                //TripToSave.invoicedKms = $('#invoicedKms').val();
+                //TripToSave.customerReferenceNo = $('#customerReferenceNo').val();
+                //TripToSave.invoiceDate = $('#invoiceDate').val();
+                //TripToSave.invoiceRate = $('#invoiceRate').val();
 
                 $("#savebtnSection1").click();
             });
