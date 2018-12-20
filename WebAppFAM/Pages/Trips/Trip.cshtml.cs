@@ -46,6 +46,7 @@ namespace WebAppFAM.Pages.Trips
        
         public async Task<IActionResult> OnGetAsync(int tripID)
         {
+
             
             Trip = await _context.Trips
                 .Include(l => l.Destination.StartLocation)
@@ -57,7 +58,7 @@ namespace WebAppFAM.Pages.Trips
            
             if (Trip == null)
             {
-                return NotFound();
+                Trip = new Trip();
             }
             return Page();
         }
