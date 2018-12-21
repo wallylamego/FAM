@@ -155,7 +155,37 @@ namespace WebAppFAM.Controllers
             return mediaType.Encoding;
         }
 
-        
+
+        [Route("")]
+        [Route("UploadFiles")]
+        [Route("UploadFiles/Download")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Download()
+        {
+            string filename = "BAT_Data.xlsx";
+            var path = Path.Combine(
+                           _newPath, filename);
+           // return await File(path, System.Net.Mime.MediaTypeNames.Application.Octet, Path.GetFileName(virtualFilePath));
+            return  File(path, System.Net.Mime.MediaTypeNames.Application.Octet, filename);
+        }
+
+        [Route("")]
+        [Route("UploadFiles")]
+        [Route("UploadFiles/Download2")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Download2(string filename)
+        {
+            var path = Path.Combine(
+                           _newPath, filename);
+            // return await File(path, System.Net.Mime.MediaTypeNames.Application.Octet, Path.GetFileName(virtualFilePath));
+            return File(path, System.Net.Mime.MediaTypeNames.Application.Octet, filename);
+        }
+
+
     }
+
     #endregion
+    
 }

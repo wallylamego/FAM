@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebAppFAM.Models;
 
 namespace WebAppFAM.Migrations
 {
     [DbContext(typeof(WebAppFAMContext))]
-    partial class WebAppFAMContextModelSnapshot : ModelSnapshot
+    [Migration("20181221041410_FileTypeTable")]
+    partial class FileTypeTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -292,27 +294,6 @@ namespace WebAppFAM.Migrations
                     b.ToTable("Trips");
                 });
 
-            modelBuilder.Entity("WebAppFAM.Models.TripFile", b =>
-                {
-                    b.Property<int>("TripFileID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("FileDateTime");
-
-                    b.Property<string>("FilePath");
-
-                    b.Property<string>("TripFileName");
-
-                    b.Property<int>("TripID");
-
-                    b.HasKey("TripFileID");
-
-                    b.HasIndex("TripID");
-
-                    b.ToTable("TripFiles");
-                });
-
             modelBuilder.Entity("WebAppFAM.Models.Vehicle", b =>
                 {
                     b.Property<int>("VehicleID")
@@ -455,14 +436,6 @@ namespace WebAppFAM.Migrations
                     b.HasOne("WebAppFAM.Models.Trailer", "Trailer")
                         .WithMany()
                         .HasForeignKey("TrailerID")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("WebAppFAM.Models.TripFile", b =>
-                {
-                    b.HasOne("WebAppFAM.Models.Trip", "Trip")
-                        .WithMany()
-                        .HasForeignKey("TripID")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 

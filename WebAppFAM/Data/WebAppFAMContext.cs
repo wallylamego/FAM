@@ -32,5 +32,6 @@ namespace WebAppFAM.Models
         public DbSet<Province> Provinces { get; set; }
         public DbSet<Fuel> FuelItems { get; set; }
         public DbSet<Trip> Trips { get; set; }
+        public DbSet<TripFile> TripFiles { get; set; }
     }
 }

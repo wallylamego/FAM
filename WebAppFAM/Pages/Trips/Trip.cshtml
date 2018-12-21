@@ -429,6 +429,12 @@
                     <div class="form-group">
                         <input type="button" class="btn btn-default" id="btnUpload" value="Upload" />
                     </div>
+                    <div class="form-group">
+                        <input type="button" class="btn btn-default" id="btnDownLoad" value="DownLoad" />
+                    </div>
+                    @*<a href="@Url.Action("Download2", "PostDetail", new { filename = "BAT_Data.xlsx" })"> DownLoad File</a>*@
+                    <a href="@Url.Action("Download2", "PostDetail", new { filename = "BAT_Data.xlsx" })"> DownLoad File</a>
+                
                 </form>
             </div>
         </div>
@@ -1408,12 +1414,7 @@
                     return;
                 }
 
-                //TripToSave.invoiceAmount = $('#invoiceAmount').val();
-                //TripToSave.invoiceNo = $('#invoiceNo').val();
-                //TripToSave.invoicedKms = $('#invoicedKms').val();
-                //TripToSave.customerReferenceNo = $('#customerReferenceNo').val();
-                //TripToSave.invoiceDate = $('#invoiceDate').val();
-                //TripToSave.invoiceRate = $('#invoiceRate').val();
+                
 
                 $("#savebtnSection1").click();
             });
@@ -1448,6 +1449,27 @@
       else {
           alert('Please select a file.')
       }
+   })
+            $('#btnDownLoad').on('click', function () {
+                var fdata = "FileName";
+            var MyAppUrlSettings = {
+                MyUsefulUrl: "/UploadFiles/Download"
+            };
+            console.log(MyAppUrlSettings.MyUsefulUrl);
+          $.ajax({
+            type: "POST",
+              url: MyAppUrlSettings.MyUsefulUrl,
+            headers:
+            {
+                "RequestVerificationToken": '@GetAntiXsrfRequestToken()'
+            },
+             data: fdata,
+             contentType: false,
+             processData: false,
+              success: function (response) {
+                 window.location = '@Url.Action("DownloadAttachment", "PostDetail")';
+             }
+          });
    })
 
 
