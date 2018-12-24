@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Hosting;
+using WebAppFAM.Helpers;
+using WebAppFAM.Models;
 
 namespace WebAppFAM.Controllers
 {
@@ -19,13 +21,16 @@ namespace WebAppFAM.Controllers
     public class UploadFilesController : Controller
     {
         private static readonly FormOptions _defaultFormOptions = new FormOptions();
+        private readonly WebAppFAM.Models.WebAppFAMContext _context;
         private IHostingEnvironment _hostingEnvironment;
         private readonly string _newPath;
         private readonly string _virtualPathFolder;
         
-        public UploadFilesController(IHostingEnvironment hostingEnvironment)
+        public UploadFilesController(IHostingEnvironment hostingEnvironment,
+            WebAppFAM.Models.WebAppFAMContext context)
         {
             _hostingEnvironment = hostingEnvironment;
+            _context = context;
             string folderName = "Upload";
             string webRootPath = _hostingEnvironment.WebRootPath;
             _newPath = Path.Combine(webRootPath, folderName);
@@ -56,7 +61,7 @@ namespace WebAppFAM.Controllers
         [HttpPost]
         [DisableFormValueModelBinding]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> StreamingUpload(Int32? id)
+        public async Task<IActionResult> StreamingUpload(Int32 id)
         {
             Debug.WriteLine("In Streaming Upload for Trip Number: " + id);
         
@@ -76,6 +81,8 @@ namespace WebAppFAM.Controllers
             var reader = new MultipartReader(boundary, HttpContext.Request.Body);
 
             var section = await reader.ReadNextSectionAsync();
+            string newFileName = "";
+            DateTime FileDateTime = new DateTime();
             while (section != null)
             {
                 ContentDispositionHeaderValue contentDisposition;
@@ -88,7 +95,8 @@ namespace WebAppFAM.Controllers
                         //targetFilePath = Path.GetTempFileName();
 
                         string fileName = contentDisposition.FileName.ToString().Trim('"');
-                        targetFilePath = Path.Combine(_newPath, fileName);
+                        newFileName = FileHelper.newFileName(id, fileName, out FileDateTime);
+                        targetFilePath = Path.Combine(_newPath, newFileName);
                         using (var targetStream = System.IO.File.Create(targetFilePath))
                         {
                             await section.Body.CopyToAsync(targetStream);
@@ -129,7 +137,18 @@ namespace WebAppFAM.Controllers
                     }
                 }
 
-                // Drains any remaining section body that has not been consumed and
+                //add the Trip File Object to the database
+                TripFile TripFileItem = new TripFile
+                {
+                    TripID = id,
+                    TripFileName = newFileName,
+                    FilePath = targetFilePath,
+                    FileDateTime = FileDateTime.ToString()
+                };
+                    _context.Add(TripFileItem);
+                    _context.SaveChanges();
+                    
+               // Drains any remaining section body that has not been consumed and
                 // reads the headers for the next section.
                 section = await reader.ReadNextSectionAsync();
             }
