@@ -430,6 +430,7 @@
                         <input type="button" class="btn btn-default" id="btnUpload" value="Upload" />
                     </div>
                     <a href="@Url.Action("Download", "UploadFiles", new {filename = "BAT_Data.xlsx"} )"> Parameter</a>
+                    <a href="UploadFiles/Download?filename=BAT_Data.xlsx">ParamterTest2</a>
                 </form>
                 <br />
                 <div class="container" id="divTripFileTable">
@@ -1144,9 +1145,9 @@
 
                     "url": "/Trips/Trip?handler=TripFilePaging",
                     "headers":
-                        {
-                            "RequestVerificationToken": '@GetAntiXsrfRequestToken()'
-                        },
+                    {
+                        "RequestVerificationToken": '@GetAntiXsrfRequestToken()'
+                    },
                     "type": "POST",
                     "datatype": "json",
                     "data": function (d) {
@@ -1163,7 +1164,7 @@
                     {
                         /*FileName is  visible and searchable*/
                         "targets": [1],
-                        "visible": false,
+                        "visible": true,
                         "searchable": true
                     },
                     {
@@ -1173,8 +1174,14 @@
                         "searchable": true
                     },
                     {
-                        /*Delete button  is  visible and is not searchable*/
+                        /*FileName is  visible and searchable*/
                         "targets": [3],
+                        "visible": true,
+                        "searchable": true
+                    },
+                    {
+                        /*Delete button  is  visible and is not searchable*/
+                        "targets": [4],
                         "visible": true,
                         "searchable": false,
                         "orderable": false
@@ -1184,9 +1191,10 @@
                     { "data": "tripFileID", "name": "tripFileID", "autoWidth": true },
                     { "data": "tripFileName", "name": "tripFileName", "autoWidth": true },
                     { "data": "fileDateTime", "name": "fileDateTime", "autoWidth": true },
-                    {
+                    { 
                         "data": null, render: function (data, type, row) {
-                            return '<a href="UploadFiles/Download/"'+row.tripFileName+ '+"""> </a>' 
+                            //return '<a href="UploadFiles/Download/?filename="' + row.tripFileName + '""">"' + row.TripFileName + '"</a>' 
+                            return '<a href="/UploadFiles/Download?filename=' + row.tripFileName + '">' + row.tripFileName + '</a>'; 
                         }
                     },
                     //Delete t
