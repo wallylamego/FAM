@@ -47,7 +47,6 @@ namespace WebAppFAM.Pages.Trips
         public async Task<IActionResult> OnGetAsync(int tripID)
         {
 
-            
             Trip = await _context.Trips
                 .Include(l => l.Destination.StartLocation)
                 .Include(c => c.Destination.EndLocation)
@@ -64,7 +63,7 @@ namespace WebAppFAM.Pages.Trips
         }
 
 
-
+        #region FuelUpdates
         //Add a new Fuel Item for this Trip
         public IActionResult OnPostInsertFuelItem([FromBody] Fuel obj)
         {
@@ -140,8 +139,9 @@ namespace WebAppFAM.Pages.Trips
             };
             return new JsonResult(value);
         }
+        #endregion
 
-
+        #region UpdateTrip
         public IActionResult OnPutUpdateTrip([FromBody] Trip obj)
         {
             var Destination = _context.Destinations.FromSql("SELECT * FROM [dbo].[Destinations] WHERE " +
@@ -155,35 +155,6 @@ namespace WebAppFAM.Pages.Trips
             _context.SaveChanges();
             return new JsonResult(obj);
         }
-
-        //public ActionResult OnPostUpload(List<IFormFile> files)
-        //{
-        //    Debug.WriteLine("In Normal Upload");
-        //    if (files != null && files.Count > 0)
-        //    {
-        //        //string folderName = "Upload";
-        //        //string webRootPath = _hostingEnvironment.WebRootPath;
-        //        //string newPath = Path.Combine(webRootPath, folderName);
-        //        //if (!Directory.Exists(newPath))
-        //        //{
-        //        //    Directory.CreateDirectory(_newPath);
-        //        //}
-        //        foreach (IFormFile item in files)
-        //        {
-        //            if (item.Length > 0)
-        //            {
-        //                string fileName = System.Net.Http.Headers.ContentDispositionHeaderValue.Parse(item.ContentDisposition).FileName.Trim('"');
-        //                string fullPath = Path.Combine(_newPath, fileName);
-        //                using (var stream = new FileStream(fullPath, FileMode.Create))
-        //                {
-        //                    item.CopyTo(stream);
-        //                }
-        //            }
-        //        }
-        //        return this.Content("Success");
-        //    }
-        //    return this.Content("Fail");
-        //}
 
         public IActionResult OnPostInsertTrip([FromBody] Trip obj)
         {
@@ -202,6 +173,74 @@ namespace WebAppFAM.Pages.Trips
             }
 
         }
+        #endregion
+
+        #region FilesUpdates
+        //Add a new File Item for this Trip
+        public IActionResult OnPostInsertFileItem([FromBody] TripFile obj)
+        {
+            if (obj != null)
+            {
+                _context.Add(obj);
+                _context.SaveChanges();
+                return new JsonResult(obj);
+            }
+            else
+            {
+                return new JsonResult("TripFile added not added");
+            }
+        }
+        public IActionResult OnDeleteDeleteTripFileItem([FromBody] TripFile obj)
+        {
+            if (obj != null)
+            {
+                _context.TripFiles.Remove(obj);
+                _context.SaveChanges();
+                return new JsonResult("Trip File Item removed successfully");
+            }
+            else
+            {
+                return new JsonResult("Trip File Item not removed.");
+            }
+
+        }
+        public JsonResult OnPostTripFilePaging([FromForm] DataTableAjaxPostModel Model,
+            [FromForm] Trip TripToSave)
+        {
+            int filteredResultsCount = 0;
+            int totalResultsCount = 0;
+
+            DataTableAjaxPostModel.GetOrderByParameters(Model.order, Model.columns, "TripFileID",
+                out bool SortDir, out string SortBy);
+
+            //First create the View of the new model you wish to display to the user
+            var TripFileQuery = _context.TripFiles
+               .Select(TripFileItem => new
+               {
+                   TripFileItem.TripFileID,
+                   TripFileItem.TripID,
+                   TripFileItem.TripFileName,
+                   TripFileItem.FileDateTime,
+                   TripFileItem.FilePath
+               }
+               ).Where(TripFileItem => TripFileItem.TripID == Convert.ToInt32(Model.search.value));
+
+            totalResultsCount = TripFileQuery.Count();
+            filteredResultsCount = totalResultsCount;
+
+            var Result = TripFileQuery.ToList();
+                       
+            var value = new
+            {
+                // this is what datatables wants sending back
+                // draw = Model.draw,
+                recordsTotal = totalResultsCount,
+                recordsFiltered = filteredResultsCount,
+                data = Result
+            };
+            return new JsonResult(value);
+        }
+        #endregion
 
 
     }

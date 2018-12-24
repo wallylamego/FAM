@@ -21,7 +21,7 @@ namespace WebAppFAM.Controllers
         private static readonly FormOptions _defaultFormOptions = new FormOptions();
         private IHostingEnvironment _hostingEnvironment;
         private readonly string _newPath;
-
+        private readonly string _virtualPathFolder;
         
         public UploadFilesController(IHostingEnvironment hostingEnvironment)
         {
@@ -29,6 +29,7 @@ namespace WebAppFAM.Controllers
             string folderName = "Upload";
             string webRootPath = _hostingEnvironment.WebRootPath;
             _newPath = Path.Combine(webRootPath, folderName);
+            _virtualPathFolder = "~/Upload/";
             if (!Directory.Exists(_newPath))
             {
                 Directory.CreateDirectory(_newPath);
@@ -51,13 +52,13 @@ namespace WebAppFAM.Controllers
 
         [Route("")]
         [Route("UploadFiles")]
-        [Route("UploadFiles/StreamingUpload")]
+        [Route("UploadFiles/StreamingUpload/{id}")]
         [HttpPost]
         [DisableFormValueModelBinding]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> StreamingUpload()
+        public async Task<IActionResult> StreamingUpload(Int32? id)
         {
-            Debug.WriteLine("In Streaming Upload");
+            Debug.WriteLine("In Streaming Upload for Trip Number: " + id);
         
             if (!MultipartRequestHelper.IsMultipartContentType(Request.ContentType))
             {
@@ -155,33 +156,16 @@ namespace WebAppFAM.Controllers
             return mediaType.Encoding;
         }
 
-
-        [Route("")]
         [Route("UploadFiles")]
         [Route("UploadFiles/Download")]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Download()
+        
+        public IActionResult Download(string filename)
         {
-            string filename = "BAT_Data.xlsx";
-            var path = Path.Combine(
-                           _newPath, filename);
-           // return await File(path, System.Net.Mime.MediaTypeNames.Application.Octet, Path.GetFileName(virtualFilePath));
-            return  File(path, System.Net.Mime.MediaTypeNames.Application.Octet, filename);
+            string virtualpath = _virtualPathFolder + filename;
+            var NewFile = File(virtualpath, System.Net.Mime.MediaTypeNames.Application.Octet, filename);
+            return NewFile;
         }
 
-        [Route("")]
-        [Route("UploadFiles")]
-        [Route("UploadFiles/Download2")]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Download2(string filename)
-        {
-            var path = Path.Combine(
-                           _newPath, filename);
-            // return await File(path, System.Net.Mime.MediaTypeNames.Application.Octet, Path.GetFileName(virtualFilePath));
-            return File(path, System.Net.Mime.MediaTypeNames.Application.Octet, filename);
-        }
 
 
     }
