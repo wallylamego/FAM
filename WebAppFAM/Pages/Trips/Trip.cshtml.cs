@@ -25,7 +25,8 @@ namespace WebAppFAM.Pages.Trips
     {
         private readonly WebAppFAM.Models.WebAppFAMContext _context;
         private IHostingEnvironment _hostingEnvironment;
-       // private string _newPath;
+        private readonly string _newPath;
+        // private string _newPath;
 
 
         // Get the default form options so that we can use them to set the default limits for
@@ -37,6 +38,9 @@ namespace WebAppFAM.Pages.Trips
         {
             _context = context;
             _hostingEnvironment = hostingEnvironment;
+            string folderName = "Upload";
+            string webRootPath = _hostingEnvironment.WebRootPath;
+            _newPath = Path.Combine(webRootPath, folderName);
 
         }
 
@@ -196,6 +200,18 @@ namespace WebAppFAM.Pages.Trips
             {
                 _context.TripFiles.Remove(obj);
                 _context.SaveChanges();
+                string targetFilePath = Path.Combine(_newPath, obj.TripFileName);
+                if (Directory.Exists(Path.GetDirectoryName(targetFilePath)))
+                {
+                    try
+                    {
+                        System.IO.File.Delete(targetFilePath);
+                    }
+                    catch (System.IO.IOException e)
+                    {
+                        return new JsonResult("Unable to Delete Trip File: " + e.Message);
+                    }
+                }
                 return new JsonResult("Trip File Item removed successfully");
             }
             else

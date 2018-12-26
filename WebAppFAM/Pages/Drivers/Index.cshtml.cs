@@ -83,5 +83,18 @@ namespace WebAppFAM.Pages.Drivers
             };
             return new JsonResult(value);
         }
+        public IActionResult OnDeleteDelete([FromBody] Driver obj)
+        {
+            if (obj != null)
+            {
+                _context.Drivers.Remove(obj);
+                _context.SaveChanges();
+                return new JsonResult("Driver removed successfully");
+            }
+            else
+            {
+                return new JsonResult("Driver not removed.");
+            }
+        }
     }
 }

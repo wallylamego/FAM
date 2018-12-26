@@ -24,6 +24,19 @@ namespace WebAppFAM.Pages.Horses
         {
             Horse = await _context.Horses.ToListAsync();
         }
+        public IActionResult OnDeleteDelete([FromBody] Horse obj)
+        {
+            if (obj != null)
+            {
+                _context.Horses.Remove(obj);
+                _context.SaveChanges();
+                return new JsonResult("Horse removed successfully");
+            }
+            else
+            {
+                return new JsonResult("Horse not removed.");
+            }
+        }
         public JsonResult OnPostPaging([FromForm] DataTableAjaxPostModel Model)
         {
 
