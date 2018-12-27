@@ -38,7 +38,7 @@ namespace WebAppFAM.Pages.Trailers
 
 
             //First create the View of the new model you wish to display to the user
-            var TrailerQuery = _context.Trailers
+            var TrailerQuery = _context.Trailers.Include(tt => tt.TrailerType)
                .Select(tral => new
                {
                    tral.VehicleID,
@@ -48,7 +48,8 @@ namespace WebAppFAM.Pages.Trailers
                    tral.LinkRegistrationNumber,
                    tral.LinkVinNo,
                    tral.RegistrationNumber,
-                   tral.VinNo
+                   tral.VinNo,
+                   trailerType = tral.TrailerType.Name
                }
                );
 
@@ -82,6 +83,18 @@ namespace WebAppFAM.Pages.Trailers
             };
             return new JsonResult(value);
         }
-    
-}
+        public IActionResult OnDeleteDelete([FromBody] Trailer obj)
+        {
+            if (obj != null)
+            {
+                _context.Trailers.Remove(obj);
+                _context.SaveChanges();
+                return new JsonResult("Trailer removed successfully");
+            }
+            else
+            {
+                return new JsonResult("Trailer not removed.");
+            }
+        }
+    }
 }
