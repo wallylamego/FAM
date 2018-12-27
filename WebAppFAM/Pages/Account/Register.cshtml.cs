@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -39,6 +40,7 @@ namespace WebAppFAM.Pages.Account
         [BindProperty]
         public InputModel Input { get; set; }
 
+
         public string ReturnUrl { get; set; }
 
         public class InputModel
@@ -64,6 +66,7 @@ namespace WebAppFAM.Pages.Account
 
         }
 
+        [Authorize(Roles = "Admin")]
         public void OnGet(string returnUrl = null, object selectedRole = null)
         {
 
