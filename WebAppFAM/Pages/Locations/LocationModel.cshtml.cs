@@ -24,7 +24,7 @@ namespace WebAppFAM.Pages.Locations
 
         public IList<Location> Location { get;set; }
 
-        public JsonResult OnPostPaging([FromForm] DataTableAjaxPostModel Model)
+        public async Task<JsonResult> OnPostPaging([FromForm] DataTableAjaxPostModel Model)
         {
            
             int filteredResultsCount = 0;
@@ -66,11 +66,11 @@ namespace WebAppFAM.Pages.Locations
 
                 filteredResultsCount = LocationQuery.Count();
             }
-            var Result = LocationQuery
+            var Result = await LocationQuery
                         .Skip(Model.start)
                         .Take(Model.length)
                         .OrderBy(SortBy, SortDir)
-                        .ToList();
+                        .ToListAsync();
 
             var value = new
             {
@@ -83,30 +83,22 @@ namespace WebAppFAM.Pages.Locations
             return new JsonResult(value);
         }
 
-        public async Task<JsonResult> OnPostDeleteAsync([FromBody] Location LocToDelete)
-        {
-            if (LocToDelete == null)
-            {
-                return new JsonResult("Location Not Found or  already Deleted");
-            }
+       
 
-            var LocationToDelete = await _context.Locations.FindAsync(LocToDelete.LocationID);
-
-            if (LocationToDelete != null)
-            {
-                _context.Locations.Remove(LocationToDelete);
-                await _context.SaveChangesAsync();
-            }
-                return new JsonResult("Location: " + LocationToDelete.LocationName + " Deleted.");
-        }
-
-        public IActionResult OnDeleteDelete([FromBody] Location obj)
+        public async Task<IActionResult> OnDeleteDelete([FromBody] Location obj)
         {
             if (obj != null && HttpContext.User.IsInRole("Admin"))
             {
-                _context.Locations.Remove(obj);
-                _context.SaveChanges();
-                return new JsonResult("Location removed successfully");
+                try
+                { 
+                    _context.Locations.Remove(obj);
+                    await _context.SaveChangesAsync();
+                    return new JsonResult("Location removed successfully");
+                }
+                catch (DbUpdateException d)
+                {
+                    return new JsonResult("Location not removed." + d.InnerException.Message);
+                }
             }
             else
             {

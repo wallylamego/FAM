@@ -21,7 +21,7 @@ namespace WebAppFAM.Helpers
             string FileDateTime = yyyy + mth + dd + hh +mm+ ss +"_"; 
             newFileName = newFileName + "_" + FileDateTime;
             newFileName = newFileName + CurrentFileName.Substring(0,Math.Min(CurrentFileName.Length,5));
-            return newFileName;
+            return newFileName.Replace(" ","");
         }
     }
 }

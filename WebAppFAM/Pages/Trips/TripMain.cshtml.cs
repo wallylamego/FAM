@@ -24,7 +24,7 @@ namespace WebAppFAM.Pages.Trips
 
         public IList<Trip> Trip { get;set; }
 
-        public JsonResult OnPostPaging([FromForm] DataTableAjaxPostModel Model)
+        public async Task<JsonResult> OnPostPaging([FromForm] DataTableAjaxPostModel Model)
         {
            
             int filteredResultsCount = 0;
@@ -69,11 +69,11 @@ namespace WebAppFAM.Pages.Trips
 
                 filteredResultsCount = TripQuery.Count();
             }
-            var Result = TripQuery
+            var Result = await TripQuery
                         .Skip(Model.start)
                         .Take(Model.length)
                         .OrderBy(SortBy, SortDir)
-                        .ToList();
+                        .ToListAsync();
 
             var value = new
             {
@@ -88,31 +88,24 @@ namespace WebAppFAM.Pages.Trips
 
         public async Task<JsonResult> OnPostDeleteAsync(Trip TripId)
         {
-           
             var TripToDelete = await _context.Trips.FindAsync(TripId);
 
-            if (TripToDelete != null)
+            if (TripToDelete != null && HttpContext.User.IsInRole("Admin"))
             {
-                _context.Trips.Remove(TripToDelete);
-                await _context.SaveChangesAsync();
+                try
+                { 
+                    _context.Trips.Remove(TripToDelete);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateException d)
+                {
+                    return new JsonResult("Trip not removed." + d.InnerException.Message);
+                }
             }
                 return new JsonResult("Trip: " + TripToDelete.TripCode + " Deleted.");
         }
 
-        public IActionResult OnDeleteDelete([FromBody] Location obj)
-        {
-            if (obj != null && HttpContext.User.IsInRole("Admin"))
-            {
-                _context.Locations.Remove(obj);
-                _context.SaveChanges();
-                return new JsonResult("Location removed successfully");
-            }
-            else
-            {
-                return new JsonResult("Location not removed.");
-            }
-
-        }
+       
 
 
     }

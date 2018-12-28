@@ -22,12 +22,7 @@ namespace WebAppFAM.Pages.Provinces
 
         public IList<Models.Province> Province { get;set; }
 
-        public async Task OnGetAsync()
-        {
-            Province = await _context.Provinces
-                .Include(p => p.Country).OrderBy(p=>p.CountryID).ToListAsync();
-        }
-        public JsonResult OnPostPaging([FromForm] DataTableAjaxPostModel Model)
+        public async Task<JsonResult> OnPostPaging([FromForm] DataTableAjaxPostModel Model)
         {
 
             int filteredResultsCount = 0;
@@ -59,11 +54,11 @@ namespace WebAppFAM.Pages.Provinces
 
                 filteredResultsCount = ProvinceQuery.Count();
             }
-            var Result = ProvinceQuery
+            var Result = await ProvinceQuery
                         .Skip(Model.start)
                         .Take(Model.length)
                         .OrderBy(SortBy, SortDir)
-                        .ToList();
+                        .ToListAsync();
 
             var value = new
             {
@@ -75,13 +70,20 @@ namespace WebAppFAM.Pages.Provinces
             };
             return new JsonResult(value);
         }
-        public IActionResult OnDeleteDelete([FromBody] Province obj)
+        public async Task<IActionResult> OnDeleteDelete([FromBody] Province obj)
         {
             if (obj != null && HttpContext.User.IsInRole("Admin"))
             {
-                _context.Provinces.Remove(obj);
-                _context.SaveChanges();
-                return new JsonResult("Province removed successfully");
+                try
+                {
+                    _context.Provinces.Remove(obj);
+                    await _context.SaveChangesAsync();
+                    return new JsonResult("Province removed successfully");
+                }
+                catch (DbUpdateException d)
+                {
+                    return new JsonResult("Province not removed." + d.InnerException.Message);
+                }
             }
             else
             {

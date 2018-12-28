@@ -481,7 +481,7 @@
     }
 
         function DeleteFuelItem(FuelID) {
-            console.log("Before Ajax Call:" + "FuelID is: " + FuelID)
+            console.log("Before Ajax Call:" + "FuelID is: " + FuelID);
             var obj = {};
             obj.fuelID = FuelID;
                     $.ajax({
@@ -509,11 +509,11 @@
                         });//ajax
         }
     function DeleteTripFileItem(TripFileID,TripFileName) {
-            console.log("Before Ajax Call:" + "TripFileID is: " + TripFileID)
+        console.log("Before Ajax Call:" + "TripFileID is: " + TripFileID);
             var obj = {};
         obj.tripFileID = TripFileID;
         obj.tripFileName = TripFileName;
-        console.log("Trip File ID to delete is: " + obj.tripFileID)
+        console.log("Trip File ID to delete is: " + obj.tripFileID);
                     $.ajax({
                         type: "DELETE",
                         url: '/Trips/Trip?handler=DeleteTripFileItem',
@@ -758,7 +758,6 @@
             $("#driverSurname").val(selectedDriver.surname);
             $("#driverCellPhone").val(selectedDriver.cellNumber);
 
-           // TripToSave.driverID = selectedDriver.driverID;
 
             $("#divDriverInputFieldsSection").show();
 

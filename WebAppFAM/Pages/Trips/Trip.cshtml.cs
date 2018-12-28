@@ -69,26 +69,40 @@ namespace WebAppFAM.Pages.Trips
 
         #region FuelUpdates
         //Add a new Fuel Item for this Trip
-        public IActionResult OnPostInsertFuelItem([FromBody] Fuel obj)
+        public async Task<IActionResult> OnPostInsertFuelItem([FromBody] Fuel obj)
         {
             if (obj != null)
             {
-                _context.Add(obj);
-                _context.SaveChanges();
-                return new JsonResult(obj);
+                try
+                { 
+                    _context.Add(obj);
+                    await _context.SaveChangesAsync();
+                    return new JsonResult(obj);
+                }
+                catch (DbUpdateException d)
+                {
+                    return new JsonResult("Fuel Item not Added." + d.InnerException.Message);
+                }
             }
             else
             {
                 return new JsonResult("Fuel Item not added");
             }
         }
-        public IActionResult OnDeleteDeleteFuelItem([FromBody] Fuel obj)
+        public async Task<IActionResult> OnDeleteDeleteFuelItem([FromBody] Fuel obj)
         {
             if (obj != null)
             {
-                _context.FuelItems.Remove(obj);
-                _context.SaveChanges();
-                return new JsonResult("Fuel Item removed successfully");
+                try
+                { 
+                    _context.FuelItems.Remove(obj);
+                    await _context.SaveChangesAsync();
+                    return new JsonResult("Fuel Item removed successfully");
+                }
+                catch (DbUpdateException d)
+                {
+                    return new JsonResult("Fuel Item not Removed." + d.InnerException.Message);
+                }
             }
             else
             {
@@ -96,7 +110,7 @@ namespace WebAppFAM.Pages.Trips
             }
 
         }
-        public JsonResult OnPostFuelPaging([FromForm] DataTableAjaxPostModel Model,
+        public async Task<IActionResult> OnPostFuelPaging([FromForm] DataTableAjaxPostModel Model,
             [FromForm] Trip TripToSave)
         {
             int filteredResultsCount = 0;
@@ -121,17 +135,8 @@ namespace WebAppFAM.Pages.Trips
             totalResultsCount = FuelQuery.Count();
             filteredResultsCount = totalResultsCount;
 
-            // if (!string.IsNullOrEmpty(Model.search.value))
-            //{
 
-
-            //   filteredResultsCount = FuelQuery.Count();
-            //}
-            var Result = FuelQuery
-                        //          .Skip(Model.start)
-                        //        .Take(Model.length)
-                        //      .OrderBy(SortBy, SortDir)
-                        .ToList();
+            var Result = await FuelQuery.ToListAsync();
 
             var value = new
             {
@@ -146,29 +151,43 @@ namespace WebAppFAM.Pages.Trips
         #endregion
 
         #region UpdateTrip
-        public IActionResult OnPutUpdateTrip([FromBody] Trip obj)
+        public async Task<IActionResult> OnPutUpdateTrip([FromBody] Trip obj)
         {
-            var Destination = _context.Destinations.FromSql("SELECT * FROM [dbo].[Destinations] WHERE " +
-                  " [DestinationID] = {0} ", obj.DestinationID).FirstOrDefault();
+            var Destination = await _context.Destinations.FromSql("SELECT * FROM [dbo].[Destinations] WHERE " +
+                  " [DestinationID] = {0} ", obj.DestinationID).FirstOrDefaultAsync();
 
 
             DTU = new DateTimeUtilities(Destination.Distance);
 
             DTU.SetTripDateTimeStatistics(obj);
-            _context.Attach(obj).State = EntityState.Modified;
-            _context.SaveChanges();
-            return new JsonResult(obj);
+            try
+            {
+                _context.Attach(obj).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+                return new JsonResult(obj);
+            }
+            catch (DbUpdateException d)
+            {
+                return new JsonResult("Trip Changes not saved." + d.InnerException.Message);
+            }
         }
 
-        public IActionResult OnPostInsertTrip([FromBody] Trip obj)
+        public async Task<IActionResult> OnPostInsertTrip([FromBody] Trip obj)
         {
 
             if (obj != null)
             {
-                _context.Add(obj);
-                _context.SaveChanges();
-                int id = obj.TripID; // Yes it's here
-                return new JsonResult(obj);
+                try
+                { 
+                    _context.Add(obj);
+                    await _context.SaveChangesAsync();
+                    int id = obj.TripID; // Yes it's here
+                    return new JsonResult(obj);
+                }
+                catch (DbUpdateException d)
+                {
+                    return new JsonResult("Trip Not Added." + d.InnerException.Message);
+                }
             }
 
             else
@@ -181,25 +200,39 @@ namespace WebAppFAM.Pages.Trips
 
         #region FilesUpdates
         //Add a new File Item for this Trip
-        public IActionResult OnPostInsertFileItem([FromBody] TripFile obj)
+        public async Task <IActionResult> OnPostInsertFileItem([FromBody] TripFile obj)
         {
             if (obj != null)
             {
-                _context.Add(obj);
-                _context.SaveChanges();
-                return new JsonResult(obj);
+                try 
+                {
+                    _context.Add(obj);
+                    await _context.SaveChangesAsync();
+                    return new JsonResult(obj);
+                }
+                catch (DbUpdateException d)
+                {
+                    return new JsonResult("Trip File not added ." + d.InnerException.Message);
+                }
             }
             else
             {
                 return new JsonResult("TripFile added not added");
             }
         }
-        public IActionResult OnDeleteDeleteTripFileItem([FromBody] TripFile obj)
+        public async Task<IActionResult> OnDeleteDeleteTripFileItem([FromBody] TripFile obj)
         {
             if (obj != null)
             {
-                _context.TripFiles.Remove(obj);
-                _context.SaveChanges();
+                try
+                { 
+                    _context.TripFiles.Remove(obj);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateException d)
+                {
+                    return new JsonResult("Trip File not removed." + d.InnerException.Message);
+                }
                 string targetFilePath = Path.Combine(_newPath, obj.TripFileName);
                 if (Directory.Exists(Path.GetDirectoryName(targetFilePath)))
                 {
@@ -209,7 +242,7 @@ namespace WebAppFAM.Pages.Trips
                     }
                     catch (System.IO.IOException e)
                     {
-                        return new JsonResult("Unable to Delete Trip File: " + e.Message);
+                        return new JsonResult("Unable to Delete Trip File: " + e.InnerException.Message);
                     }
                 }
                 return new JsonResult("Trip File Item removed successfully");
@@ -220,7 +253,7 @@ namespace WebAppFAM.Pages.Trips
             }
 
         }
-        public JsonResult OnPostTripFilePaging([FromForm] DataTableAjaxPostModel Model,
+        public async Task<JsonResult> OnPostTripFilePaging([FromForm] DataTableAjaxPostModel Model,
             [FromForm] Trip TripToSave)
         {
             int filteredResultsCount = 0;
@@ -244,7 +277,7 @@ namespace WebAppFAM.Pages.Trips
             totalResultsCount = TripFileQuery.Count();
             filteredResultsCount = totalResultsCount;
 
-            var Result = TripFileQuery.ToList();
+            var Result = await TripFileQuery.ToListAsync();
                        
             var value = new
             {

@@ -22,25 +22,29 @@ namespace WebAppFAM.Pages.Horses
 
         public IList<Horse> Horse { get;set; }
 
-        public async Task OnGetAsync()
-        {
-            Horse = await _context.Horses.ToListAsync();
-        }
+        
 
-        public IActionResult OnDeleteDelete([FromBody] Horse obj)
+        public async Task<IActionResult> OnDeleteDelete([FromBody] Horse obj)
         {
             if (obj != null & HttpContext.User.IsInRole("Admin"))
             {
-                _context.Horses.Remove(obj);
-                _context.SaveChanges();
-                return new JsonResult("Horse removed successfully");
+                try
+                {
+                    _context.Horses.Remove(obj);
+                    await _context.SaveChangesAsync();
+                    return new JsonResult("Horse removed successfully");
+                }
+                catch (DbUpdateException d)
+                {
+                    return new JsonResult("Horse not removed." + d.InnerException.Message);
+                }
             }
             else
             {
                 return new JsonResult("Horse not removed.");
             }
         }
-        public JsonResult OnPostPaging([FromForm] DataTableAjaxPostModel Model)
+        public async Task<JsonResult> OnPostPaging([FromForm] DataTableAjaxPostModel Model)
         {
 
             int filteredResultsCount = 0;
@@ -79,11 +83,11 @@ namespace WebAppFAM.Pages.Horses
 
                 filteredResultsCount = HorseQuery.Count();
             }
-            var Result = HorseQuery
+            var Result = await HorseQuery
                         .Skip(Model.start)
                         .Take(Model.length)
                         .OrderBy(SortBy, SortDir)
-                        .ToList();
+                        .ToListAsync();
 
             var value = new
             {

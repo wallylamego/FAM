@@ -22,12 +22,9 @@ namespace WebAppFAM.Pages.Drivers
 
         public IList<Driver> Driver { get;set; }
 
-        public async Task OnGetAsync()
-        {
-            Driver = await _context.Drivers.ToListAsync();
-        }
+        
         //This get provides a list of Paged Drivers
-        public JsonResult OnPostPaging([FromForm] DataTableAjaxPostModel Model)
+        public async Task<JsonResult> OnPostPaging([FromForm] DataTableAjaxPostModel Model)
         {
 
             int filteredResultsCount = 0;
@@ -69,11 +66,11 @@ namespace WebAppFAM.Pages.Drivers
 
                 filteredResultsCount = DriverQuery.Count();
             }
-            var Result = DriverQuery
+            var Result = await DriverQuery
                         .Skip(Model.start)
                         .Take(Model.length)
                         .OrderBy(SortBy, SortDir)
-                        .ToList();
+                        .ToListAsync();
 
             var value = new
             {
@@ -86,13 +83,20 @@ namespace WebAppFAM.Pages.Drivers
             return new JsonResult(value);
         }
 
-        public IActionResult OnDeleteDelete([FromBody] Driver obj)
+        public async Task<IActionResult> OnDeleteDelete([FromBody] Driver obj)
         {
             if (obj != null && HttpContext.User.IsInRole("Admin"))
             {
-                _context.Drivers.Remove(obj);
-                _context.SaveChanges();
-                return new JsonResult("Driver removed successfully");
+                try
+                {
+                    _context.Drivers.Remove(obj);
+                    await _context.SaveChangesAsync();
+                    return new JsonResult("Driver removed successfully");
+                }
+                catch(DbUpdateException d)
+                {
+                    return new JsonResult("Driver not removed." + d.InnerException.Message);
+                }
             }
             else
             {
