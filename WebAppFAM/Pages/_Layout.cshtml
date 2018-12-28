@@ -33,20 +33,23 @@
                     <li><a asp-page="/Index">Home</a></li>
                     <li><a asp-page="/About">About</a></li>
                     <li><a asp-page="/Contact">Contact</a></li>
-                    <li>
-                        <a class="dropdown-toggle" data-toggle="dropdown" asp-page="/Admin">Admin<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a asp-page="/Horses/Index">Horses</a></li>
-                            <li><a asp-page="/Trailers/Index">Trailers</a></li>
-                            <li><a asp-page="/Drivers/Index">Drivers</a></li>
-                            <li><a asp-page="/Countries/Index">Countries</a></li>
-                            <li><a asp-page="/Provinces/Index">Provinces</a></li>
-                            <li><a asp-page="/Locations/LocationModel">Locations</a></li>
-                            <li><a asp-page="/Destinations/Destination">Destinations</a></li>
-                            <li><a asp-page="/Trips/TripMain">Trips</a></li>
-                        </ul>
-                    </li>
-                </ul>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li>
+                            <a class="dropdown-toggle" data-toggle="dropdown" asp-page="/Admin">Admin<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a asp-page="/Horses/Index">Horses</a></li>
+                                <li><a asp-page="/Trailers/Index">Trailers</a></li>
+                                <li><a asp-page="/Drivers/Index">Drivers</a></li>
+                                <li><a asp-page="/Countries/Index">Countries</a></li>
+                                <li><a asp-page="/Provinces/Index">Provinces</a></li>
+                                <li><a asp-page="/Locations/LocationModel">Locations</a></li>
+                                <li><a asp-page="/Destinations/Destination">Destinations</a></li>
+                                <li><a asp-page="/Trips/TripMain">Trips</a></li>
+                            </ul>
+                        </li>
+                    }
+                    </ul>
                 @await Html.PartialAsync("_LoginPartial")
             </div>
         </div>

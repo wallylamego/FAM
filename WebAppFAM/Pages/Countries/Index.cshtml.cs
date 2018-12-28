@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -66,13 +67,15 @@ namespace WebAppFAM.Pages.Countries
             };
             return new JsonResult(value);
         }
+
+        [Authorize(Roles = "Admin")]
         public IActionResult OnDeleteDelete([FromBody] Country obj)
         {
             if (obj != null)
             {
                 _context.Countries.Remove(obj);
                 _context.SaveChanges();
-                return new JsonResult("Province removed successfully");
+                return new JsonResult("Country removed successfully");
             }
             else
             {
