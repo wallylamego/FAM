@@ -22,14 +22,7 @@ namespace WebAppFAM.Pages.Trailers
 
         public IList<Trailer> Trailer { get;set; }
 
-        public async Task OnGetAsync()
-        {
-            Trailer = await _context.Trailers
-               .Include(tt => tt.TrailerType)
-                .AsNoTracking()
-                .ToListAsync();
-        }
-        public JsonResult OnPostPaging([FromForm] DataTableAjaxPostModel Model)
+        public async Task<JsonResult> OnPostPaging([FromForm] DataTableAjaxPostModel Model)
         {
 
             int filteredResultsCount = 0;
@@ -69,11 +62,11 @@ namespace WebAppFAM.Pages.Trailers
 
                 filteredResultsCount = TrailerQuery.Count();
             }
-            var Result = TrailerQuery
+            var Result = await TrailerQuery
                         .Skip(Model.start)
                         .Take(Model.length)
                         .OrderBy(SortBy, SortDir)
-                        .ToList();
+                        .ToListAsync();
 
             var value = new
             {
@@ -85,13 +78,20 @@ namespace WebAppFAM.Pages.Trailers
             };
             return new JsonResult(value);
         }
-        public IActionResult OnDeleteDelete([FromBody] Trailer obj)
+        public async Task<IActionResult> OnDeleteDelete([FromBody] Trailer obj)
         {
             if (obj != null & HttpContext.User.IsInRole("Admin"))
             {
+                try
+                { 
                 _context.Trailers.Remove(obj);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return new JsonResult("Trailer removed successfully");
+                }
+                catch(DbUpdateException d)
+                {
+                    return new JsonResult("Trailer not removed." + d.InnerException.Message);
+                }
             }
             else
             {

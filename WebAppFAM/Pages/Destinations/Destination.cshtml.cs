@@ -49,7 +49,6 @@ namespace WebAppFAM.Pages.Destinations
         //This get provides a list of Paged Destinations
         public JsonResult OnPostPaging([FromForm] DataTableAjaxPostModel Model)
         {
-
             int filteredResultsCount = 0;
             int totalResultsCount = 0;
 
@@ -58,7 +57,7 @@ namespace WebAppFAM.Pages.Destinations
 
 
             //First create the View of the new model you wish to display to the user
-            var DestinationQuery = _context.Destinations
+            var DestinationQuery =  _context.Destinations
                .Include(s => s.StartLocation)
                .Include(e => e.EndLocation)
                .Include(c => c.Customer)
@@ -91,7 +90,7 @@ namespace WebAppFAM.Pages.Destinations
 
                 filteredResultsCount = DestinationQuery.Count();
             }
-            var Result = DestinationQuery
+            var Result =  DestinationQuery
                         .Skip(Model.start)
                         .Take(Model.length)
                         .OrderBy(SortBy, SortDir)
@@ -131,13 +130,20 @@ namespace WebAppFAM.Pages.Destinations
             return new JsonResult("Destination updated");
         }
 
-        public IActionResult OnDeleteDelete([FromBody] Destination obj)
+        public async Task<IActionResult> OnDeleteDelete([FromBody] Destination obj)
         {
             if (obj != null && HttpContext.User.IsInRole("Admin"))
             {
-                _context.Destinations.Remove(obj);
-                _context.SaveChanges();
-                return new JsonResult("Destination removed successfully");
+                try
+                {
+                    _context.Destinations.Remove(obj);
+                    await _context.SaveChangesAsync();
+                    return new JsonResult("Destination removed successfully");
+                }
+                catch(Exception e)
+                {
+                    return new JsonResult("Destination not removed. There was a database error :" + e.Message);
+                }
             }
             else
             {

@@ -25,11 +25,8 @@ namespace WebAppFAM.Pages.Trailers
 
         public IActionResult OnGet()
         {
-            
             PopulateTrailerTypeDropDownList(_context);
             return Page();
-
-            
         }
 
      
