@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using WebAppFAM.Models;
 
 namespace WebAppFAM.Pages.Provinces
 {
+    [Authorize]
     public class IndexModel : PageModel
     {
         private readonly WebAppFAM.Models.WebAppFAMContext _context;
@@ -75,7 +77,7 @@ namespace WebAppFAM.Pages.Provinces
         }
         public IActionResult OnDeleteDelete([FromBody] Province obj)
         {
-            if (obj != null)
+            if (obj != null && HttpContext.User.IsInRole("Admin"))
             {
                 _context.Provinces.Remove(obj);
                 _context.SaveChanges();

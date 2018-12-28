@@ -10,6 +10,7 @@ using WebAppFAM.Models;
 
 namespace WebAppFAM.Pages.Countries
 {
+    [Authorize]
     public class IndexModel : PageModel
     {
         private readonly WebAppFAM.Models.WebAppFAMContext _context;
@@ -68,10 +69,10 @@ namespace WebAppFAM.Pages.Countries
             return new JsonResult(value);
         }
 
-        [Authorize(Roles = "Admin")]
         public IActionResult OnDeleteDelete([FromBody] Country obj)
         {
-            if (obj != null)
+            
+            if (obj != null && HttpContext.User.IsInRole("Admin"))
             {
                 _context.Countries.Remove(obj);
                 _context.SaveChanges();
@@ -79,7 +80,7 @@ namespace WebAppFAM.Pages.Countries
             }
             else
             {
-                return new JsonResult("Province not removed.");
+                return new JsonResult("Country not removed.");
             }
         }
 

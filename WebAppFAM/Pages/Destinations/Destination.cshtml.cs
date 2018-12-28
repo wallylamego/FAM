@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -10,6 +11,7 @@ using WebAppFAM.Models;
 
 namespace WebAppFAM.Pages.Destinations
 {
+    [Authorize]
     public class DestinationModel : PageModel
     {
         private readonly WebAppFAM.Models.WebAppFAMContext _context;
@@ -131,7 +133,7 @@ namespace WebAppFAM.Pages.Destinations
 
         public IActionResult OnDeleteDelete([FromBody] Destination obj)
         {
-            if (obj != null)
+            if (obj != null && HttpContext.User.IsInRole("Admin"))
             {
                 _context.Destinations.Remove(obj);
                 _context.SaveChanges();

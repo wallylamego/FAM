@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using WebAppFAM.Models;
 using WebAppFAM;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebAppFAM.Pages.Locations
 {
+    [Authorize]
     public class LocationModel : PageModel
     {
         private readonly WebAppFAM.Models.WebAppFAMContext _context;
@@ -100,7 +102,7 @@ namespace WebAppFAM.Pages.Locations
 
         public IActionResult OnDeleteDelete([FromBody] Location obj)
         {
-            if (obj != null)
+            if (obj != null && HttpContext.User.IsInRole("Admin"))
             {
                 _context.Locations.Remove(obj);
                 _context.SaveChanges();

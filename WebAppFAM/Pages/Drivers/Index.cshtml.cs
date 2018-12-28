@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using WebAppFAM.Models;
 
 namespace WebAppFAM.Pages.Drivers
 {
+    [Authorize]
     public class IndexModel : PageModel
     {
         private readonly WebAppFAM.Models.WebAppFAMContext _context;
@@ -83,9 +85,10 @@ namespace WebAppFAM.Pages.Drivers
             };
             return new JsonResult(value);
         }
+
         public IActionResult OnDeleteDelete([FromBody] Driver obj)
         {
-            if (obj != null)
+            if (obj != null && HttpContext.User.IsInRole("Admin"))
             {
                 _context.Drivers.Remove(obj);
                 _context.SaveChanges();
