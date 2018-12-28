@@ -21,7 +21,7 @@ namespace WebAppFAM.Pages.Countries
         }
 
         public IList<Country> Country { get;set; }
-        public JsonResult OnPostPaging([FromForm] DataTableAjaxPostModel Model)
+        public async Task<JsonResult> OnPostPaging([FromForm] DataTableAjaxPostModel Model)
         {
 
             int filteredResultsCount = 0;
@@ -52,11 +52,11 @@ namespace WebAppFAM.Pages.Countries
 
                 filteredResultsCount = CountryQuery.Count();
             }
-            var Result = CountryQuery
+            var Result = await CountryQuery
                         .Skip(Model.start)
                         .Take(Model.length)
                         .OrderBy(SortBy, SortDir)
-                        .ToList();
+                        .ToListAsync();
 
             var value = new
             {
@@ -69,14 +69,21 @@ namespace WebAppFAM.Pages.Countries
             return new JsonResult(value);
         }
 
-        public IActionResult OnDeleteDelete([FromBody] Country obj)
+        public async Task<IActionResult> OnDeleteDelete([FromBody] Country obj)
         {
-            
+
             if (obj != null && HttpContext.User.IsInRole("Admin"))
             {
-                _context.Countries.Remove(obj);
-                _context.SaveChanges();
-                return new JsonResult("Country removed successfully");
+                try
+                {
+                    _context.Countries.Remove(obj);
+                    await _context.SaveChangesAsync();
+                    return new JsonResult("Country removed successfully");
+                }
+                catch (DbUpdateException d)
+                {
+                    return new JsonResult("Country not removed." + d.InnerException.Message);
+                }
             }
             else
             {

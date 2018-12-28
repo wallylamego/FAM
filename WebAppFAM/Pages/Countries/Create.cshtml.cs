@@ -34,10 +34,8 @@ namespace WebAppFAM.Pages.Countries
             {
                 return Page();
             }
-
             _context.Countries.Add(Country);
             await _context.SaveChangesAsync();
-
             return RedirectToPage("./Index");
         }
     }

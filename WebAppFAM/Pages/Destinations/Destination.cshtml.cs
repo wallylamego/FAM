@@ -19,14 +19,12 @@ namespace WebAppFAM.Pages.Destinations
 
         public DestinationModel(WebAppFAM.Models.WebAppFAMContext context)
         {
-            
             _context = context;
         }
 
         [BindProperty]
         public Destination Destination { get; set; }
 
-        
         public async Task<IActionResult> OnGetAsync(int? destinationId)
         {
             PopulateCustomerDropDownList();
@@ -47,7 +45,7 @@ namespace WebAppFAM.Pages.Destinations
         }
 
         //This get provides a list of Paged Destinations
-        public JsonResult OnPostPaging([FromForm] DataTableAjaxPostModel Model)
+        public async Task<JsonResult> OnPostPaging([FromForm] DataTableAjaxPostModel Model)
         {
             int filteredResultsCount = 0;
             int totalResultsCount = 0;
@@ -90,11 +88,11 @@ namespace WebAppFAM.Pages.Destinations
 
                 filteredResultsCount = DestinationQuery.Count();
             }
-            var Result =  DestinationQuery
+            var Result = await DestinationQuery
                         .Skip(Model.start)
                         .Take(Model.length)
                         .OrderBy(SortBy, SortDir)
-                        .ToList();
+                        .ToListAsync();
 
             var value = new
             {
@@ -107,14 +105,20 @@ namespace WebAppFAM.Pages.Destinations
             return new JsonResult(value);
         }
 
-        public IActionResult OnPostInsert([FromBody] Destination obj)
+        public async Task<IActionResult> OnPostInsert([FromBody] Destination obj)
         {
-            
             if (obj != null)
             {
-                _context.Add(obj);
-                _context.SaveChanges();
-                return new JsonResult("Destination has been created successfully.");
+                try
+                {
+                    _context.Add(obj);
+                    await _context.SaveChangesAsync();
+                    return new JsonResult("Destination has been created successfully.");
+                }
+                catch (DbUpdateException d)
+                {
+                    return new JsonResult("New Destination not created." + d.InnerException.Message);
+                }
             }
             
             else
@@ -123,11 +127,18 @@ namespace WebAppFAM.Pages.Destinations
             }
 
         }
-        public IActionResult OnPutUpdate([FromBody] Destination obj)
+        public async Task<IActionResult> OnPutUpdate([FromBody] Destination obj)
         {
-            _context.Attach(obj).State = EntityState.Modified;
-            _context.SaveChanges();
-            return new JsonResult("Destination updated");
+            try
+            {
+                _context.Attach(obj).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+                return new JsonResult("Destination updated.");
+            }
+            catch(DbUpdateException d)
+            {
+                return new JsonResult("Destination not update." + d.InnerException.Message);
+            }
         }
 
         public async Task<IActionResult> OnDeleteDelete([FromBody] Destination obj)
