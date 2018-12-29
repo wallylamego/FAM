@@ -40,6 +40,9 @@ namespace WebAppFAM.Pages.Trips
                {
                    tp.TripID,
                    tp.TripCode,
+                   Customer = tp.Destination.Customer.Name,
+                   CommodityName = tp.Commodity.Name,
+                   tp.ReturnTrip,
                    TripStart = tp.ExpectedCollectionDateTime,
                    From = tp.Destination.StartLocation.Province.Country.CountryName + " | " +
                         tp.Destination.StartLocation.Province.ProvinceName + " | " +
@@ -49,7 +52,22 @@ namespace WebAppFAM.Pages.Trips
                         tp.Destination.EndLocation.LocationName,
                    tp.Destination.Distance,
                    Driver = tp.Driver.FirstName + "|" + tp.Driver.Surname,
-                   Horse = tp.Horse.FleetNo
+                   Horse = tp.Horse.FleetNo,
+                   Trailer = tp.Trailer.FleetNo,
+                   tp.ExpectedStartDateTime,
+                   tp.ExpectedCompletionDateTime,
+                   tp.ActualCollectionDateTime,
+                   tp.ActualStartDateTime,
+                   tp.ActualCompletionDateTime,
+                   tp.DiffCollectionTimeHrs,
+                   tp.DiffStartTimeHrs,
+                   tp.DiffEndTimeHrs,
+                   tp.CustomerReferenceNo,
+                   tp.InvoiceNo,
+                   tp.InvoiceDate,
+                   tp.InvoiceRate,
+                   tp.Kilometres,
+                   tp.InvoiceAmount
                }
                    );
                
@@ -65,7 +83,11 @@ namespace WebAppFAM.Pages.Trips
                         t.Driver.ToLower().Contains(Model.search.value.ToLower()) ||
                         t.From.ToLower().Contains(Model.search.value.ToLower()) ||
                         t.To.ToLower().Contains(Model.search.value.ToLower()) ||
-                        t.Horse.ToLower().Contains(Model.search.value.ToLower()));
+                        t.Customer.ToLower().Contains(Model.search.value.ToLower()) ||
+                        t.Trailer.ToLower().Contains(Model.search.value.ToLower()) ||
+                        t.Horse.ToLower().Contains(Model.search.value.ToLower()) ||
+                        t.InvoiceNo.ToLower().Contains(Model.search.value.ToLower()) 
+                        );
 
                 filteredResultsCount = TripQuery.Count();
             }
