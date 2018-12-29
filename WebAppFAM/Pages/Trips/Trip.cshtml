@@ -202,6 +202,7 @@
             </div>
         </div>
     </div>
+
     <div class="card" id="cardSection3">
         <div class="card-header" id="headingThree">
             <h5 class="mb-0">
@@ -214,29 +215,34 @@
         <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
             @*<div class="card table-bordered well-sm">*@
             <div id="divFuelInputFieldsSection" class="well-sm" style="background-color:lightgray">
-                <div class="form-group" id="divPurchaseOrder">
-                    <label class="control-label">Purchase Order No</label>
-                    <input id="purchaseOrderID" class="form-control" />
-                </div>
-                <div class="form-group" id="divLitres">
-                    <label class="control-label">Litres</label>
-                    <input id="litres" class="form-control" />
-                </div>
-                <div class="form-group" id="divDieselRate">
-                    <label class="control-label">Diesel Rate</label>
-                    <input id="fuelRate" class="form-control" />
-                </div>
-                <div class="form-group" id="divDieselCost">
-                    <label class="control-label">Diesel Cost</label>
-                    <input id="DieselTotalCost" class="form-control" />
-                </div>
-                <div class="form-group" id="divOdometre">
-                    <label class="control-label">Odometre</label>
-                    <input id="odometre" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <input type="button" value="Add" class="btn btn-default  " id="savebtnSection3" />
-                </div>
+                <form id="FuelForm" method="post">
+                    <div class="form-group" id="divPurchaseOrder">
+                        <label class="control-label">Purchase Order No</label>
+                        <input asp-for="FuelItem.PurchaseOrderID" id="purchaseOrderID" class="form-control" />
+                    </div>
+                    <div class="form-group" id="divLitres">
+                        <label class="control-label">Litres</label>
+                        @*<input id="litres" class="form-control" />*@
+                        <input asp-for="FuelItem.Litres" id="litres" class="form-control" />
+                        <span asp-validation-for="FuelItem.Litres" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" id="divDieselRate">
+                        <label class="control-label">Diesel Rate</label>
+                        <input asp-for="FuelItem.FuelRate" id="fuelRate" class="form-control" />
+                        <span asp-validation-for="FuelItem.FuelRate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" id="divDieselCost">
+                        <label class="control-label">Diesel Cost</label>
+                        <input id="DieselTotalCost" class="form-control" />
+                    </div>
+                    <div class="form-group" id="divOdometre">
+                        <label class="control-label">Odometre</label>
+                        <input  id="odometre" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <input type="button" value="Add" class="btn btn-default  " id="savebtnSection3" />
+                    </div>
+                </form >
             </div>
             <br />
             <div class="container" id="divFuelTable">
@@ -264,7 +270,7 @@
     <div class="card" id="cardSection4">
         <div class="card-header" id="headingFour">
             <h5 class="mb-0">
-                <button class="btn-primary" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" 
+                <button class="btn-primary" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false"
                         aria-controls="collapseFour" style="background-color:darkred; border:outset; font-size:medium; border-color:white">
                     Section 4: Dates and Times
                 </button>
@@ -274,11 +280,11 @@
             <div class="row" id="divTripDurationForm">
                 <div class="col-md-4">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    
+
                     <div class="form-group" id="divExpectedCollectionDateTime">
                         <label asp-for="Trip.ExpectedCollectionDateTime" class="control-label">Expected Collection Date</label>
                         <div class='input-group date' id='datetimepicker2'>
-                            <input  type="text" class="form-control" id="expectedCollectionDate" />
+                            <input type="text" class="form-control" id="expectedCollectionDate" />
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
@@ -387,7 +393,7 @@
                         </span>
                         <span asp-validation-for="Trip.InvoiceDate" class="text-danger"></span>
                     </div>
-                   
+
                 </div>
                 <div class="form-group" id="divCustomerReferenceNo">
                     <label class="control-label">Customer Reference No</label>
@@ -451,13 +457,13 @@
         </div>
     </div>
 </div>
-@await Html.PartialAsync("_ModalPartial")
-@await Html.PartialAsync("_ModalConfirmPartial")
+
 
 @section Scripts {
-
-
-<script type="text/javascript">
+    @await Html.PartialAsync("_ModalPartial")
+    @await Html.PartialAsync("_ModalConfirmPartial")
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
         var TripToSave = {};
 
         //section Update Destination Fields
@@ -466,7 +472,7 @@
         var selectedDestination = {};
         selectedDestination = JSON.parse(data);
         $("#destinationID").val(selectedDestination.destinationID);
-        $("#customerName").val(selectedDestination.customerName);
+            $("#customerName").val(decodeURIComponent(selectedDestination.customerName));
         $("#startLocationName").val(decodeURIComponent(selectedDestination.startLocationName));
         $("#endLocationName").val(decodeURIComponent(selectedDestination.endLocationName));
         $("#distance").val(decodeURIComponent(selectedDestination.distance));
@@ -633,12 +639,12 @@
                             var selectedDestination = {};
                             selectedDestination.destinationID = full.destinationID;
                             selectedDestination.customerID = full.customerID;
-                            selectedDestination.customerName = full.customerName;
+                            selectedDestination.customerName = encodeURIComponent(full.customerName);
                             selectedDestination.startLocationID = full.startLocationID;
                             selectedDestination.endLocationID = full.endLocationID;
                             selectedDestination.startLocationName = encodeURIComponent(full.startLocationName);
                             selectedDestination.endLocationName = encodeURIComponent(full.endLocationName);
-                            selectedDestination.distance = full.distance;
+                            selectedDestination.distance = encodeURIComponent(full.distance);
                             return "<p data-placement='top' data-toggle='tooltip' title='Select'><button id='btnDest' class='btn btn-primary btn-xs' data-title='Select' data-toggle='modal' data-target='#edit' onclick=updateDestinationInputFields('" + JSON.stringify(selectedDestination) + "')><span class='glyphicon glyphicon-pencil'></span></button></p>";
 
                         }
@@ -691,7 +697,7 @@
                 success: function (data) {
                     console.log("Fuel Item successfully inserted into database. The fuel ID is: " + data.fuelID);
                     $("#modalHeader").text("Fuel Item Processing Status");
-                    $("#modalMessage").text(data.fuelID + "Fuel ID was inserted.");
+                    $("#modalMessage").text(data.fuelID + " Fuel ID was inserted.");
                     $("#myModal").modal("show");
                     if (!$.fn.DataTable.isDataTable('#FuelTable')) {
                         GetFuelData();
@@ -754,9 +760,9 @@
             var selectedDriver = {};
             selectedDriver = JSON.parse(data);
             $("#driverID").val(selectedDriver.driverID);
-            $("#driverFirstName").val(selectedDriver.firstName);
-            $("#driverSurname").val(selectedDriver.surname);
-            $("#driverCellPhone").val(selectedDriver.cellNumber);
+            $("#driverFirstName").val(decodeURIComponent(selectedDriver.firstName));
+            $("#driverSurname").val(decodeURIComponent(selectedDriver.surname));
+            $("#driverCellPhone").val(decodeURIComponent(selectedDriver.cellNumber));
 
 
             $("#divDriverInputFieldsSection").show();
@@ -852,16 +858,16 @@
                         "render": function (data, type, full, meta) {
                             var selectedDriver = {};
                             selectedDriver.driverID = full.driverID;
-                            selectedDriver.firstName = full.firstName;
-                            selectedDriver.surname = full.surname;
-                            selectedDriver.secondName = full.secondName;
-                            selectedDriver.cellNumber = full.cellNumber;
+                            selectedDriver.firstName = encodeURIComponent(full.firstName);
+                            selectedDriver.surname = encodeURIComponent(full.surname);
+                            selectedDriver.secondName = encodeURIComponent(full.secondName);
+                            selectedDriver.cellNumber = encodeURIComponent(full.cellNumber);
                             selectedDriver.pdpExpiryDate = encodeURIComponent(full.pdpExpiryDate);
                             selectedDriver.medicalExpiryDate = encodeURIComponent(full.medicalExpiryDate);
-                            selectedDriver.passportNo = full.passportNo;
-                            selectedDriver.iDNumber = full.iDNumber;
-                            selectedDriver.nextOfKin = full.nextOfKin;
-                            selectedDriver.nextOfKinDate = full.nextOfKinDate;
+                            selectedDriver.passportNo = encodeURIComponent(full.passportNo);
+                            selectedDriver.iDNumber = encodeURIComponent(full.iDNumber);
+                            selectedDriver.nextOfKin = encodeURIComponent(full.nextOfKin);
+                            selectedDriver.nextOfKinDate = encodeURIComponent(full.nextOfKinDate);
                             return "<p data-placement='top' data-toggle='tooltip' title='Select'><button id='btnDriver' class='btn btn-primary btn-xs' data-title='Select' data-toggle='modal' data-target='#edit' onclick=updateDriverInputFields('" + JSON.stringify(selectedDriver) + "')><span class='glyphicon glyphicon-pencil'></span></button></p>";
                         }
                     },
@@ -874,9 +880,8 @@
             var selectedHorse = {};
             selectedHorse = JSON.parse(data);
             $("#horseID").val(selectedHorse.vehicleID);
-            //TripToSave.horseID = selectedHorse.vehicleID;
-            $("#HorseFleetNo").val(selectedHorse.fleetNo);
-            $("#HorseRegistrationNumber").val(selectedHorse.registrationNumber);
+            $("#HorseFleetNo").val(decodeURIComponent(selectedHorse.fleetNo));
+            $("#HorseRegistrationNumber").val(decodeURIComponent(selectedHorse.registrationNumber));
             $("#divHorseInputFieldsSection").show();
             $("#divHorseTableSection").hide();
             $('#showHorseBtn').val("Hide Horse");
@@ -942,8 +947,8 @@
                         "render": function (data, type, full, meta) {
                             var selectedHorse = {};
                             selectedHorse.vehicleID = full.vehicleID;
-                            selectedHorse.fleetNo = full.fleetNo;
-                            selectedHorse.registrationNumber = full.registrationNumber;
+                            selectedHorse.fleetNo = encodeURIComponent(full.fleetNo);
+                            selectedHorse.registrationNumber = encodeURIComponent(full.registrationNumber);
                             return "<p data-placement='top' data-toggle='tooltip' title='Select'><button id='btnHorse' class='btn btn-primary btn-xs' data-title='Select' data-toggle='modal' data-target='#edit' onclick=updateHorseInputFields('" + JSON.stringify(selectedHorse) + "')><span class='glyphicon glyphicon-pencil'></span></button></p>";
                         }
                     },
@@ -956,12 +961,11 @@
             var selectedTrailer = {};
             selectedTrailer = JSON.parse(data);
             $("#trailerID").val(selectedTrailer.vehicleID);
-            $("#TrailerFleetNo").val(selectedTrailer.fleetNo);
-            $("#TrailerRegistrationNumber").val(selectedTrailer.registrationNumber);
+            $("#TrailerFleetNo").val(decodeURIComponent(selectedTrailer.fleetNo));
+            $("#TrailerRegistrationNumber").val(decodeURIComponent(selectedTrailer.registrationNumber));
             $("#divTrailerInputFieldsSection").show();
             $("#divTrailerTableSection").hide();
             $('#showTrailerBtn').val("Hide Trailer");
-           // TripToSave.trailerID = selectedTrailer.vehicleID;
         }
 
 
@@ -1024,8 +1028,8 @@
                         "render": function (data, type, full, meta) {
                             var selectedTrailer = {};
                             selectedTrailer.vehicleID = full.vehicleID;
-                            selectedTrailer.fleetNo = full.fleetNo;
-                            selectedTrailer.registrationNumber = full.registrationNumber;
+                            selectedTrailer.fleetNo = encodeURIComponent(full.fleetNo);
+                            selectedTrailer.registrationNumber = encodeURIComponent(full.registrationNumber);
                             return "<p data-placement='top' data-toggle='tooltip' title='Select'><button id='btnTrailer' class='btn btn-primary btn-xs' data-title='Select' data-toggle='modal' data-target='#edit' onclick=updateTrailerInputFields('" + JSON.stringify(selectedTrailer) + "')><span class='glyphicon glyphicon-pencil'></span></button></p>";
                         }
                     },
@@ -1184,7 +1188,7 @@
                     { "data": "tripFileID", "name": "tripFileID", "autoWidth": true },
                     {
                         "data": null, render: function (data, type, row) {
-                            //return '<a href="UploadFiles/Download/?filename="' + row.tripFileName + '""">"' + row.TripFileName + '"</a>' 
+                            //return '<a href="UploadFiles/Download/?filename="' + row.tripFileName + '""">"' + row.TripFileName + '"</a>'
                             return '<a href="/UploadFiles/Download?filename=' + row.tripFileName + '">' + row.tripFileName + '</a>';
                         }
                     },
@@ -1443,28 +1447,56 @@
 
             //Fuel Expenses
             $('#savebtnSection3').click(function () {
-
                 //to save a fuel item we need a fuel rate
                 //and litres which are numbers
                 //Check fuel rate has been entered
                 $("#modalHeader").text("Trip Section 3 Processing Status");
 
-                if ($('#fuelRate').val() == "") {
-                    $("#modalMessage").text("Please ensure you have a numeric number for the Fuel Rate");
-                    $("#myModal").modal("show");
-                    return;
+                //var litres = document.getElementById('litres');
+                //var fuelRate = document.getElementById('fuelRate');
+                //var purchaseOrderID = document.getElementById('purchaseOrderID');
+                var form = document.getElementById('FuelForm');
+                
+                var fuelRateCheck = $("#fuelRate").hasClass("valid");
+                var litresCheck = $("#litres").hasClass("valid");
+                
+                //console.log($("#FuelForm"));
+                //console.log(form);
+                //console.log("Form validity status :" + form.checkValidity());
+                //console.log("Litres validity status :" + litres.validity.valid);
+                //console.log("fuelRate validity status :" + fuelRate.validity.valid);
+                //console.log("purchaseOrderID validity status :" + purchaseOrderID.validity.valid);
+                //console.log("fuelRate validity status:" + $("#fuelRate").hasClass("valid"));
+                console.log(fuelRateCheck);
+                console.log(litresCheck);
+                
+                
+                if (fuelRateCheck && litresCheck)
+                //if ($("#FuelForm").isvalid)
+                {
+                    addFuelItemToTable();
+                    $("#savebtnSection1").click();
                 }
-                if ($('#litres').val() == "") {
-                    $("#modalMessage").text("Please ensure you have a numeric number for the litres");
+                else
+                {
+                    $("#modalMessage").text("Please ensure all validation fields are cleared ");
                     $("#myModal").modal("show");
                     return;
                 }
 
+                //if ($('#fuelRate').val() == "") {
+                //    $("#modalMessage").text("Please ensure you have a numeric number for the Fuel Rate");
+                //    $("#myModal").modal("show");
+                //    return;
+                //}
+                //if ($('#litres').val() == "") {
+                //    $("#modalMessage").text("Please ensure you have a numeric number for the litres");
+                //    $("#myModal").modal("show");
+                //    return;
+                //}
 
-                addFuelItemToTable();
 
                 
-                $("#savebtnSection1").click();
             });
 
             //Trip Times
@@ -1537,7 +1569,7 @@
                     return;
                 }
 
-                
+
 
                 $("#savebtnSection1").click();
             });
@@ -1589,7 +1621,7 @@
           alert('Please select a file.')
       }
    })
-            
+
 
 
 
@@ -1641,6 +1673,6 @@
 
 
         });
-</script>
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    </script>
+
 }

@@ -26,7 +26,6 @@ namespace WebAppFAM.Pages.Trips
         private readonly WebAppFAM.Models.WebAppFAMContext _context;
         private IHostingEnvironment _hostingEnvironment;
         private readonly string _newPath;
-        // private string _newPath;
 
 
         // Get the default form options so that we can use them to set the default limits for
@@ -46,6 +45,8 @@ namespace WebAppFAM.Pages.Trips
 
         [BindProperty]
         public Trip Trip { get; set; }
+        [BindProperty]
+        public Fuel FuelItem { get; set; }
         public DateTimeUtilities DTU;
        
         public async Task<IActionResult> OnGetAsync(int tripID)
