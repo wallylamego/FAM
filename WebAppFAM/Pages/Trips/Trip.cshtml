@@ -1242,16 +1242,8 @@
                 });
 
         }//Get TripFileData
-
-        function cleanSpaces(inputString) {
-            //Remove all Line Breaks
-            var newStr = inputString.replace(/(\r\n|\n|\r)/gm, "");
-            //Remove all double spaces and replace with one space
-            var newStr1 = newStr.replace(/\s+/g, " ");
-            //Remove leading and trailing spaces
-            var newStr2 = $.trim(newStr1);
-            return newStr2;
-        }
+        
+       
 
 
         $(document).ready(function () {
@@ -1432,7 +1424,7 @@
                     return;
                 }
 
-                TripToSave.tripCode = $('#tripCode').val();
+                TripToSave.tripCode = cleanSpaces($('#tripCode').val());
                 TripToSave.destinationID = $('#destinationID').val();
                 TripToSave.reverseDestinationID = $('#revDestChkBox:checked').val() ? true : false;
 
@@ -1448,9 +1440,9 @@
                 TripToSave.actualCompletionDateTime = $('#actualCompletionDate').val();
 
                 TripToSave.invoiceAmount = $('#invoiceAmount').val();
-                TripToSave.invoiceNo = $('#invoiceNo').val();
+                TripToSave.invoiceNo = cleanSpaces($('#invoiceNo').val());
                 TripToSave.invoicedKms = $('#invoicedKms').val();
-                TripToSave.customerReferenceNo = $('#customerReferenceNo').val();
+                TripToSave.customerReferenceNo = cleanSpaces($('#customerReferenceNo').val());
                 TripToSave.invoiceDate = $('#invoiceDate').val();
                 TripToSave.invoiceRate = $('#invoiceRate').val();
 
