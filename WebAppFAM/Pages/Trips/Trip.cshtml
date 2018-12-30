@@ -564,7 +564,9 @@
 
             var fuelItem = {};
             fuelItem.tripID = $('#tripId').val();
-            fuelItem.purchaseOrderID = $('#purchaseOrderID').val();
+            console.log($('#purchaseOrderID').val());
+            fuelItem.purchaseOrderID = cleanSpaces($('#purchaseOrderID').val());
+            console.log(fuelItem.purchaseOrderID);
             fuelItem.fuelRate = $('#fuelRate').val();
             fuelItem.litres = $('#litres').val();
             fuelItem.odometre = $('#odometre').val();
@@ -1241,6 +1243,15 @@
 
         }//Get TripFileData
 
+        function cleanSpaces(inputString) {
+            //Remove all Line Breaks
+            var newStr = inputString.replace(/(\r\n|\n|\r)/gm, "");
+            //Remove all double spaces and replace with one space
+            var newStr1 = newStr.replace(/\s+/g, " ");
+            //Remove leading and trailing spaces
+            var newStr2 = $.trim(newStr1);
+            return newStr2;
+        }
 
 
         $(document).ready(function () {
@@ -1401,6 +1412,8 @@
                     $('#showTrailerBtn').val("Show Trailer");
                 }
             });
+
+            
 
             //TripHeader Details (Trip Code and Destination Details)
             $('#savebtnSection1').click(function () {
