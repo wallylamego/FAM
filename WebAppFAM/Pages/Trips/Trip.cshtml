@@ -713,8 +713,14 @@
                         console.log(msg);
                         $("#modalMessage").text(msg);
                         $("#myModal").modal("show");
+                        $('#purchaseOrderID').val("");
+                        $('#fuelRate').val("");
+                        $('#litres').val("");
+                        $('#odometre').val("");
+                        $('#DieselTotalCost').val("");
                         if (!$.fn.DataTable.isDataTable('#FuelTable')) {
                             GetFuelData();
+                            
                         }
                         else {
                             var oTable = $('#FuelTable').DataTable();
@@ -1115,7 +1121,8 @@
                         /*Diesel Total Cost is visible and is searchable*/
                         "targets": [5],
                         "visible": true,
-                        "searchable": true
+                        "searchable": true,
+                        "orderable": false
                         },
                     {
                         /*Date is visible and is searchable*/
@@ -1142,7 +1149,14 @@
                             return row.litres * row.fuelRate;
                         }
                     },
-                    { "data": "createdUtc", "name": "createdUtc", "autoWidth": true },
+                    {
+                        data: "createdUtc",
+                        render: function (data, type, row) {
+                            return moment(data).format("DD-MM-YYYY HH:mm");
+                        }
+                    },
+
+                   // { "data": "createdUtc", "name": "createdUtc", "autoWidth": true },
                     //Delete FuelItem
                     {
                         "data": null, render: function (data, type, row) {
@@ -1255,9 +1269,12 @@
             $("#TrailerFleetNo").prop("disabled", true);
             $("#TrailerRegistrationNumber").prop("disabled", true);
 
+            //Disable Diesel Total Cost
+            $("#DieselTotalCost").prop("disabled", true);
+
             //Disable calculated dates fields in the date section
 
-            //var startDate = new Date(Date.now()).toLocaleString();
+            
 
             $("#expectedCompletionDate").prop("disabled", true);
             $("#diffCollectionHrs").prop("disabled", true);
@@ -1267,6 +1284,29 @@
 
 
             //Click Button Functions
+            $('#fuelRate').change(function () {
+                var fuelRateCheck = $("#fuelRate").hasClass("valid");
+                var litresCheck = $("#litres").hasClass("valid");
+                if (fuelRateCheck && litresCheck) {
+                    ($("#DieselTotalCost")).val($('#fuelRate').val() * $('#litres').val()); // get the current value of the input field.
+                }
+                else {
+                    ($("#DieselTotalCost")).val(0);
+                }
+                });
+            $('#litres').change(function () {
+                var fuelRateCheck = $("#fuelRate").hasClass("valid");
+                var litresCheck = $("#litres").hasClass("valid");
+
+                if (fuelRateCheck && litresCheck) {
+                    ($("#DieselTotalCost")).val($('#fuelRate').val() * $('#litres').val()); // get the current value of the input field.
+                }
+                else {
+                    ($("#DieselTotalCost")).val(0);
+                }
+            });
+
+
 
             //Find Destination
             $('#findDestinationBtn').click(function () {
