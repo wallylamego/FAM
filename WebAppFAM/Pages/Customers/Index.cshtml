@@ -1,0 +1,43 @@
+﻿@page
+@model WebAppFAM.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Pages/_LayoutDataTables.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Customer[0].Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Customer[0].CreatedUtc)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Customer) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreatedUtc)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.CustomerID">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.CustomerID">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.CustomerID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
