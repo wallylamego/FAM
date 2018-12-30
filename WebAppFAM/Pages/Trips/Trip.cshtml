@@ -221,13 +221,14 @@
                         <input asp-for="FuelItem.PurchaseOrderID" id="purchaseOrderID" class="form-control" />
                     </div>
                     <div class="form-group" id="divLitres">
-                        <label class="control-label">Litres</label>
-                        @*<input id="litres" class="form-control" />*@
-                        <input asp-for="FuelItem.Litres" id="litres" class="form-control" />
-                        <span asp-validation-for="FuelItem.Litres" class="text-danger"></span>
+                        <span style="color:red">*</span>
+                            <label class="control-label">Litres</label>
+                            <input asp-for="FuelItem.Litres" id="litres" class="form-control" />
+                            <span asp-validation-for="FuelItem.Litres" class="text-danger"></span>
                     </div>
                     <div class="form-group" id="divDieselRate">
-                        <label class="control-label">Diesel Rate</label>
+                        <span style="color:red">*</span>
+                            <label class="control-label">Fuel Rate</label>
                         <input asp-for="FuelItem.FuelRate" id="fuelRate" class="form-control" />
                         <span asp-validation-for="FuelItem.FuelRate" class="text-danger"></span>
                     </div>
@@ -236,8 +237,10 @@
                         <input id="DieselTotalCost" class="form-control" />
                     </div>
                     <div class="form-group" id="divOdometre">
+                        <span style="color:red">*</span>
                         <label class="control-label">Odometre</label>
-                        <input  id="odometre" class="form-control" />
+                        <input asp-for="FuelItem.Odometre" id="odometre" class="form-control" />
+                        <span asp-validation-for="FuelItem.Odometre" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <input type="button" value="Add" class="btn btn-default  " id="savebtnSection3" />
@@ -695,19 +698,28 @@
                     dataType: "json",
                     data: JSON.stringify(obj),
                 success: function (data) {
-                    console.log("Fuel Item successfully inserted into database. The fuel ID is: " + data.fuelID);
                     $("#modalHeader").text("Fuel Item Processing Status");
-                    $("#modalMessage").text(data.fuelID + " Fuel ID was inserted.");
-                    $("#myModal").modal("show");
-                    if (!$.fn.DataTable.isDataTable('#FuelTable')) {
-                        GetFuelData();
+                    console.log(data);
+                    if (data.fuelID == null) {
+                        $("#modalMessage").text(data);
+                        $("#myModal").modal("show");
+                        return;
                     }
                     else {
-                        var oTable = $('#FuelTable').DataTable();
-                        oTable.draw()
+                        var msg = "Fuel Item successfully inserted into database. The fuel ID is: " + data.fuelID
+                        console.log(msg);
+                        $("#modalMessage").text(msg);
+                        $("#myModal").modal("show");
+                        if (!$.fn.DataTable.isDataTable('#FuelTable')) {
+                            GetFuelData();
+                        }
+                        else {
+                            var oTable = $('#FuelTable').DataTable();
+                            oTable.draw()
+                        }
                     }
 
-                    },
+                   },
                     error: function (jqXHR, textStatus, errorThrown) {
                         $("#modalHeader").text("Fuel Item Processing Status");
                         $("#modalMessage").text("Fuel Item Not Updated.");
@@ -1459,44 +1471,25 @@
                 
                 var fuelRateCheck = $("#fuelRate").hasClass("valid");
                 var litresCheck = $("#litres").hasClass("valid");
-                
-                //console.log($("#FuelForm"));
-                //console.log(form);
-                //console.log("Form validity status :" + form.checkValidity());
-                //console.log("Litres validity status :" + litres.validity.valid);
-                //console.log("fuelRate validity status :" + fuelRate.validity.valid);
+                var odometreCheck = $("#odometre").hasClass("valid");
+               
                 //console.log("purchaseOrderID validity status :" + purchaseOrderID.validity.valid);
                 //console.log("fuelRate validity status:" + $("#fuelRate").hasClass("valid"));
                 console.log(fuelRateCheck);
                 console.log(litresCheck);
                 
                 
-                if (fuelRateCheck && litresCheck)
-                //if ($("#FuelForm").isvalid)
+                if (fuelRateCheck && litresCheck && odometreCheck)
                 {
                     addFuelItemToTable();
-                    $("#savebtnSection1").click();
                 }
                 else
                 {
-                    $("#modalMessage").text("Please ensure all validation fields are cleared ");
+                    $("#modalMessage").text("Please ensure all validation fields are cleared. Or data has been entered. ");
                     $("#myModal").modal("show");
                     return;
                 }
 
-                //if ($('#fuelRate').val() == "") {
-                //    $("#modalMessage").text("Please ensure you have a numeric number for the Fuel Rate");
-                //    $("#myModal").modal("show");
-                //    return;
-                //}
-                //if ($('#litres').val() == "") {
-                //    $("#modalMessage").text("Please ensure you have a numeric number for the litres");
-                //    $("#myModal").modal("show");
-                //    return;
-                //}
-
-
-                
             });
 
             //Trip Times
