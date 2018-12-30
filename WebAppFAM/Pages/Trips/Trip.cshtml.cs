@@ -117,8 +117,12 @@ namespace WebAppFAM.Pages.Trips
             int filteredResultsCount = 0;
             int totalResultsCount = 0;
 
-            DataTableAjaxPostModel.GetOrderByParameters(Model.order, Model.columns, "FuelID",
+            //DataTableAjaxPostModel.GetOrderByParameters(Model.order, Model.columns, "FuelID",
+            //    out bool SortDir, out string SortBy);
+            DataTableAjaxPostModel.GetOrderByParameters(Model.order, Model.columns, "CreatedUtc",
                 out bool SortDir, out string SortBy);
+
+
 
             //First create the View of the new model you wish to display to the user
             var FuelQuery = _context.FuelItems
@@ -130,14 +134,16 @@ namespace WebAppFAM.Pages.Trips
                    FuelItem.Litres,
                    FuelItem.Odometre,
                    FuelItem.PurchaseOrderID,
+                   FuelItem.CreatedUtc
                }
-               ).Where(FuelItem => FuelItem.TripID == Convert.ToInt32(Model.search.value));
+               )
+               .Where(FuelItem => FuelItem.TripID == Convert.ToInt32(Model.search.value));
 
             totalResultsCount = FuelQuery.Count();
             filteredResultsCount = totalResultsCount;
 
 
-            var Result = await FuelQuery.ToListAsync();
+            var Result = await FuelQuery.OrderBy(SortBy, SortDir).ToListAsync();
 
             var value = new
             {

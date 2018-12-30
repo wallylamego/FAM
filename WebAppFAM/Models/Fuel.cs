@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,6 +11,8 @@ namespace WebAppFAM.Models
     {
         public int FuelID { get; set; }
         public int TripID { get; set; }
+
+        [Required(ErrorMessage = "Purchase Order Number is required")]
         public string PurchaseOrderID { get; set; }
 
         [Required(ErrorMessage = "Fuel Rate is required")]
@@ -23,6 +26,9 @@ namespace WebAppFAM.Models
         [Required(ErrorMessage = "The odometer is a required field")]
         [Range(0.01, 99999999999.99, ErrorMessage = "Please enter a number")]
         public double Odometre { get; set; }
+
+        [Required, DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public DateTime CreatedUtc { get; set; }
 
         public Trip Trip { get; set; }
 

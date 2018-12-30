@@ -217,17 +217,19 @@
             <div id="divFuelInputFieldsSection" class="well-sm" style="background-color:lightgray">
                 <form id="FuelForm" method="post">
                     <div class="form-group" id="divPurchaseOrder">
+                        <span style="color:red">*</span>
                         <label class="control-label">Purchase Order No</label>
                         <input asp-for="FuelItem.PurchaseOrderID" id="purchaseOrderID" class="form-control" />
+                        <span asp-validation-for="FuelItem.PurchaseOrderID" class="text-danger"></span>
                     </div>
                     <div class="form-group" id="divLitres">
-                        <span style="color:red">*</span>
+                            <span style="color:red">*</span>
                             <label class="control-label">Litres</label>
                             <input asp-for="FuelItem.Litres" id="litres" class="form-control" />
                             <span asp-validation-for="FuelItem.Litres" class="text-danger"></span>
                     </div>
                     <div class="form-group" id="divDieselRate">
-                        <span style="color:red">*</span>
+                            <span style="color:red">*</span>
                             <label class="control-label">Fuel Rate</label>
                         <input asp-for="FuelItem.FuelRate" id="fuelRate" class="form-control" />
                         <span asp-validation-for="FuelItem.FuelRate" class="text-danger"></span>
@@ -259,6 +261,7 @@
                                 <th>Litres</th>
                                 <th>Diesel Rate</th>
                                 <th>Diesel Cost</th>
+                                <th>Date</th>
                                 <th>Del.</th>
                             </tr>
                         </thead>
@@ -1058,6 +1061,7 @@
                     "header": true,
                     "footer": true
                 },
+                "order": [[6, "desc"]],
                 "responsive": true,
                 "processing": true, // for show progress bar
                 "serverSide": true, // for process server side
@@ -1112,10 +1116,16 @@
                         "targets": [5],
                         "visible": true,
                         "searchable": true
+                        },
+                    {
+                        /*Date is visible and is searchable*/
+                        "targets": [6],
+                        "visible": true,
+                        "searchable": true,
                     },
                     {
                         /*Delete button  is  visible and is not searchable*/
-                        "targets": [6],
+                        "targets": [7],
                         "visible": true,
                         "searchable": false,
                         "orderable": false
@@ -1132,6 +1142,7 @@
                             return row.litres * row.fuelRate;
                         }
                     },
+                    { "data": "createdUtc", "name": "createdUtc", "autoWidth": true },
                     //Delete FuelItem
                     {
                         "data": null, render: function (data, type, row) {
