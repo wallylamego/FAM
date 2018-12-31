@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using WebAppFAM.Data;
 
 namespace WebAppFAM.Models
 {
@@ -24,6 +26,7 @@ namespace WebAppFAM.Models
         
         public int? DriverID { get; set; }
 
+        public string UserID { get; set; }
         
         public int? HorseID { get; set; }
         
@@ -70,8 +73,9 @@ namespace WebAppFAM.Models
         public double InvoicedKms { get; set; }
         public double InvoiceRate { get; set; }
         public double InvoiceAmount { get; set; }
-         
 
+        [Required, DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public DateTime CreatedUtc { get; set; }
 
         public Destination Destination { get; set; }
         public ICollection<Fuel> FuelItems { get; set; }
@@ -81,5 +85,6 @@ namespace WebAppFAM.Models
         public Horse Horse { get; set; }
         public Trailer Trailer { get; set; }
         public Commodity Commodity { get; set; }
+        public ApplicationUser User { get; set; }
     }
 }

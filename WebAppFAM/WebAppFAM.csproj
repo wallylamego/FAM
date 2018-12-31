@@ -26,6 +26,8 @@
     <Compile Remove="Migrations\20180902185029_AddTripAndFuelModelsTake3.Designer.cs" />
     <Compile Remove="Migrations\20180902190422_AddTripAndFuelModelsTake4.cs" />
     <Compile Remove="Migrations\20180902190422_AddTripAndFuelModelsTake4.Designer.cs" />
+    <Compile Remove="Migrations\20181231064107_DateTimeStampForTripTable.cs" />
+    <Compile Remove="Migrations\20181231064107_DateTimeStampForTripTable.Designer.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="jQuery" Version="3.3.1" />
