@@ -14,7 +14,9 @@
 }
 
 <h2>Trip</h2>
-
+<p>
+    <a asp-page="TripMain">Trip Listing</a>
+</p>
 <div id="accordion">
     <div class="card" id="cardSection1">
         <div class="card-header" id="headingOne">
@@ -1451,7 +1453,7 @@
                 TripToSave.diffStartTimeHrs = $("#diffStartHrs").val();
                 TripToSave.diffEndTimeHrs = $("#diffEndHrs").val();
 
-                if ($('#tripId').val().length > 0) {
+                if ($('#tripId').val().length > 0 && $('#tripId').val() > 0) {
                     TripToSave.tripID = $('#tripId').val();
                     ajaxTripUpdate(TripToSave);
                 }
