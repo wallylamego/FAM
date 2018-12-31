@@ -64,14 +64,21 @@ namespace WebAppFAM.Models
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm:ss}", ApplyFormatInEditMode = true)]
         public DateTime ActualCompletionDateTime { get; set; }
 
+        [Required(ErrorMessage = "Invoice Number is required")]
         public string InvoiceNo { get; set; }
         [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm:ss}", ApplyFormatInEditMode = true)]
         public DateTime InvoiceDate { get; set; }
 
+        [Required(ErrorMessage = "Customer Reference No is required")]
         public string CustomerReferenceNo { get; set; }
+
         public double InvoicedKms { get; set; }
+
+        [Required(ErrorMessage = "Invoice Rate is required")]
+        [Range(0.01, 99999999999.99, ErrorMessage = "Please enter a number")]
         public double InvoiceRate { get; set; }
+
         public double InvoiceAmount { get; set; }
 
         [Required, DatabaseGenerated(DatabaseGeneratedOption.Computed)]

@@ -395,41 +395,47 @@
         </div>
         <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
             <div id="divInvoiceSection" class="well-sm" style="background-color:lightgray">
-                <div class="form-group" id="divInvoiceNo">
-                    <label class="control-label">Invoice Number</label>
-                    <input asp-for="Trip.InvoiceNo" id="invoiceNo" class="form-control" />
-                    <span asp-validation-for="Trip.InvoiceNo" class="text-danger"></span>
-                </div>
-                <div class="form-group" id="divInvoiceDate">
-                    <label class="control-label">Invoice Date</label>
-                    <div class='input-group date' id='datetimepicker8'>
-                        <input value=@Model.Trip.InvoiceDate type='text' class="form-control" id="invoiceDate" />
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
-                        <span asp-validation-for="Trip.InvoiceDate" class="text-danger"></span>
+                <form id="InvoiceForm" method="post">
+                    <div class="form-group" id="divInvoiceNo">
+                        <span style="color:red">*</span>
+                        <label class="control-label">Invoice Number</label>
+                        <input asp-for="Trip.InvoiceNo" id="invoiceNo" class="form-control" />
+                        <span asp-validation-for="Trip.InvoiceNo" class="text-danger"></span>
                     </div>
-
-                </div>
-                <div class="form-group" id="divCustomerReferenceNo">
-                    <label class="control-label">Customer Reference No</label>
-                    <input asp-for="Trip.CustomerReferenceNo" id="customerReferenceNo" class="form-control" />
-                </div>
-                <div class="form-group" id="divInvoiceKms">
-                    <label class="control-label">Invoice Kms</label>
-                    <input asp-for="Trip.InvoicedKms" id="invoicedKms" class="form-control" />
-                </div>
-                <div class="form-group" id="divInvoiceRate">
-                    <label class="control-label">Invoice Rate</label>
-                    <input asp-for="Trip.InvoiceRate" id="invoiceRate" class="form-control" />
-                </div>
-                <div class="form-group" id="divInvoiceAmount">
-                    <label class="control-label">Invoice Amount</label>
-                    <input asp-for="Trip.InvoiceAmount" id="invoiceAmount" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <input type="button" value="Add" class="btn btn-default  " id="savebtnSection5" />
-                </div>
+                    <div class="form-group" id="divInvoiceDate">
+                        <label class="control-label">Invoice Date</label>
+                        <div class='input-group date' id='datetimepicker8'>
+                            <input value=@Model.Trip.InvoiceDate type='text' class="form-control" id="invoiceDate" />
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                            <span asp-validation-for="Trip.InvoiceDate" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group" id="divCustomerReferenceNo">
+                        <span style="color:red">*</span>
+                        <label class="control-label">Customer Reference No</label>
+                        <input asp-for="Trip.CustomerReferenceNo" id="customerReferenceNo" class="form-control" />
+                        <span asp-validation-for="Trip.CustomerReferenceNo" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" id="divInvoiceKms">
+                        <label class="control-label">Invoice Kms</label>
+                        <input asp-for="Trip.InvoicedKms" id="invoicedKms" class="form-control" />
+                    </div>
+                    <div class="form-group" id="divInvoiceRate">
+                        <span style="color:red">*</span>
+                        <label class="control-label">Invoice Rate</label>
+                        <input asp-for="Trip.InvoiceRate" id="invoiceRate" class="form-control" />
+                        <span asp-validation-for="Trip.InvoiceRate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" id="divInvoiceAmount">
+                        <label class="control-label">Invoice Amount</label>
+                        <input asp-for="Trip.InvoiceAmount" id="invoiceAmount" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <input type="button" value="Save" class="btn btn-default  " id="savebtnSection5" />
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -492,6 +498,7 @@
         $("#startLocationName").val(decodeURIComponent(selectedDestination.startLocationName));
         $("#endLocationName").val(decodeURIComponent(selectedDestination.endLocationName));
         $("#distance").val(decodeURIComponent(selectedDestination.distance));
+        $("#invoicedKms").val($("#distance").val());
         $("#customerName").prop("disabled", true);
         $("#startLocationName").prop("disabled", true);
         $("#endLocationName").prop("disabled", true);
@@ -1270,10 +1277,18 @@
             //hide the destination table and  capture fields when the form starts up
             $("#divDestinationTableSection").hide();
             $("#divDestinationInputFieldsSection").hide();
-            $("#createdBy").hide();
-            $("#createdDate").hide();
-            $("#createdByLabel").hide();
-            $("#createdDateLabel").hide();
+            if ($("#tripId").val() > 0) {
+                $("#createdBy").show();
+                $("#createdDate").show();
+                $("#createdByLabel").show();
+                $("#createdDateLabel").show();
+            } else {
+                $("#createdBy").hide();
+                $("#createdDate").hide();
+                $("#createdByLabel").hide();
+                $("#createdDateLabel").hide();
+            }
+            
 
             $("#customerName").prop("disabled", true);
             $("#startLocationName").prop("disabled", true);
@@ -1303,14 +1318,15 @@
 
             //Disable calculated dates fields in the date section
 
-            
-
             $("#expectedCompletionDate").prop("disabled", true);
             $("#diffCollectionHrs").prop("disabled", true);
             $("#diffStartHrs").prop("disabled", true);
             $("#diffEndHrs").prop("disabled", true);
             $("#diffTotalHrs").prop("disabled", true);
 
+            //Disable the calculated fields in the invoice
+            $("#invoicedKms").prop("disabled", true);
+            $("#invoiceAmount").prop("disabled", true);
 
             //Click Button Functions
             $('#fuelRate').change(function () {
@@ -1335,6 +1351,31 @@
                 }
             });
 
+            $('#invoiceRate').change(function () {
+
+                $('#customerReferenceNo').focus();
+                $('#invoiceRate').focus();
+                var invoiceRateCheck = $("#invoiceRate").hasClass("valid");
+
+                console.log("Invoice Rate Change:" + invoiceRateCheck);
+
+                if (invoiceRateCheck) {
+                    ($("#invoiceAmount")).val($('#invoiceRate').val() * $('#distance').val()); // get the current value of the input field.
+                    var FormatInvoiceAmount = ($("#invoiceAmount")).val();
+                    FormatInvoiceAmount = FormatInvoiceAmount.toLocaleString(
+                        undefined, // leave undefined to use the browser's locale,
+                        // or use a string like 'en-US' to override it.
+                        { minimumFractionDigits: 2 });
+                    console.log(FormatInvoiceAmount.toLocaleString(
+                        undefined, // leave undefined to use the browser's locale,
+                        // or use a string like 'en-US' to override it.
+                        { minimumFractionDigits: 2 }));
+                    $("#invoiceAmount").val(FormatInvoiceAmount);
+                }
+                else {
+                    ($("#invoiceAmount")).val(0);
+                }
+            });
 
 
             //Find Destination
@@ -1541,26 +1582,13 @@
 
             //Fuel Expenses
             $('#savebtnSection3').click(function () {
-                //to save a fuel item we need a fuel rate
-                //and litres which are numbers
-                //Check fuel rate has been entered
                 $("#modalHeader").text("Trip Section 3 Processing Status");
-
-                //var litres = document.getElementById('litres');
-                //var fuelRate = document.getElementById('fuelRate');
-                //var purchaseOrderID = document.getElementById('purchaseOrderID');
-                var form = document.getElementById('FuelForm');
-                
                 var fuelRateCheck = $("#fuelRate").hasClass("valid");
                 var litresCheck = $("#litres").hasClass("valid");
                 var odometreCheck = $("#odometre").hasClass("valid");
-               
-                //console.log("purchaseOrderID validity status :" + purchaseOrderID.validity.valid);
-                //console.log("fuelRate validity status:" + $("#fuelRate").hasClass("valid"));
                 console.log(fuelRateCheck);
                 console.log(litresCheck);
-                
-                
+
                 if (fuelRateCheck && litresCheck && odometreCheck)
                 {
                     addFuelItemToTable();
@@ -1623,30 +1651,27 @@
             //Invoice Details
             $('#savebtnSection5').click(function () {
 
-                //to save a fuel item we need a fuel rate
-                //and litres which are numbers
-                //Check fuel rate has been entered
+                $("#invoiceNo").focus();
+                $("#invoiceRate").focus();
+                $("#customerReferenceNo").focus();
+                $('#savebtnSection5').focus();
+                var invoiceNoCheck = $("#invoiceNo").hasClass("valid");
+                var invoiceRateCheck = $("#invoiceRate").hasClass("valid");
+                var customerReferenceNoCheck = $("#customerReferenceNo").hasClass("valid");
+                console.log("Invoice No Check:  " + invoiceNoCheck);
+                console.log("Invoice Rate Check:  " + invoiceRateCheck);
+                console.log("Customer Reference No Check:  " + customerReferenceNoCheck);
+
                 $("#modalHeader").text("Trip Section 5 Processing Status");
-
-                if ($('#invoiceAmt').val() == "") {
-                    $("#modalMessage").text("Please ensure you have a numeric number for the Invoice Amount");
-                    $("#myModal").modal("show");
-                    return;
+                if (invoiceNoCheck && invoiceRateCheck && customerReferenceNoCheck) {
+                    $("#savebtnSection1").click();
                 }
-                if ($('#invoicedKms').val() == "") {
-                    $("#modalMessage").text("Please ensure you have a numeric number for the Invoiced Kms");
-                    $("#myModal").modal("show");
-                    return;
-                }
-                if ($('#invoiceRate').val() == "") {
-                    $("#modalMessage").text("Please ensure you have a numeric number for the Invoiced Kms");
+                else {
+                    $("#modalMessage").text("Please ensure all the required fields are complete");
                     $("#myModal").modal("show");
                     return;
                 }
 
-
-
-                $("#savebtnSection1").click();
             });
             $('#btnUpload').on('click', function () {
                 //First check if a TripId exists
