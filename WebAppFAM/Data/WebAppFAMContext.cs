@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using WebAppFAM.Data;
 
 namespace WebAppFAM.Models
 {
@@ -12,6 +13,43 @@ namespace WebAppFAM.Models
         }
     protected override void OnModelCreating(ModelBuilder modelbuilder)
         {
+            modelbuilder.Entity("WebAppFAM.Data.ApplicationUser", b =>
+            {
+                b.Property<string>("Id")
+                    .ValueGeneratedOnAdd();
+
+                b.Property<int>("AccessFailedCount");
+
+                b.Property<string>("ConcurrencyStamp");
+
+                b.Property<string>("Email");
+
+                b.Property<bool>("EmailConfirmed");
+
+                b.Property<bool>("LockoutEnabled");
+
+                b.Property<System.DateTimeOffset?>("LockoutEnd");
+
+                b.Property<string>("NormalizedEmail");
+
+                b.Property<string>("NormalizedUserName");
+
+                b.Property<string>("PasswordHash");
+
+                b.Property<string>("PhoneNumber");
+
+                b.Property<bool>("PhoneNumberConfirmed");
+
+                b.Property<string>("SecurityStamp");
+
+                b.Property<bool>("TwoFactorEnabled");
+
+                b.Property<string>("UserName");
+
+                b.HasKey("Id");
+
+                b.ToTable("AspNetUsers");
+            });
             foreach (var relationship in modelbuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
@@ -33,5 +71,6 @@ namespace WebAppFAM.Models
         public DbSet<Fuel> FuelItems { get; set; }
         public DbSet<Trip> Trips { get; set; }
         public DbSet<TripFile> TripFiles { get; set; }
+        public DbSet<ApplicationUser> AspNetUsers { get; set; }
     }
 }

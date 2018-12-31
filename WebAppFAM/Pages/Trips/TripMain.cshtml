@@ -32,30 +32,32 @@
                     <th>Trip Code</th> @*[1]*@
                     <th>Customer</th> @*[2]*@
                     <th>Commodity</th> @*[3]*@
-                    <th>Edit</th>@*[4]*@
-                    <th>Delete</th>@*[5]*@
-                    <th>Return Trip</th> @*[6]*@
-                    <th>Expected Collection Date</th>@*[7]*@
-                    <th>From</th>@*[8]*@
-                    <th>To</th>@*[9]*@
-                    <th>Distance</th>@*[10]*@
-                    <th>Driver</th> @*[11]*@
-                    <th>Truck</th>@*[12]*@
-                    <th>Trailer</th>@*[13]*@
-                    <th>Expect. Start Date</th>@*[14]*@
-                    <th>Expect. Completion Date</th>@*[15]*@
-                    <th>Act. Coll. Date</th>@*[16]*@
-                    <th>Act. Start. Date</th>@*[17]*@
-                    <th>Act. Compl. Date</th>@*[18]*@
-                    <th>Diff Coll. Hrs</th>@*[19]*@
-                    <th>Diff Start Hrs</th>@*[20]*@
-                    <th>Diff End Hrs</th>@*[21]*@
-                    <th>Cust. RefNo</th>@*[22]*@
-                    <th>Invoice No</th>@*[23]*@
-                    <th>Invoice Date</th>@*[24]*@
-                    <th>Invoice Rate</th>@*[25]*@
-                    <th>Kilometres</th>@*[26]*@
-                    <th>Invoice Amount</th>@*[27]*@
+                    <th>Create User</th>@*[4]*@
+                    <th>Create Date</th>@*[5]*@
+                    <th>Edit</th>@*[6]*@
+                    <th>Delete</th>@*[7]*@
+                    <th>Return Trip</th> @*[8]*@
+                    <th>Expect. Coll. Date</th>@*[9]*@
+                    <th>From</th>@*[10]*@
+                    <th>To</th>@*[11]*@
+                    <th>Distance</th>@*[12]*@
+                    <th>Driver</th> @*[13]*@
+                    <th>Truck</th>@*[14]*@
+                    <th>Trailer</th>@*[15]*@
+                    <th>Expect. Start Date</th>@*[16]*@
+                    <th>Expect. Completion Date</th>@*[17]*@
+                    <th>Act. Coll. Date</th>@*[18]*@
+                    <th>Act. Start. Date</th>@*[19]*@
+                    <th>Act. Compl. Date</th>@*[20]*@
+                    <th>Diff. Coll. Hrs</th>@*[21]*@
+                    <th>Diff. Start Hrs</th>@*[22]*@
+                    <th>Diff. End Hrs</th>@*[23]*@
+                    <th>Cust. RefNo</th>@*[24]*@
+                    <th>Invoice No</th>@*[25]*@
+                    <th>Invoice Date</th>@*[26]*@
+                    <th>Invoice Rate</th>@*[27]*@
+                    <th>Kilometres</th>@*[28]*@
+                    <th>Invoice Amount</th>@*[29]*@
                 </tr>
             </thead>
         </table>
@@ -115,50 +117,50 @@
                     },
                     {
                     /*From is visible and is searchable*/
-                    "targets": [8],
+                    "targets": [10],
                     "visible": true,
                     "searchable": true
                     },
                     {
                     /*To is visible and is searchable*/
-                    "targets": [9],
+                    "targets": [11],
                     "visible": true,
                     "searchable": true
                         },
                     {
                         /*Driver is visible and is searchable*/
-                        "targets": [11],
+                        "targets": [13],
                         "visible": true,
                         "searchable": true
                     },
                     {
                         /*Horse is visible and is searchable*/
-                        "targets": [12],
+                        "targets": [14],
                         "visible": true,
                         "searchable": true
                     },
                     {
                         /*Trailer is visible and is searchable*/
-                        "targets": [13],
+                        "targets": [15],
                         "visible": true,
                         "searchable": true
                         },
                     {
                         /*InvoiceNo is visible and is searchable*/
-                        "targets": [23],
+                        "targets": [25],
                         "visible": true,
                         "searchable": true
                     },
                     {
                     /*Edit button  is  visible and is not searchable*/
-                    "targets": [4],
+                    "targets": [6],
                     "visible": true,
                     "searchable": false,
                         "orderable": false
                     },
                     {
                         /*Delete button  is  visible and is not searchable*/
-                        "targets": [5],
+                        "targets": [7],
                         "visible": true,
                         "searchable": false,
                         "orderable": false
@@ -169,6 +171,13 @@
                     { "data": "tripCode", "name": "TripCode", "autoWidth": true },
                     { "data": "customer", "name": "customer", "autoWidth": true },
                     { "data": "commodityName", "name": "commodityName", "autoWidth": true },
+                    { "data": "createdBy", "name": "createdBy", "autoWidth": true },
+                    {
+                        data: "createDate",
+                        render: function (data, type, row) {
+                            return moment(data).format("DD-MM-YYYY HH:mm");
+                        }
+                    },
                     {
                         "render": function (data, type, full, meta) {
                             return "<p data-placement='top' data-toggle='tooltip' title='Edit'><button class='btn btn-primary btn-xs' data-title='Edit' data-toggle='modal' data-target='#edit' onclick='window.location.href=\"/Trips/Trip/" + full.tripID + "\"\'><span class='glyphicon glyphicon-pencil'></span></button></p>";
@@ -181,24 +190,66 @@
                         }
                     },
                     { "data": "returnTrip", "name": "returnTrip", "autoWidth": true },
-                    { "data": "tripStart", "name": "TripStart", "autoWidth": true },
+                    {
+                        data: "tripStart",
+                        name: "tripStart",
+                        render: function (data, type, row) {
+                            return moment(data).format("DD-MM-YYYY HH:mm");
+                        }
+                    },
                     { "data": "from", "name": "From", "autoWidth": true },
                     { "data": "to", "name": "To", "autoWidth": true },
                     { "data": "distance", "name": "Distance", "autoWidth": true },
                     { "data": "driver", "name": "Driver", "autoWidth": true },
                     { "data": "horse", "name": "Horse", "autoWidth": true },
                     { "data": "trailer", "name": "trailer", "autoWidth": true },
-                    { "data": "expectedStartDateTime", "name": "expectedStartDateTime", "autoWidth": true },
-                    { "data": "expectedCompletionDateTime", "name": "expectedCompletionDateTime", "autoWidth": true },
-                    { "data": "actualCollectionDateTime", "name": "actualCollectionDateTime", "autoWidth": true },
-                    { "data": "actualStartDateTime", "name": "actualStartDateTime", "autoWidth": true },
-                    { "data": "actualCompletionDateTime", "name": "actualCompletionDateTime", "autoWidth": true },
+                    {
+                        data: "expectedStartDateTime",
+                        name: "expectedStartDateTime",
+                        render: function (data, type, row) {
+                            return moment(data).format("DD-MM-YYYY HH:mm");
+                        }
+                    },
+                    {
+                        data: "expectedCompletionDateTime",
+                        name: "expectedCompletionDateTime",
+                        render: function (data, type, row) {
+                            return moment(data).format("DD-MM-YYYY HH:mm");
+                        }
+                    },
+                    {
+                        data: "actualCollectionDateTime",
+                        name: "actualCollectionDateTime",
+                        render: function (data, type, row) {
+                            return moment(data).format("DD-MM-YYYY HH:mm");
+                        }
+                    },
+                   {
+                       data: "actualStartDateTime",
+                       name: "actualStartDateTime",
+                        render: function (data, type, row) {
+                            return moment(data).format("DD-MM-YYYY HH:mm");
+                        }
+                    },
+                   {
+                       data: "actualCompletionDateTime",
+                       name: "actualCompletionDateTime",
+                        render: function (data, type, row) {
+                            return moment(data).format("DD-MM-YYYY HH:mm");
+                        }
+                    },
                     { "data": "diffCollectionTimeHrs", "name": "diffCollectionTimeHrs", "autoWidth": true },
                     { "data": "diffStartTimeHrs", "name": "diffStartTimeHrs", "autoWidth": true },
                     { "data": "diffEndTimeHrs", "name": "diffEndTimeHrs", "autoWidth": true },
                     { "data": "customerReferenceNo", "name": "customerReferenceNo", "autoWidth": true },
                     { "data": "invoiceNo", "name": "invoiceNo", "autoWidth": true },
-                    { "data": "invoiceDate", "name": "invoiceDate", "autoWidth": true },
+                    {
+                        data: "invoiceDate",
+                        name: "invoiceDate",
+                        render: function (data, type, row) {
+                            return moment(data).format("DD-MM-YYYY HH:mm");
+                        }
+                    },
                     { "data": "invoiceRate", "name": "invoiceRate", "autoWidth": true },
                     { "data": "kilometres", "name": "kilometres", "autoWidth": true },
                     { "data": "invoiceAmount", "name": "invoiceAmount", "autoWidth": true },

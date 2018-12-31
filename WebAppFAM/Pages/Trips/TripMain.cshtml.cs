@@ -43,6 +43,8 @@ namespace WebAppFAM.Pages.Trips
                    Customer = tp.Destination.Customer.Name,
                    CommodityName = tp.Commodity.Name,
                    tp.ReturnTrip,
+                   CreatedBy = tp.User.UserName,
+                   CreateDate = tp.CreatedUtc,
                    TripStart = tp.ExpectedCollectionDateTime,
                    From = tp.Destination.StartLocation.Province.Country.CountryName + " | " +
                         tp.Destination.StartLocation.Province.ProvinceName + " | " +
@@ -92,9 +94,9 @@ namespace WebAppFAM.Pages.Trips
                 filteredResultsCount = TripQuery.Count();
             }
             var Result = await TripQuery
+                        .OrderBy(SortBy, SortDir)
                         .Skip(Model.start)
                         .Take(Model.length)
-                        .OrderBy(SortBy, SortDir)
                         .ToListAsync();
 
             var value = new

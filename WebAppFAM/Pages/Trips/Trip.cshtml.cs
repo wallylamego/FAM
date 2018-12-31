@@ -18,6 +18,8 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Globalization;
 using Microsoft.Net.Http.Headers;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Identity;
+using WebAppFAM.Data;
 
 namespace WebAppFAM.Pages.Trips
 {
@@ -26,6 +28,7 @@ namespace WebAppFAM.Pages.Trips
         private readonly WebAppFAM.Models.WebAppFAMContext _context;
         private IHostingEnvironment _hostingEnvironment;
         private readonly string _newPath;
+        private readonly UserManager<ApplicationUser> _userManager;
 
 
         // Get the default form options so that we can use them to set the default limits for
@@ -33,10 +36,11 @@ namespace WebAppFAM.Pages.Trips
         private static readonly FormOptions _defaultFormOptions = new FormOptions();
 
         public TripModel(WebAppFAM.Models.WebAppFAMContext context,
-                IHostingEnvironment hostingEnvironment)
+                IHostingEnvironment hostingEnvironment, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _hostingEnvironment = hostingEnvironment;
+            _userManager = userManager;
             string folderName = "Upload";
             string webRootPath = _hostingEnvironment.WebRootPath;
             _newPath = Path.Combine(webRootPath, folderName);
@@ -58,6 +62,7 @@ namespace WebAppFAM.Pages.Trips
                 .Include(d=> d.Driver)
                 .Include(h=>h.Horse)
                 .Include(t=>t.Trailer)
+                .Include(u=>u.User)
                 .SingleOrDefaultAsync(m => m.TripID == tripID);
            
             if (Trip == null)
@@ -66,7 +71,6 @@ namespace WebAppFAM.Pages.Trips
             }
             return Page();
         }
-
 
         #region FuelUpdates
         //Add a new Fuel Item for this Trip
@@ -185,10 +189,12 @@ namespace WebAppFAM.Pages.Trips
             if (obj != null)
             {
                 try
-                { 
+                {
+                    obj.UserID = _userManager.GetUserId(HttpContext.User);
                     _context.Add(obj);
                     await _context.SaveChangesAsync();
                     int id = obj.TripID; // Yes it's here
+                    obj.User = await _userManager.GetUserAsync(HttpContext.User);
                     return new JsonResult(obj);
                 }
                 catch (DbUpdateException d)
