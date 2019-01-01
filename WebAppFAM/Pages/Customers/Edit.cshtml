@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{id?}"
 @model WebAppFAM.EditModel
 
 @{
@@ -19,6 +19,11 @@
                 <label asp-for="Customer.Name" class="control-label"></label>
                 <input asp-for="Customer.Name" class="form-control" />
                 <span asp-validation-for="Customer.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Customer.AccountNo" class="control-label"></label>
+                <input asp-for="Customer.AccountNo" class="form-control" />
+                <span asp-validation-for="Customer.AccountNo" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default" />
