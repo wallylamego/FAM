@@ -31,11 +31,14 @@ namespace WebAppFAM.Models
         public int? HorseID { get; set; }
         
         public int? TrailerID { get; set; }
-        
+
+        [Display(Name = "Commodity")]
         public int? CommodityID { get; set; }
 
+        [Display(Name ="Status")]
         public int? StatusID { get; set; }
 
+        [Display(Name = "Sub Contractor")]
         public int? SubContractorID { get; set; }
 
 

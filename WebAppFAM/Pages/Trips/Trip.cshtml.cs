@@ -32,6 +32,7 @@ namespace WebAppFAM.Pages.Trips
         private readonly UserManager<ApplicationUser> _userManager;
         public SelectList StatusSL { get; set; }
         public SelectList SubContractorSL { get; set; }
+        public SelectList CommoditySL { get; set; }
 
         public void PopulateStatusDropDownList(object selectedStatus = null)
         {
@@ -49,7 +50,14 @@ namespace WebAppFAM.Pages.Trips
             SubContractorSL = new SelectList(SubContractorQuery.AsNoTracking(),
                         "SubContractorID", "Name", selectedSubContractor);
         }
-
+        public void PopulateCommodityDropDownList(object selectedCommodity = null)
+        {
+            var CommodityQuery = from c in _context.Commodity
+                                     orderby c.Name
+                                     select c;
+            CommoditySL = new SelectList(CommodityQuery.AsNoTracking(),
+                        "CommodityID", "Name", selectedCommodity);
+        }
 
         // Get the default form options so that we can use them to set the default limits for
         // request body data
@@ -89,6 +97,9 @@ namespace WebAppFAM.Pages.Trips
             {
                 Trip = new Trip();
             }
+            PopulateStatusDropDownList();
+            PopulateSubContractorDropDownList();
+            PopulateCommodityDropDownList();
             return Page();
         }
 
