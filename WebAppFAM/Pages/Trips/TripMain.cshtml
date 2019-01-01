@@ -36,28 +36,30 @@
                     <th>Create Date</th>@*[5]*@
                     <th>Edit</th>@*[6]*@
                     <th>Delete</th>@*[7]*@
-                    <th>Return Trip</th> @*[8]*@
-                    <th>Expect. Coll. Date</th>@*[9]*@
-                    <th>From</th>@*[10]*@
-                    <th>To</th>@*[11]*@
-                    <th>Distance</th>@*[12]*@
-                    <th>Driver</th> @*[13]*@
-                    <th>Truck</th>@*[14]*@
-                    <th>Trailer</th>@*[15]*@
-                    <th>Expect. Start Date</th>@*[16]*@
-                    <th>Expect. Completion Date</th>@*[17]*@
-                    <th>Act. Coll. Date</th>@*[18]*@
-                    <th>Act. Start. Date</th>@*[19]*@
-                    <th>Act. Compl. Date</th>@*[20]*@
-                    <th>Diff. Coll. Hrs</th>@*[21]*@
-                    <th>Diff. Start Hrs</th>@*[22]*@
-                    <th>Diff. End Hrs</th>@*[23]*@
-                    <th>Cust. RefNo</th>@*[24]*@
-                    <th>Invoice No</th>@*[25]*@
-                    <th>Invoice Date</th>@*[26]*@
-                    <th>Invoice Rate</th>@*[27]*@
-                    <th>Kilometres</th>@*[28]*@
-                    <th>Invoice Amount</th>@*[29]*@
+                    <th>Status</th>@*[8]*@
+                    <th>Sub Contractor</th>@*[9]*@
+                    <th>Return Trip</th> @*[10]*@
+                    <th>Expect. Coll. Date</th>@*[11]*@
+                    <th>From</th>@*[12]*@
+                    <th>To</th>@*[13]*@
+                    <th>Distance</th>@*[14]*@
+                    <th>Driver</th> @*[15]*@
+                    <th>Truck</th>@*[16]*@
+                    <th>Trailer</th>@*[17]*@
+                    <th>Expect. Start Date</th>@*[18]*@
+                    <th>Expect. Completion Date</th>@*[19]*@
+                    <th>Act. Coll. Date</th>@*[20]*@
+                    <th>Act. Start. Date</th>@*[21]*@
+                    <th>Act. Compl. Date</th>@*[22]*@
+                    <th>Diff. Coll. Hrs</th>@*[23]*@
+                    <th>Diff. Start Hrs</th>@*[24]*@
+                    <th>Diff. End Hrs</th>@*[25]*@
+                    <th>Cust. RefNo</th>@*[26]*@
+                    <th>Invoice No</th>@*[27]*@
+                    <th>Invoice Date</th>@*[28]*@
+                    <th>Invoice Rate</th>@*[29]*@
+                    <th>Kilometres</th>@*[30]*@
+                    <th>Invoice Amount</th>@*[31]*@
                 </tr>
             </thead>
         </table>
@@ -77,6 +79,7 @@
                 lengthMenu: [25, 100, 150, 200],
                 dom: '<lfB<t>ip>',
                 buttons: ['excel', 'copy', 'csv', 'pdf', 'print'],
+                "order": [[5, "desc"]],
                 "fixedHeader": {
                     "header": true,
                     "footer": true
@@ -116,38 +119,50 @@
                     "searchable": true
                     },
                     {
+                        /*Status is visible and is searchable*/
+                        "targets": [8],
+                        "visible": true,
+                        "searchable": true
+                        },
+                    {
+                        /*SubContractor is visible and is searchable*/
+                        "targets": [9],
+                        "visible": true,
+                        "searchable": true
+                    },
+                    {
                     /*From is visible and is searchable*/
-                    "targets": [10],
+                    "targets": [12],
                     "visible": true,
                     "searchable": true
                     },
                     {
                     /*To is visible and is searchable*/
-                    "targets": [11],
+                    "targets": [13],
                     "visible": true,
                     "searchable": true
                         },
                     {
                         /*Driver is visible and is searchable*/
-                        "targets": [13],
+                        "targets": [15],
                         "visible": true,
                         "searchable": true
                     },
                     {
                         /*Horse is visible and is searchable*/
-                        "targets": [14],
+                        "targets": [16],
                         "visible": true,
                         "searchable": true
                     },
                     {
                         /*Trailer is visible and is searchable*/
-                        "targets": [15],
+                        "targets": [17],
                         "visible": true,
                         "searchable": true
                         },
                     {
                         /*InvoiceNo is visible and is searchable*/
-                        "targets": [25],
+                        "targets": [27],
                         "visible": true,
                         "searchable": true
                     },
@@ -189,6 +204,8 @@
 
                         }
                     },
+                    { "data": "status", "name": "status", "autoWidth": true },
+                    { "data": "subContractor", "name": "subContractor", "autoWidth": true },
                     { "data": "returnTrip", "name": "returnTrip", "autoWidth": true },
                     {
                         data: "tripStart",

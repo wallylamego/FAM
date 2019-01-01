@@ -30,7 +30,7 @@ namespace WebAppFAM.Pages.Trips
             int filteredResultsCount = 0;
             int totalResultsCount = 0;
 
-            DataTableAjaxPostModel.GetOrderByParameters(Model.order, Model.columns, "TripCode", 
+            DataTableAjaxPostModel.GetOrderByParameters(Model.order, Model.columns, "CreateDate", 
                 out bool SortDir, out string SortBy);
 
            
@@ -45,6 +45,8 @@ namespace WebAppFAM.Pages.Trips
                    tp.ReturnTrip,
                    CreatedBy = tp.User.UserName,
                    CreateDate = tp.CreatedUtc,
+                   Status = tp.Status.Name,
+                   SubContractor = tp.SubContractor.Name,
                    TripStart = tp.ExpectedCollectionDateTime,
                    From = tp.Destination.StartLocation.Province.Country.CountryName + " | " +
                         tp.Destination.StartLocation.Province.ProvinceName + " | " +
@@ -88,7 +90,9 @@ namespace WebAppFAM.Pages.Trips
                         t.Customer.ToLower().Contains(Model.search.value.ToLower()) ||
                         t.Trailer.ToLower().Contains(Model.search.value.ToLower()) ||
                         t.Horse.ToLower().Contains(Model.search.value.ToLower()) ||
-                        t.InvoiceNo.ToLower().Contains(Model.search.value.ToLower()) 
+                        t.InvoiceNo.ToLower().Contains(Model.search.value.ToLower()) ||
+                        t.Status.ToLower().Contains(Model.search.value.ToLower()) ||
+                        t.SubContractor.ToLower().Contains(Model.search.value.ToLower())
                         );
 
                 filteredResultsCount = TripQuery.Count();

@@ -3,3 +3,12 @@ add-migration FileTypeTable -context WebAppFAMContext
 
 <a href="@Url.Action("Download", "UploadFiles", new {filename = "BAT_Data.xlsx"} )"> Parameter</a>
 <a href="UploadFiles/Download?filename=BAT_Data.xlsx">ParamterTest2</a>
+
+Azure
+
+
+Server: wallylamego.database.windows.net
+admin name: wallylamego
+password: [dogDateOfBirth]
+
+storage account: wallylamego
