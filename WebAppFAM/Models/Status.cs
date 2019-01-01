@@ -7,16 +7,12 @@ using System.Threading.Tasks;
 
 namespace WebAppFAM.Models
 {
-    public class Customer
+    public class Status
     {
-        public int CustomerID { get; set; }
+        public int StatusID { get; set; }
         [Required]
         [MaxLength(50)]
         public string Name { get; set; }
-
-        [Required]
-        [MaxLength(50)]
-        public string AccountNo { get; set; }
 
         [Required, DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedUtc { get; set; }

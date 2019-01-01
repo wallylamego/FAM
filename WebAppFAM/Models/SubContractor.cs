@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace WebAppFAM.Models
 {
-    public class Customer
+    public class SubContractor
     {
-        public int CustomerID { get; set; }
+        public int SubContractorID { get; set; }
         [Required]
         [MaxLength(50)]
         public string Name { get; set; }

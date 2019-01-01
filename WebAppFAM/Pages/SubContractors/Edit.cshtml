@@ -1,0 +1,41 @@
+﻿@page
+@model WebAppFAM.Pages.SubContractors.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Pages/_LayoutDataTables.cshtml";
+}
+
+<h2>Edit</h2>
+
+<h4>SubContractor</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="SubContractor.SubContractorID" />
+            <div class="form-group">
+                <label asp-for="SubContractor.Name" class="control-label"></label>
+                <input asp-for="SubContractor.Name" class="form-control" />
+                <span asp-validation-for="SubContractor.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SubContractor.AccountNo" class="control-label"></label>
+                <input asp-for="SubContractor.AccountNo" class="form-control" />
+                <span asp-validation-for="SubContractor.AccountNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
