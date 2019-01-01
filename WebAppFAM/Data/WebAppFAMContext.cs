@@ -73,8 +73,8 @@ namespace WebAppFAM.Models
         public DbSet<Trip> Trips { get; set; }
         public DbSet<TripFile> TripFiles { get; set; }
         public DbSet<ApplicationUser> AspNetUsers { get; set; }
-        public DbSet<WebAppFAM.Models.Commodity> Commodity { get; set; }
-        public DbSet<WebAppFAM.Models.Status> Status { get; set; }
-        public DbSet<WebAppFAM.Models.SubContractor> SubContractor { get; set; }
+        public DbSet<Commodity> Commodity { get; set; }
+        public DbSet<Status> Status { get; set; }
+        public DbSet<SubContractor> SubContractor { get; set; }
     }
 }
