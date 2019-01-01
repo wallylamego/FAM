@@ -20,6 +20,7 @@ using Microsoft.Net.Http.Headers;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 using WebAppFAM.Data;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WebAppFAM.Pages.Trips
 {
@@ -29,6 +30,25 @@ namespace WebAppFAM.Pages.Trips
         private IHostingEnvironment _hostingEnvironment;
         private readonly string _newPath;
         private readonly UserManager<ApplicationUser> _userManager;
+        public SelectList StatusSL { get; set; }
+        public SelectList SubContractorSL { get; set; }
+
+        public void PopulateStatusDropDownList(object selectedStatus = null)
+        {
+            var StatusQuery = from s in _context.Status
+                               orderby s.Name
+                               select s;
+            StatusSL = new SelectList(StatusQuery.AsNoTracking(),
+                        "StatusID", "Name", selectedStatus);
+        }
+        public void PopulateSubContractorDropDownList(object selectedSubContractor = null)
+        {
+            var SubContractorQuery = from s in _context.SubContractor
+                              orderby s.Name
+                              select s;
+            SubContractorSL = new SelectList(SubContractorQuery.AsNoTracking(),
+                        "SubContractorID", "Name", selectedSubContractor);
+        }
 
 
         // Get the default form options so that we can use them to set the default limits for
