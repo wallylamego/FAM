@@ -1174,7 +1174,7 @@
                     { "data": "fuelRate", "name": "fuelRate", "autoWidth": true },
                     {
                         "data": null, render: function (data, type, row) {
-                            return row.litres * row.fuelRate;
+                            return FormatToDecimal(row.litres * row.fuelRate);
                         }
                     },
                     {
@@ -1327,6 +1327,7 @@
             //Disable the calculated fields in the invoice
             $("#invoicedKms").prop("disabled", true);
             $("#invoiceAmount").prop("disabled", true);
+            $("#invoiceAmount").val(FormatToDecimal($("#invoiceAmount").val()));
 
             //Click Button Functions
             $('#fuelRate').change(function () {
@@ -1334,6 +1335,7 @@
                 var litresCheck = $("#litres").hasClass("valid");
                 if (fuelRateCheck && litresCheck) {
                     ($("#DieselTotalCost")).val($('#fuelRate').val() * $('#litres').val()); // get the current value of the input field.
+                    
                 }
                 else {
                     ($("#DieselTotalCost")).val(0);
@@ -1351,31 +1353,7 @@
                 }
             });
 
-            $('#invoiceRate').change(function () {
-
-                $('#customerReferenceNo').focus();
-                $('#invoiceRate').focus();
-                var invoiceRateCheck = $("#invoiceRate").hasClass("valid");
-
-                console.log("Invoice Rate Change:" + invoiceRateCheck);
-
-                if (invoiceRateCheck) {
-                    ($("#invoiceAmount")).val($('#invoiceRate').val() * $('#distance').val()); // get the current value of the input field.
-                    var FormatInvoiceAmount = ($("#invoiceAmount")).val();
-                    FormatInvoiceAmount = FormatInvoiceAmount.toLocaleString(
-                        undefined, // leave undefined to use the browser's locale,
-                        // or use a string like 'en-US' to override it.
-                        { minimumFractionDigits: 2 });
-                    console.log(FormatInvoiceAmount.toLocaleString(
-                        undefined, // leave undefined to use the browser's locale,
-                        // or use a string like 'en-US' to override it.
-                        { minimumFractionDigits: 2 }));
-                    $("#invoiceAmount").val(FormatInvoiceAmount);
-                }
-                else {
-                    ($("#invoiceAmount")).val(0);
-                }
-            });
+            
 
 
             //Find Destination
@@ -1664,7 +1642,11 @@
 
                 $("#modalHeader").text("Trip Section 5 Processing Status");
                 if (invoiceNoCheck && invoiceRateCheck && customerReferenceNoCheck) {
+                    ($("#invoiceAmount")).val($('#invoiceRate').val() * $('#distance').val()); // get the current value of the input field.
+                    var FormatAmt = FormatToDecimal($("#invoiceAmount").val());
+                    console.log(FormatAmt);
                     $("#savebtnSection1").click();
+                    $("#invoiceAmount").val(FormatAmt);
                 }
                 else {
                     $("#modalMessage").text("Please ensure all the required fields are complete");

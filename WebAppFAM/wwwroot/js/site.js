@@ -8,3 +8,12 @@ function cleanSpaces(inputString) {
     var newStr2 = $.trim(newStr1);
     return newStr2;
 }
+function FormatToDecimal(inputString) {
+    var newStr1 = parseFloat(inputString);
+    newStr2 = newStr1.toLocaleString(
+        undefined, // leave undefined to use the browser's locale,
+        // or use a string like 'en-US' to override it.
+        { 'minimumFractionDigits': 2, 'maximumFractionDigits': 2 });
+                    //minimumFractionDigits
+    return newStr2;
+}
