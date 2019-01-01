@@ -30,10 +30,13 @@ namespace WebAppFAM.Models
         
         public int? HorseID { get; set; }
         
-
         public int? TrailerID { get; set; }
         
         public int? CommodityID { get; set; }
+
+        public int? StatusID { get; set; }
+
+        public int? SubContractorID { get; set; }
 
 
         [DataType(DataType.DateTime)]
@@ -92,6 +95,8 @@ namespace WebAppFAM.Models
         public Horse Horse { get; set; }
         public Trailer Trailer { get; set; }
         public Commodity Commodity { get; set; }
+        public SubContractor SubContractor { get; set; }
+        public Status Status { get; set; }
         public ApplicationUser User { get; set; }
     }
 }
