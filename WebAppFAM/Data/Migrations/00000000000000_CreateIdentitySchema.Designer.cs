@@ -126,7 +126,7 @@ namespace WebAppFAM.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("WebAppFAM.Models.ApplicationUser", b =>
+            modelBuilder.Entity("WebAppFAM.Data.ApplicationUser", b =>
                 {
                     b.Property<string>("Id");
 
