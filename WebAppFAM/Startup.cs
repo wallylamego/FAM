@@ -29,10 +29,15 @@ namespace WebAppFAM
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<WebAppFAMContext>(options =>
+                   options.UseSqlServer(Configuration.GetConnectionString("WebAppFAMContext")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+            //services.AddIdentity<ApplicationUser, IdentityRole>()
+            //    .AddEntityFrameworkStores<WebAppFAMContext>()
+            //    .AddDefaultTokenProviders();
 
             services.AddMvc()
                 .AddRazorPagesOptions(options =>
@@ -46,8 +51,7 @@ namespace WebAppFAM
                          // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
                          services.AddSingleton<IEmailSender, EmailSender>();
 
-            services.AddDbContext<WebAppFAMContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("WebAppFAMContext")));
+           
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             
@@ -64,7 +68,10 @@ namespace WebAppFAM
             }
             else
             {
-                app.UseExceptionHandler("/Error");
+                app.UseBrowserLink();
+                app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
+              //  app.UseExceptionHandler("/Error");
             }
 
             app.UseStaticFiles();
@@ -72,33 +79,33 @@ namespace WebAppFAM
             app.UseAuthentication();
 
             app.UseMvc();
-            CreateUserRoles(services).Wait();
+          //  CreateUserRoles(services).Wait();
         }
 
-        private async Task CreateUserRoles(IServiceProvider serviceProvider)
-        {
-            var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            var UserManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+        //private async Task CreateUserRoles(IServiceProvider serviceProvider)
+        //{
+        //    var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+        //    var UserManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
-            IdentityResult roleResult;
-            //Adding Admin Role 
-            var roleCheck = await RoleManager.RoleExistsAsync("Admin");
-            if (!roleCheck)
-            {
-                //create the roles and seed them to the database 
-                roleResult = await RoleManager.CreateAsync(new IdentityRole("Admin"));
-            }
-            roleCheck = await RoleManager.RoleExistsAsync("Controller");
-            if (!roleCheck)
-            {
-                //create the roles and seed them to the database 
-                roleResult = await RoleManager.CreateAsync(new IdentityRole("Controller"));
-            }
-            //Assign Admin role to the main User here we have given our newly registered  
-            //login id for Admin management 
-            ApplicationUser user = await UserManager.FindByEmailAsync("wallylamego@hotmail.com");
-            var User = new ApplicationUser();
-            await UserManager.AddToRoleAsync(user, "Admin");
-        }
+        //    IdentityResult roleResult;
+        //    //Adding Admin Role 
+        //    var roleCheck = await RoleManager.RoleExistsAsync("Admin");
+        //    if (!roleCheck)
+        //    {
+        //        //create the roles and seed them to the database 
+        //        roleResult = await RoleManager.CreateAsync(new IdentityRole("Admin"));
+        //    }
+        //    roleCheck = await RoleManager.RoleExistsAsync("Controller");
+        //    if (!roleCheck)
+        //    {
+        //        //create the roles and seed them to the database 
+        //        roleResult = await RoleManager.CreateAsync(new IdentityRole("Controller"));
+        //    }
+        //    //Assign Admin role to the main User here we have given our newly registered  
+        //    //login id for Admin management 
+        //    ApplicationUser user = await UserManager.FindByEmailAsync("wallylamego@hotmail.com");
+        //    var User = new ApplicationUser();
+        //    await UserManager.AddToRoleAsync(user, "Admin");
+        //}
     }
 }

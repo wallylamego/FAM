@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using WebAppFAM.Data;
 using WebAppFAM.Services;
+using WebAppFAM.Models;
 
 namespace WebAppFAM.Pages.Account
 {

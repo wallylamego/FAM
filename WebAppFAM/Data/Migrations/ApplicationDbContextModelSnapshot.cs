@@ -210,6 +210,8 @@ namespace WebAppFAM.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
+
+
         }
     }
 }

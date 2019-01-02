@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using WebAppFAM.Data;
+using WebAppFAM.Models;
 
 namespace WebAppFAM.Pages.Account
 {
