@@ -15,9 +15,9 @@ namespace WebAppFAM.Pages.Trailers
     [Authorize]
     public class EditModel : TrailerTypeNamePageModel
     {
-        private readonly WebAppFAMContext _context;
+        private readonly WebAppFAM.Data.ApplicationDbContext _context;
         
-        public EditModel(WebAppFAMContext context)
+        public EditModel(WebAppFAM.Data.ApplicationDbContext context)
         {
             _context = context;
         }

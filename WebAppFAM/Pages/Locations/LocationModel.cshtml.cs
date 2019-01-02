@@ -14,9 +14,9 @@ namespace WebAppFAM.Pages.Locations
     [Authorize]
     public class LocationModel : PageModel
     {
-        private readonly WebAppFAM.Models.WebAppFAMContext _context;
+        private readonly WebAppFAM.Data.ApplicationDbContext _context;
         
-        public LocationModel(WebAppFAM.Models.WebAppFAMContext context)
+        public LocationModel(WebAppFAM.Data.ApplicationDbContext context)
         {
             _context = context;
         }

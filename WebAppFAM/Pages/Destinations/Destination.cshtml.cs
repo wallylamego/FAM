@@ -14,10 +14,10 @@ namespace WebAppFAM.Pages.Destinations
     [Authorize]
     public class DestinationModel : PageModel
     {
-        private readonly WebAppFAM.Models.WebAppFAMContext _context;
+        private readonly WebAppFAM.Data.ApplicationDbContext _context;
         public SelectList CustomerNameSL { get; set; }
 
-        public DestinationModel(WebAppFAM.Models.WebAppFAMContext context)
+        public DestinationModel(WebAppFAM.Data.ApplicationDbContext context)
         {
             _context = context;
         }

@@ -13,9 +13,9 @@ namespace WebAppFAM.Pages.Provinces
     [Authorize]
     public class CreateModel : CountryProvinceNamePageModel
     {
-        private readonly WebAppFAMContext _context;
+        private readonly WebAppFAM.Data.ApplicationDbContext _context;
 
-        public CreateModel(WebAppFAMContext context)
+        public CreateModel(WebAppFAM.Data.ApplicationDbContext context)
         {
             _context = context;
         }

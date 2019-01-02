@@ -16,7 +16,7 @@ namespace WebAppFAM.Pages.Provinces
         public SelectList CountryNameSL { get; set; }
         public SelectList ProvinceNameSL { get; set; }
 
-        public void PopulateCountryDropDownList(WebAppFAMContext _context,
+        public void PopulateCountryDropDownList(WebAppFAM.Data.ApplicationDbContext _context,
             object selectedCountry = null)
         {
             var CountryQuery = from c in _context.Countries
@@ -26,7 +26,7 @@ namespace WebAppFAM.Pages.Provinces
                         "CountryID", "CountryName", selectedCountry);
 
         }
-        public void PopulateProvinceDropDownList(WebAppFAMContext _context,int id,
+        public void PopulateProvinceDropDownList(WebAppFAM.Data.ApplicationDbContext _context,int id,
            object selectedProvince = null)
         {
             var ProvinceQuery = from c in _context.Provinces
@@ -38,7 +38,7 @@ namespace WebAppFAM.Pages.Provinces
 
         }
 
-        public JsonResult GetProvinceList(WebAppFAMContext _context,int CountryId)
+        public JsonResult GetProvinceList(WebAppFAM.Data.ApplicationDbContext _context,int CountryId)
         {
             List<Province> ProvinceList = _context.Provinces.Where(p => p.CountryID == CountryId).ToList();
             JsonResult jsonProvinceList = new JsonResult(ProvinceList);

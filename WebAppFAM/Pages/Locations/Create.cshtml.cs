@@ -16,9 +16,9 @@ namespace WebAppFAM.Pages.Locations
     public class CreateModel :CountryProvinceNamePageModel
     {
 
-        private readonly WebAppFAM.Models.WebAppFAMContext _context;
+        private readonly WebAppFAM.Data.ApplicationDbContext _context;
 
-        public CreateModel(WebAppFAM.Models.WebAppFAMContext context)
+        public CreateModel(WebAppFAM.Data.ApplicationDbContext context)
         {
             _context = context;
         }

@@ -13,12 +13,12 @@ namespace WebAppFAM.Pages.Trailers
     [Authorize]
     public class CreateModel : TrailerTypeNamePageModel
     {
-        private readonly WebAppFAM.Models.WebAppFAMContext _context;
+        private readonly WebAppFAM.Data.ApplicationDbContext _context;
        
         [TempData]
         public string message { get; set; }
 
-        public CreateModel(WebAppFAM.Models.WebAppFAMContext context)
+        public CreateModel(WebAppFAM.Data.ApplicationDbContext context)
         {
             _context = context;
         }

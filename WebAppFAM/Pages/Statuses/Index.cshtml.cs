@@ -11,9 +11,9 @@ namespace WebAppFAM.Pages.Statuses
 {
     public class IndexModel : PageModel
     {
-        private readonly WebAppFAM.Models.WebAppFAMContext _context;
+        private readonly WebAppFAM.Data.ApplicationDbContext _context;
 
-        public IndexModel(WebAppFAM.Models.WebAppFAMContext context)
+        public IndexModel(WebAppFAM.Data.ApplicationDbContext context)
         {
             _context = context;
         }

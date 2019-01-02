@@ -14,7 +14,7 @@ namespace WebAppFAM.Pages.Trailers
     {
         public SelectList TrailerNameSL { get; set; }
 
-        public void PopulateTrailerTypeDropDownList(WebAppFAMContext _context,
+        public void PopulateTrailerTypeDropDownList(WebAppFAM.Data.ApplicationDbContext _context,
             object selectedTrailerType = null)
         {
             var TrailerTypesQuery = from tt in _context.TrailerTypes

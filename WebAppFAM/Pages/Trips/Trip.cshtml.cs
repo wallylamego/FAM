@@ -26,7 +26,7 @@ namespace WebAppFAM.Pages.Trips
 {
     public class TripModel : PageModel
     {
-        private readonly WebAppFAM.Models.WebAppFAMContext _context;
+        private readonly WebAppFAM.Data.ApplicationDbContext _context;
         private IHostingEnvironment _hostingEnvironment;
         private readonly string _newPath;
         private readonly UserManager<ApplicationUser> _userManager;
@@ -63,7 +63,7 @@ namespace WebAppFAM.Pages.Trips
         // request body data
         private static readonly FormOptions _defaultFormOptions = new FormOptions();
 
-        public TripModel(WebAppFAM.Models.WebAppFAMContext context,
+        public TripModel(WebAppFAM.Data.ApplicationDbContext context,
                 IHostingEnvironment hostingEnvironment, UserManager<ApplicationUser> userManager)
         {
             _context = context;

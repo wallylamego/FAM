@@ -14,9 +14,9 @@ namespace WebAppFAM.Pages.Trips
     [Authorize]
     public class TripMain : PageModel
     {
-        private readonly WebAppFAM.Models.WebAppFAMContext _context;
+        private readonly WebAppFAM.Data.ApplicationDbContext _context;
         
-        public TripMain(WebAppFAM.Models.WebAppFAMContext context)
+        public TripMain(WebAppFAM.Data.ApplicationDbContext context)
         {
             _context = context;
         }

@@ -15,9 +15,9 @@ namespace WebAppFAM.Pages.Locations
     [Authorize]
     public class EditModel : CountryProvinceNamePageModel
     {
-        private readonly WebAppFAM.Models.WebAppFAMContext _context;
+        private readonly WebAppFAM.Data.ApplicationDbContext _context;
 
-        public EditModel(WebAppFAM.Models.WebAppFAMContext context)
+        public EditModel(WebAppFAM.Data.ApplicationDbContext context)
         {
             _context = context;
         }
