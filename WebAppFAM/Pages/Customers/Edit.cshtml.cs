@@ -12,9 +12,9 @@ namespace WebAppFAM
 {
     public class EditModel : PageModel
     {
-        private readonly WebAppFAM.Models.WebAppFAMContext _context;
+        private readonly WebAppFAM.Data.ApplicationDbContext _context;
 
-        public EditModel(WebAppFAM.Models.WebAppFAMContext context)
+        public EditModel(WebAppFAM.Data.ApplicationDbContext context)
         {
             _context = context;
         }

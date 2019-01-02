@@ -11,9 +11,9 @@ namespace WebAppFAM
 {
     public class CreateModel : PageModel
     {
-        private readonly WebAppFAM.Models.WebAppFAMContext _context;
+        private readonly WebAppFAM.Data.ApplicationDbContext _context;
 
-        public CreateModel(WebAppFAM.Models.WebAppFAMContext context)
+        public CreateModel(WebAppFAM.Data.ApplicationDbContext context)
         {
             _context = context;
         }
