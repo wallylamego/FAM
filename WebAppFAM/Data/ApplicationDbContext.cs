@@ -18,27 +18,10 @@ namespace WebAppFAM.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            //builder.Entity("WebAppFAM.Models.Customer", b =>
-            //{
-            //    b.Property<int>("CustomerID")
-            //        .ValueGeneratedOnAdd()
-            //        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            //    b.Property<string>("AccountNo")
-            //        .IsRequired()
-            //        .HasMaxLength(50);
-
-            //    b.Property<DateTime>("CreatedUtc")
-            //        .ValueGeneratedOnAddOrUpdate();
-
-            //    b.Property<string>("Name")
-            //        .IsRequired()
-            //        .HasMaxLength(50);
-
-            //    b.HasKey("CustomerID");
-
-            //    b.ToTable("Customers");
-            //});
+            foreach (var relationship in builder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            {
+                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            }
             base.OnModelCreating(builder);
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
