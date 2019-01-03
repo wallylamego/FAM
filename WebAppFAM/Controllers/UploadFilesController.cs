@@ -21,13 +21,13 @@ namespace WebAppFAM.Controllers
     public class UploadFilesController : Controller
     {
         private static readonly FormOptions _defaultFormOptions = new FormOptions();
-        private readonly WebAppFAM.Models.WebAppFAMContext _context;
+        private readonly WebAppFAM.Data.ApplicationDbContext _context;
         private IHostingEnvironment _hostingEnvironment;
         private readonly string _newPath;
         private readonly string _virtualPathFolder;
         
         public UploadFilesController(IHostingEnvironment hostingEnvironment,
-            WebAppFAM.Models.WebAppFAMContext context)
+            WebAppFAM.Data.ApplicationDbContext context)
         {
             _hostingEnvironment = hostingEnvironment;
             _context = context;

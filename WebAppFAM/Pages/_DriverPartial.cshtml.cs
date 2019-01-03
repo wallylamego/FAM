@@ -12,13 +12,12 @@ namespace WebAppFAM.Pages.Destinations
 {
     public class DestinationPartialModel : PageModel
     {
-        private readonly WebAppFAM.Models.WebAppFAMContext _context;
+        private readonly WebAppFAM.Data.ApplicationDbContext _context;
         public SelectList CustomerNameSL { get; set; }
 
-        public DestinationPartialModel(WebAppFAM.Models.WebAppFAMContext context)
+        public DestinationPartialModel(WebAppFAM.Data.ApplicationDbContext context)
         {
-            
-            _context = context;
+                _context = context;
         }
 
         [BindProperty]

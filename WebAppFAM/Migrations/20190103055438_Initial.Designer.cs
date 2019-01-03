@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebAppFAM.Data;
 
-namespace WebAppFAM.Data.Migrations
+namespace WebAppFAM.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190102204202_LinkToNewAppContext")]
-    partial class LinkToNewAppContext
+    [Migration("20190103055438_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -661,17 +661,17 @@ namespace WebAppFAM.Data.Migrations
                     b.HasOne("WebAppFAM.Models.Customer", "Customer")
                         .WithMany()
                         .HasForeignKey("CustomerID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("WebAppFAM.Models.Location", "EndLocation")
                         .WithMany()
                         .HasForeignKey("EndLocationID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("WebAppFAM.Models.Location", "StartLocation")
                         .WithMany()
                         .HasForeignKey("StartLocationID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("WebAppFAM.Models.Fuel", b =>
@@ -679,7 +679,7 @@ namespace WebAppFAM.Data.Migrations
                     b.HasOne("WebAppFAM.Models.Trip", "Trip")
                         .WithMany("FuelItems")
                         .HasForeignKey("TripID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("WebAppFAM.Models.Kilometre", b =>
@@ -687,7 +687,7 @@ namespace WebAppFAM.Data.Migrations
                     b.HasOne("WebAppFAM.Models.Trip", "Trip")
                         .WithMany("Kilometres")
                         .HasForeignKey("TripID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("WebAppFAM.Models.Location", b =>
@@ -695,7 +695,7 @@ namespace WebAppFAM.Data.Migrations
                     b.HasOne("WebAppFAM.Models.Province", "Province")
                         .WithMany()
                         .HasForeignKey("ProvinceID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("WebAppFAM.Models.Province", b =>
@@ -703,43 +703,50 @@ namespace WebAppFAM.Data.Migrations
                     b.HasOne("WebAppFAM.Models.Country", "Country")
                         .WithMany()
                         .HasForeignKey("CountryID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("WebAppFAM.Models.Trip", b =>
                 {
                     b.HasOne("WebAppFAM.Models.Commodity", "Commodity")
                         .WithMany()
-                        .HasForeignKey("CommodityID");
+                        .HasForeignKey("CommodityID")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("WebAppFAM.Models.Destination", "Destination")
                         .WithMany()
                         .HasForeignKey("DestinationID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("WebAppFAM.Models.Driver", "Driver")
                         .WithMany()
-                        .HasForeignKey("DriverID");
+                        .HasForeignKey("DriverID")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("WebAppFAM.Models.Horse", "Horse")
                         .WithMany()
-                        .HasForeignKey("HorseID");
+                        .HasForeignKey("HorseID")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("WebAppFAM.Models.Status", "Status")
                         .WithMany()
-                        .HasForeignKey("StatusID");
+                        .HasForeignKey("StatusID")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("WebAppFAM.Models.SubContractor", "SubContractor")
                         .WithMany()
-                        .HasForeignKey("SubContractorID");
+                        .HasForeignKey("SubContractorID")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("WebAppFAM.Models.Trailer", "Trailer")
                         .WithMany()
-                        .HasForeignKey("TrailerID");
+                        .HasForeignKey("TrailerID")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("WebAppFAM.Data.ApplicationUser", "User")
                         .WithMany()
-                        .HasForeignKey("UserID");
+                        .HasForeignKey("UserID")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("WebAppFAM.Models.TripFile", b =>
@@ -747,7 +754,7 @@ namespace WebAppFAM.Data.Migrations
                     b.HasOne("WebAppFAM.Models.Trip", "Trip")
                         .WithMany()
                         .HasForeignKey("TripID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("WebAppFAM.Models.Trailer", b =>
@@ -755,7 +762,7 @@ namespace WebAppFAM.Data.Migrations
                     b.HasOne("WebAppFAM.Models.TrailerType", "TrailerType")
                         .WithMany()
                         .HasForeignKey("TrailerTypeID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 #pragma warning restore 612, 618
         }
