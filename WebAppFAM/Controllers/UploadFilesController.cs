@@ -304,11 +304,13 @@ namespace WebAppFAM.Controllers
         CloudStorageAccount storageAccount = null;
         CloudBlobContainer cloudBlobContainer = null;
 
-        string storageConnectionString = _configuration["StorageAccount"];
+ 
+
+            string storageConnectionString = _configuration.GetConnectionString("StorageAccount");
 
         // Check whether the connection string can be parsed.
 
-        if (CloudStorageAccount.TryParse(storageConnectionString, out storageAccount))
+            if (CloudStorageAccount.TryParse(storageConnectionString, out storageAccount))
         {
             try
             {
