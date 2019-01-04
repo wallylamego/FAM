@@ -29,15 +29,10 @@ namespace WebAppFAM
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            //services.AddDbContext<WebAppFAMContext>(options =>
-            //       options.UseSqlServer(Configuration.GetConnectionString("WebAppFAMContext")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
-            //services.AddIdentity<ApplicationUser, IdentityRole>()
-            //    .AddEntityFrameworkStores<WebAppFAMContext>()
-            //    .AddDefaultTokenProviders();
 
             services.AddMvc()
                 .AddRazorPagesOptions(options =>
