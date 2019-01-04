@@ -113,15 +113,18 @@ namespace WebAppFAM.Pages.Trips
             };
             return new JsonResult(value);
         }
-
-        public async Task<JsonResult> OnPostDeleteAsync(Trip TripId)
+        
+        public async Task<IActionResult> OnDeleteDelete([FromBody] Trip obj)
         {
-            var TripToDelete = await _context.Trips.FindAsync(TripId);
-
+            var TripToDelete = await _context.Trips.FindAsync(obj.TripID);
+            var FuelItemsToDelete = _context.FuelItems.Where(fi => fi.TripID == obj.TripID);
+            
             if (TripToDelete != null && HttpContext.User.IsInRole("Admin"))
             {
                 try
-                { 
+                {
+                    _context.FuelItems.RemoveRange(FuelItemsToDelete);
+                    await _context.SaveChangesAsync();
                     _context.Trips.Remove(TripToDelete);
                     await _context.SaveChangesAsync();
                 }

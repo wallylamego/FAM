@@ -295,7 +295,7 @@
             console.log("Before Ajax Call:" + "Trip ID is: " + TripID)
             var obj = {};
             obj.TripID = TripID;
-
+            console.log("Oject to be deleted" + JSON.stringify(obj));
 
             $.ajax({
                 type: "DELETE",
@@ -307,7 +307,9 @@
                 contentType: "application/json",
                 dataType: "json",
                 data: JSON.stringify(obj),
+                
                 success: function (msg) {
+                        console.log("In Successs Function:")
                         oTable = $('#TripTable').DataTable();
                         oTable.draw();
                         $("#msg").html(msg);
@@ -315,10 +317,11 @@
                         $("#modalMessage").text(msg);
                         $("#myModal").modal("show");
                     },
-                    error: function () {
-                        $("#msg").html("Error while making Ajax call!");
+                error: function (msg) {
+                       // $("#msg").html("Error while making Ajax call!");
                         $("#modalHeader").text("Trip Processing Status");
-                        $("#modalMessage").text(msg);
+                        console.log("In Error Function:")
+                        $("#modalMessage").text("In Error Function");
                         $("#myModal").modal("show");
                     }
                 });//ajax
